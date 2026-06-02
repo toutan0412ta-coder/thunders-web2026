@@ -11,7 +11,6 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // ★ここを自分のFirebaseの設定に書き換えてください★
   const firebaseConfig = {
     apiKey:            "AIzaSyDyHEv72GDqgSba2KFgM-x550dHRT6FGgM",
     authDomain:        "thunders-web.firebaseapp.com",
@@ -24,7 +23,6 @@
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
 
-  // ─── Firestore 読み書き関数をグローバルに公開 ───
   window._fbDb = db;
 
   window.fbLoad = async function(docName) {
@@ -40,7 +38,6 @@
     await setDoc(doc(db, "data", docName), { items: arr });
   };
 
-  // リアルタイム監視（他のユーザーの変更を即時反映）
   window.fbWatch = function(docName, callback) {
     return onSnapshot(doc(db, "data", docName), (snap) => {
       if (snap.exists()) {
@@ -50,11 +47,13 @@
     });
   };
 
-  // Firebase準備完了を通知
   window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <style>
+/* ════════════════════════════════════════
+   CSS カスタムプロパティ & リセット
+════════════════════════════════════════ */
 :root{
   --primary:#1a3a5c;--primary-light:#2563a8;--accent:#e8a020;
   --win:#1a7a3c;--lose:#c0392b;--draw:#5a6a7a;
@@ -62,13 +61,17 @@
   --bg:#f0f4f8;--white:#fff;--border:#cdd5e0;--text:#1a2535;
   --radius:10px;--font:'Hiragino Kaku Gothic ProN','Meiryo','Yu Gothic',sans-serif;
   --fg-color:#e8a020;--ft-color:#4a90c4;
+  /* タッチターゲット最小サイズ */
+  --touch-min:44px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;}
 a{color:var(--primary-light);text-decoration:none;}
 button{cursor:pointer;font-family:var(--font);}
 
-/* ローディング画面 */
+/* ════════════════════════════════════════
+   ローディング画面
+════════════════════════════════════════ */
 #loadingScreen{
   position:fixed;inset:0;background:var(--primary);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -82,57 +85,133 @@ button{cursor:pointer;font-family:var(--font);}
 #loadingScreen p{font-size:16px;font-weight:600;}
 #loadingScreen.hidden{display:none;}
 
-.app-header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.25);}
-.app-header h1{font-size:clamp(13px,2.5vw,20px);font-weight:700;letter-spacing:.04em;}
-.btn-admin-open{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:7px 16px;font-size:13px;font-weight:700;}
-.nav-tabs{display:flex;background:var(--primary);border-bottom:3px solid var(--accent);}
-.nav-tab{padding:11px 22px;color:rgba(255,255,255,.7);cursor:pointer;font-size:14px;transition:.2s;}
+/* ════════════════════════════════════════
+   ヘッダー
+════════════════════════════════════════ */
+.app-header{
+  background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
+  color:#fff;padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+  position:sticky;top:0;z-index:200;
+}
+.app-header h1{font-size:clamp(12px,2.8vw,20px);font-weight:700;letter-spacing:.04em;line-height:1.3;}
+.btn-admin-open{
+  background:var(--accent);color:#fff;border:none;border-radius:6px;
+  padding:8px 16px;font-size:13px;font-weight:700;
+  min-height:var(--touch-min);white-space:nowrap;
+  flex-shrink:0;
+}
+
+/* ════════════════════════════════════════
+   ナビタブ
+════════════════════════════════════════ */
+.nav-tabs{
+  display:flex;background:var(--primary);
+  border-bottom:3px solid var(--accent);
+  position:sticky;top:56px;z-index:190;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
+.nav-tabs::-webkit-scrollbar{height:2px;}
+.nav-tabs::-webkit-scrollbar-thumb{background:var(--accent);}
+.nav-tab{
+  padding:12px 18px;color:rgba(255,255,255,.7);cursor:pointer;
+  font-size:14px;transition:.2s;white-space:nowrap;
+  min-height:var(--touch-min);display:flex;align-items:center;
+}
 .nav-tab:hover{background:rgba(255,255,255,.1);color:#fff;}
 .nav-tab.active{background:var(--accent);color:#fff;font-weight:700;}
-.page{display:none;padding:16px;max-width:1600px;margin:0 auto;}
+
+/* ════════════════════════════════════════
+   ページ共通
+════════════════════════════════════════ */
+.page{display:none;padding:12px;max-width:1600px;margin:0 auto;}
 .page.active{display:block;}
 
-.btn{border:none;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;}
+/* ════════════════════════════════════════
+   ボタン
+════════════════════════════════════════ */
+.btn{border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;min-height:var(--touch-min);}
 .btn-primary{background:var(--primary-light);color:#fff;}
 .btn-accent{background:var(--accent);color:#fff;}
 .btn-success{background:var(--win);color:#fff;}
 .btn-danger{background:var(--lose);color:#fff;}
-.btn-sm{padding:4px 10px;font-size:12px;}
-.btn-reset{background:#e0e4ea;color:var(--text);border:1px solid var(--border);border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;}
-.btn-pdf{background:#c62828;color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-sm{padding:6px 10px;font-size:12px;min-height:36px;}
+.btn-reset{background:#e0e4ea;color:var(--text);border:1px solid var(--border);border-radius:5px;padding:6px 10px;font-size:12px;cursor:pointer;min-height:36px;}
+.btn-pdf{background:#c62828;color:#fff;border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;min-height:var(--touch-min);}
 
-.section-card{background:var(--white);border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);padding:16px;margin-bottom:16px;}
+/* ════════════════════════════════════════
+   セクションカード
+════════════════════════════════════════ */
+.section-card{background:var(--white);border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);padding:14px;margin-bottom:14px;}
 .section-card h2{font-size:15px;color:var(--primary);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--border);}
 
-.filter-area{background:var(--white);border-radius:var(--radius);padding:12px 16px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.06);}
-.filter-input{border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;font-family:var(--font);min-width:160px;}
-.filter-area select,.filter-area input[type="date"]{border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px;font-family:var(--font);}
+/* ════════════════════════════════════════
+   フィルターエリア
+════════════════════════════════════════ */
+.filter-area{
+  background:var(--white);border-radius:var(--radius);padding:10px 12px;
+  margin-bottom:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.filter-input{
+  border:1px solid var(--border);border-radius:6px;padding:8px 10px;
+  font-size:13px;font-family:var(--font);min-width:140px;
+  min-height:38px;
+}
+.filter-area select,.filter-area input[type="date"]{
+  border:1px solid var(--border);border-radius:6px;padding:8px 8px;
+  font-size:13px;font-family:var(--font);min-height:38px;
+}
 .filter-label{font-size:12px;color:#666;white-space:nowrap;font-weight:600;}
 
-.chart-row{display:grid;grid-template-columns:220px 1fr;gap:12px;margin-bottom:16px;}
-@media(max-width:600px){.chart-row{grid-template-columns:1fr;}}
-.chart-card{background:var(--white);border-radius:var(--radius);padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.08);}
+/* ════════════════════════════════════════
+   チャートエリア
+════════════════════════════════════════ */
+.chart-row{
+  display:grid;
+  grid-template-columns:200px 1fr;
+  gap:10px;margin-bottom:14px;
+}
+.chart-card{background:var(--white);border-radius:var(--radius);padding:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);}
 .chart-card h3{font-size:13px;color:var(--primary);margin-bottom:8px;text-align:center;}
 .chart-wrap{position:relative;height:160px;display:flex;align-items:center;justify-content:center;}
 .donut-center{position:absolute;text-align:center;pointer-events:none;}
 .donut-center .pct{font-size:22px;font-weight:700;color:var(--primary);}
 .donut-center .lbl{font-size:10px;color:#666;}
 
-.dashboard-layout{display:grid;grid-template-columns:1fr 270px;gap:12px;align-items:start;}
-@media(max-width:900px){.dashboard-layout{grid-template-columns:1fr;}}
+/* ════════════════════════════════════════
+   ダッシュボードレイアウト
+════════════════════════════════════════ */
+.dashboard-layout{
+  display:grid;
+  grid-template-columns:1fr 260px;
+  gap:12px;align-items:start;
+}
 
-.table-wrap{background:var(--white);border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);overflow-x:auto;}
+/* ════════════════════════════════════════
+   テーブル共通
+════════════════════════════════════════ */
+.table-wrap{
+  background:var(--white);border-radius:var(--radius);
+  box-shadow:0 2px 8px rgba(0,0,0,.08);overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
 table{width:100%;border-collapse:collapse;}
-thead th{background:var(--primary);color:#fff;padding:9px 10px;font-size:13px;white-space:nowrap;}
+thead th{background:var(--primary);color:#fff;padding:9px 8px;font-size:13px;white-space:nowrap;}
 thead th.sortable{cursor:pointer;user-select:none;}
 thead th.sortable:hover{background:var(--primary-light);}
 tbody tr:nth-child(even){background:#f7f9fc;}
 tbody tr:hover{background:#e8f0ff;}
-td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
+td{padding:8px 8px;font-size:13px;border-bottom:1px solid var(--border);}
 .td-center{text-align:center;}
 .score-cell{text-align:center;font-weight:700;font-size:14px;}
 
-.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
+/* ════════════════════════════════════════
+   バッジ
+════════════════════════════════════════ */
+.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
 .badge-male{background:#e3f0ff;color:var(--male-color);}
 .badge-female{background:#fce4f0;color:var(--female-color);}
 .badge-jr{background:#fff3e0;color:#e65100;}
@@ -142,12 +221,15 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .yt-icon{display:inline-block;vertical-align:middle;}
 .yt-icon:hover{opacity:.75;}
 
-.monthly-card{border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden;position:sticky;top:12px;}
+/* ════════════════════════════════════════
+   月別集計カード
+════════════════════════════════════════ */
+.monthly-card{border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden;position:sticky;top:108px;}
 .monthly-card-header{background:linear-gradient(135deg,#1a3a5c 0%,#2563a8 100%);padding:10px 14px;text-align:center;}
 .monthly-card-header h3{font-size:14px;color:#fff;font-weight:700;letter-spacing:.05em;}
 .monthly-card-body{background:var(--white);padding:10px;}
 .cat-tab-group{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;}
-.cat-tab{padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid transparent;font-weight:600;transition:.15s;}
+.cat-tab{padding:4px 8px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid transparent;font-weight:600;transition:.15s;min-height:30px;display:flex;align-items:center;}
 .cat-tab[data-cat="全体"]   {background:#ede7f6;color:#4527a0;border-color:#b39ddb;}
 .cat-tab[data-cat="全体Jr"] {background:#d1c4e9;color:#311b92;border-color:#9575cd;}
 .cat-tab[data-cat="男子"]   {background:#e3f0ff;color:var(--male-color);border-color:#90caf9;}
@@ -168,48 +250,75 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .win-rate-high{color:var(--win);font-weight:700;}
 .win-rate-low{color:var(--lose);}
 
+/* ════════════════════════════════════════
+   ページネーション
+════════════════════════════════════════ */
 .pagination{display:flex;align-items:center;gap:6px;padding:10px 0;flex-wrap:wrap;}
-.page-btn{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:5px;padding:5px 11px;font-size:13px;cursor:pointer;}
+.page-btn{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:5px;padding:6px 12px;font-size:13px;cursor:pointer;min-height:36px;}
 .page-btn:hover{background:#e8f0ff;}
 .page-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
 .page-btn:disabled{opacity:.4;cursor:not-allowed;}
 .page-info{font-size:12px;color:#666;}
 
+/* ════════════════════════════════════════
+   個人スタッツ – 選手グループタブ
+════════════════════════════════════════ */
 .player-group-tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
-.player-group-tab{border:2px solid var(--border);background:var(--white);border-radius:8px;padding:7px 16px;font-size:13px;font-weight:600;transition:.2s;}
+.player-group-tab{
+  border:2px solid var(--border);background:var(--white);
+  border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;
+  transition:.2s;min-height:var(--touch-min);
+}
 .player-group-tab[data-grp="female"].active-tab{border-color:var(--female-color);background:#fce4f0;color:var(--female-color);}
 .player-group-tab[data-grp="male"].active-tab{border-color:var(--male-color);background:#e3f0ff;color:var(--male-color);}
 .player-group-tab[data-grp="ob"].active-tab{border-color:var(--ob-color);background:#f3e5f5;color:var(--ob-color);}
 .player-btn-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-.player-btn{border:2px solid var(--border);background:var(--white);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;transition:.2s;cursor:pointer;}
+.player-btn{
+  border:2px solid var(--border);background:var(--white);
+  border-radius:8px;padding:9px 14px;font-size:13px;font-weight:600;
+  transition:.2s;cursor:pointer;min-height:var(--touch-min);
+}
 .player-btn.selected-female{border-color:var(--female-color);background:#fce4f0;color:var(--female-color);}
 .player-btn.selected-male{border-color:var(--male-color);background:#e3f0ff;color:var(--male-color);}
 .player-btn.selected-ob{border-color:var(--ob-color);background:#f3e5f5;color:var(--ob-color);}
 .stats-filter-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;}
-.stats-filter-row select,.stats-filter-row input[type="date"]{border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px;font-family:var(--font);}
+.stats-filter-row select,.stats-filter-row input[type="date"]{border:1px solid var(--border);border-radius:6px;padding:7px 8px;font-size:13px;font-family:var(--font);min-height:38px;}
 
-.stats-player-header{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:var(--radius);margin-bottom:12px;color:#fff;}
+/* ════════════════════════════════════════
+   個人スタッツ – プレイヤーヘッダー
+════════════════════════════════════════ */
+.stats-player-header{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:var(--radius);margin-bottom:12px;color:#fff;flex-wrap:wrap;}
 .stats-player-icon{font-size:36px;}
 .stats-player-name{font-size:20px;font-weight:700;}
 .stats-player-sub{font-size:13px;opacity:.85;}
 
-.stats-summary-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:10px;margin-bottom:14px;}
-.stats-card{background:var(--white);border-radius:var(--radius);padding:12px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.08);}
-.stats-card .sc-val{font-size:20px;font-weight:700;color:var(--primary);}
-.stats-card .sc-lbl{font-size:11px;color:#666;margin-top:2px;}
+/* ════════════════════════════════════════
+   個人スタッツ – サマリーカード
+════════════════════════════════════════ */
+.stats-summary-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:14px;}
+.stats-card{background:var(--white);border-radius:var(--radius);padding:10px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.08);}
+.stats-card .sc-val{font-size:18px;font-weight:700;color:var(--primary);}
+.stats-card .sc-lbl{font-size:10px;color:#666;margin-top:2px;}
 
-.stats-charts-row{display:grid;grid-template-columns:240px 1fr 1fr;gap:12px;margin-bottom:16px;}
-@media(max-width:900px){.stats-charts-row{grid-template-columns:1fr 1fr;}}
-@media(max-width:500px){.stats-charts-row{grid-template-columns:1fr;}}
+/* ════════════════════════════════════════
+   個人スタッツ – チャートエリア
+════════════════════════════════════════ */
+.stats-charts-row{display:grid;grid-template-columns:220px 1fr 1fr;gap:10px;margin-bottom:14px;}
 .stats-chart-card{background:var(--white);border-radius:var(--radius);padding:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);}
 .stats-chart-card h4{font-size:12px;color:var(--primary);margin-bottom:6px;text-align:center;font-weight:700;}
 .stats-chart-wrap{position:relative;height:200px;}
 
-.stats-name-bar{display:flex;align-items:center;background:#fff;border:2px solid var(--border);border-radius:6px 6px 0 0;padding:6px 10px;gap:12px;}
+/* ════════════════════════════════════════
+   個人スタッツ – テーブルネームバー
+════════════════════════════════════════ */
+.stats-name-bar{display:flex;align-items:center;background:#fff;border:2px solid var(--border);border-radius:6px 6px 0 0;padding:6px 10px;gap:12px;flex-wrap:wrap;}
 .stats-name-bar .snb-label{font-size:12px;color:#888;}
 .stats-name-bar .snb-name{font-size:16px;font-weight:700;color:var(--primary);background:#fffde7;border:1px solid #f9a825;border-radius:4px;padding:2px 14px;}
 
-.stats-table-wrap{overflow-x:auto;border-radius:0 0 var(--radius) var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);}
+/* ════════════════════════════════════════
+   スタッツメインテーブル
+════════════════════════════════════════ */
+.stats-table-wrap{overflow-x:auto;border-radius:0 0 var(--radius) var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);-webkit-overflow-scrolling:touch;}
 table.stats-main-table{width:100%;border-collapse:collapse;font-size:11px;white-space:nowrap;}
 table.stats-main-table thead tr.h-group th{padding:4px 3px;font-size:11px;font-weight:700;text-align:center;border:1px solid #bbb;}
 .th-base  {background:#e0e0e0;color:#333;}
@@ -229,13 +338,11 @@ table.stats-main-table thead tr.h-sub th{padding:3px 3px;font-size:10px;text-ali
 .th-sub-ftpct{background:#dcfce7;color:#166534;}
 .th-sub-reb  {background:#f0fdf4;color:#14532d;}
 .th-sub-other{background:#f1f5f9;color:#475569;}
-
 table.stats-main-table tbody td{padding:3px 4px;border:1px solid #ddd;text-align:center;font-size:11px;}
 table.stats-main-table tbody tr:nth-child(even) td{background:#fafafa;}
 table.stats-main-table tbody tr:hover td{background:#e8f0ff;}
 table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align:center;font-size:11px;font-weight:700;background:#f0f4f8;}
 .bl-thick-left {border-left:3px solid #666 !important;}
-
 .q-check{color:#1a7a3c;font-weight:700;font-size:12px;}
 .q-empty{color:#ddd;font-size:10px;}
 .pct-high{color:#1a7a3c;font-weight:700;}
@@ -246,7 +353,9 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
 .td-fta{color:#1e3a8a;}
 .no-data{text-align:center;padding:40px;color:#888;font-size:15px;}
 
-/* 保存中インジケーター */
+/* ════════════════════════════════════════
+   保存インジケーター
+════════════════════════════════════════ */
 .saving-indicator{
   position:fixed;top:60px;right:16px;background:#1a7a3c;color:#fff;
   padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;
@@ -254,28 +363,42 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
 }
 .saving-indicator.show{opacity:1;}
 
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;}
+/* ════════════════════════════════════════
+   認証オーバーレイ
+════════════════════════════════════════ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;padding:16px;}
 .overlay.open{display:flex;}
-.auth-card{background:var(--white);border-radius:var(--radius);padding:28px;min-width:280px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.auth-card{background:var(--white);border-radius:var(--radius);padding:28px;width:min(320px,100%);text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.2);}
 .auth-card h2{margin-bottom:16px;color:var(--primary);}
-.auth-card input{border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:14px;width:100%;margin-bottom:12px;}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;align-items:center;justify-content:center;}
+.auth-card input{border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:16px;width:100%;margin-bottom:12px;}
+
+/* ════════════════════════════════════════
+   モーダル
+════════════════════════════════════════ */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;align-items:center;justify-content:center;padding:12px;}
 .modal-overlay.open{display:flex;}
-.modal-box{background:var(--white);border-radius:var(--radius);padding:24px;width:min(680px,95vw);max-height:90vh;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.modal-box{
+  background:var(--white);border-radius:var(--radius);padding:20px;
+  width:min(680px,100%);max-height:90vh;overflow-y:auto;
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+}
 .modal-box h3{font-size:16px;color:var(--primary);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--border);}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
 .form-group{display:flex;flex-direction:column;gap:4px;}
 .form-group label{font-size:12px;color:#555;font-weight:600;}
-.form-group input,.form-group select,.form-group textarea{border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;font-family:var(--font);}
-.form-group textarea{resize:vertical;min-height:60px;}
+.form-group input,.form-group select,.form-group textarea{border:1px solid var(--border);border-radius:6px;padding:9px 10px;font-size:16px;font-family:var(--font);}
+.form-group textarea{resize:vertical;min-height:60px;font-size:14px;}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
 .modal-section-label{font-size:12px;font-weight:700;color:var(--primary);margin:12px 0 6px;border-left:3px solid var(--accent);padding-left:6px;background:#fffde7;padding:4px 8px;border-radius:3px;}
 
+/* ════════════════════════════════════════
+   スタッツ入力テーブル（モーダル内）
+════════════════════════════════════════ */
 .stats-input-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px;}
 .stats-input-table th{padding:5px 6px;text-align:center;font-size:11px;font-weight:700;}
 .stats-input-table td{padding:3px 4px;text-align:center;}
-.stats-input-table input[type="number"]{width:48px;border:1px solid var(--border);border-radius:4px;padding:4px 4px;font-size:12px;text-align:center;font-family:var(--font);}
-.stats-input-table select{width:60px;border:1px solid var(--border);border-radius:4px;padding:3px;font-size:11px;font-family:var(--font);}
+.stats-input-table input[type="number"]{width:44px;border:1px solid var(--border);border-radius:4px;padding:4px 2px;font-size:12px;text-align:center;font-family:var(--font);}
+.stats-input-table select{width:56px;border:1px solid var(--border);border-radius:4px;padding:3px;font-size:11px;font-family:var(--font);}
 .sit-head-jikan{background:#f5a623;color:#fff;}
 .sit-head-fg   {background:#f5a623;color:#fff;}
 .sit-head-ft   {background:#4a90c4;color:#fff;}
@@ -285,10 +408,20 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
 .sit-sub-ftm   {background:#dbeafe;color:#1e40af;}
 .sit-sub-fta   {background:#bfdbfe;color:#1e3a8a;}
 
-.toast{position:fixed;bottom:24px;right:24px;background:#333;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:2000;opacity:0;transition:.3s;pointer-events:none;}
+/* ════════════════════════════════════════
+   トースト通知
+════════════════════════════════════════ */
+.toast{position:fixed;bottom:24px;right:50%;transform:translateX(50%);background:#333;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:2000;opacity:0;transition:.3s;pointer-events:none;max-width:90vw;text-align:center;}
 .toast.show{opacity:1;}
-.admin-toolbar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
 
+/* ════════════════════════════════════════
+   管理ツールバー
+════════════════════════════════════════ */
+.admin-toolbar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center;}
+
+/* ════════════════════════════════════════
+   印刷
+════════════════════════════════════════ */
 @media print{
   .nav-tabs,.filter-area,.app-header nav,.btn-admin-open,.btn-pdf,.btn-reset,.admin-toolbar,
   #loadingScreen,.saving-indicator,
@@ -297,11 +430,147 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
   body{background:#fff;}
   .monthly-card{position:static;}
 }
+
+/* ════════════════════════════════════════
+   レスポンシブ – 大画面（〜1200px）
+════════════════════════════════════════ */
+@media(max-width:1200px){
+  .dashboard-layout{grid-template-columns:1fr 240px;}
+  .stats-charts-row{grid-template-columns:200px 1fr 1fr;}
+}
+
+/* ════════════════════════════════════════
+   レスポンシブ – タブレット（〜900px）
+════════════════════════════════════════ */
+@media(max-width:900px){
+  .dashboard-layout{
+    grid-template-columns:1fr;
+  }
+  .monthly-card{
+    position:static;
+    /* スマホ・タブレットでは上部に移動 */
+    order:-1;
+  }
+  .stats-charts-row{grid-template-columns:1fr 1fr;}
+  .stats-summary-cards{grid-template-columns:repeat(4,1fr);}
+
+  /* ダッシュボードレイアウト反転: 月別表→テーブル の順に */
+  .dashboard-layout{
+    display:flex;
+    flex-direction:column;
+  }
+}
+
+/* ════════════════════════════════════════
+   レスポンシブ – スマートフォン大（〜700px）
+════════════════════════════════════════ */
 @media(max-width:700px){
+  .page{padding:8px;}
+
+  /* ヘッダー */
+  .app-header{padding:10px 12px;}
+
+  /* チャート */
+  .chart-row{
+    grid-template-columns:1fr;
+  }
+  .chart-wrap{height:140px;}
+
+  /* フィルター */
+  .filter-area{padding:8px 10px;gap:6px;}
+  .filter-input{min-width:100%;flex:1 1 100%;}
+  .filter-area select{flex:1 1 calc(50% - 4px);}
+  .filter-area input[type="date"]{flex:1 1 calc(50% - 4px);}
+  .filter-label{display:none;}  /* モバイルでは省略 */
+  .filter-area .filter-label{display:none;}
+
+  /* ダッシュボードテーブル: 主要列のみ表示 */
+  table thead th:nth-child(2),  /* 場所 */
+  table tbody td:nth-child(2){display:none;}
+
+  /* モーダル */
   .form-row{grid-template-columns:1fr;}
+  .modal-box{padding:16px;}
+  .modal-actions{justify-content:stretch;}
+  .modal-actions .btn{flex:1;text-align:center;}
+
+  /* スタッツ */
   .stats-summary-cards{grid-template-columns:repeat(3,1fr);}
-  .monthly-card{position:static;}
   .stats-charts-row{grid-template-columns:1fr;}
+  .stats-chart-wrap{height:160px;}
+  .stats-player-header{padding:12px 14px;gap:10px;}
+  .stats-player-name{font-size:17px;}
+  .stats-player-icon{font-size:28px;}
+
+  /* 月別集計 */
+  .monthly-card{position:static;}
+
+  /* PDF・管理ボタン */
+  .stats-filter-row{gap:6px;}
+  .stats-filter-row select,
+  .stats-filter-row input[type="date"]{flex:1 1 calc(50% - 4px);min-width:120px;}
+  .btn-pdf{width:100%;text-align:center;}
+}
+
+/* ════════════════════════════════════════
+   レスポンシブ – スマートフォン小（〜480px）
+════════════════════════════════════════ */
+@media(max-width:480px){
+  .app-header h1{font-size:11px;}
+  .nav-tab{padding:10px 14px;font-size:13px;}
+
+  /* チャート縦並び */
+  .chart-row{grid-template-columns:1fr;}
+  .chart-wrap{height:130px;}
+
+  /* フィルター: 全幅 */
+  .filter-area select,
+  .filter-area input[type="date"]{flex:1 1 100%;}
+
+  /* テーブル: 列削減（試合名・動画列） */
+  table thead th:nth-child(4),  /* 試合名 */
+  table tbody td:nth-child(4){display:none;}
+
+  /* スタッツサマリー */
+  .stats-summary-cards{grid-template-columns:repeat(2,1fr);}
+  .stats-card .sc-val{font-size:16px;}
+
+  /* 選手ボタン */
+  .player-btn{padding:8px 10px;font-size:12px;}
+  .player-group-tab{padding:7px 12px;font-size:12px;}
+
+  /* 管理ツールバー */
+  .admin-toolbar{gap:6px;}
+  .admin-toolbar .btn{flex:1 1 calc(50% - 4px);}
+
+  /* 月別集計タブ */
+  .cat-tab{padding:3px 6px;font-size:10px;}
+}
+
+/* ════════════════════════════════════════
+   レスポンシブ – 極小（〜360px）
+════════════════════════════════════════ */
+@media(max-width:360px){
+  .app-header{flex-direction:column;align-items:flex-start;gap:6px;}
+  .btn-admin-open{align-self:flex-end;}
+  .nav-tab{padding:9px 12px;font-size:12px;}
+  .stats-summary-cards{grid-template-columns:repeat(2,1fr);}
+  .pagination{gap:4px;}
+  .page-btn{padding:5px 8px;font-size:12px;}
+}
+
+/* ════════════════════════════════════════
+   タッチデバイス向け操作感改善
+════════════════════════════════════════ */
+@media(hover:none) and (pointer:coarse){
+  /* ホバー効果をタップフィードバックに変更 */
+  tbody tr:hover{background:inherit;}
+  .nav-tab:hover{background:transparent;}
+  thead th.sortable:hover{background:var(--primary);}
+  /* タップ時のハイライト */
+  .btn,.player-btn,.player-group-tab,.cat-tab,.page-btn,.nav-tab{
+    -webkit-tap-highlight-color:rgba(37,99,168,.15);
+  }
 }
 </style>
 </head>
@@ -381,7 +650,7 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
       <div class="form-group"><label>対戦相手 *</label><input type="text" id="sSOpponent"></div>
     </div>
     <div class="modal-section-label">📊 クォーター別スタッツ入力</div>
-    <div style="overflow-x:auto;">
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
       <table class="stats-input-table">
         <thead>
           <tr>
@@ -429,7 +698,7 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
       </table>
     </div>
     <div class="modal-section-label">🏀 リバウンド / その他スタッツ</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;">
       <div class="form-group"><label>OR（攻撃REB）</label><input type="number" id="sRebOff" min="0" value="0"></div>
       <div class="form-group"><label>DR（守備REB）</label><input type="number" id="sRebDef" min="0" value="0"></div>
       <div class="form-group"><label>アシスト</label><input type="number" id="sAst" min="0" value="0"></div>
@@ -487,15 +756,14 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
     </div>
     <div class="chart-card">
       <h3>月別 勝敗推移（絞り込み連動）</h3>
-      <div class="chart-wrap" style="height:180px;"><canvas id="barChart"></canvas></div>
+      <div class="chart-wrap" style="height:160px;"><canvas id="barChart"></canvas></div>
     </div>
   </div>
   <div class="filter-area">
     <input class="filter-input" id="filterKeyword" placeholder="🔍 試合名・場所・相手…" oninput="applyFilters()">
-    <select class="filter-input" id="filterOpponent" onchange="applyFilters()" style="min-width:130px;"><option value="">相手：すべて</option></select>
-    <span class="filter-label">男女：</span>
-    <select class="filter-input" id="filterCategory" onchange="applyFilters()" style="min-width:100px;">
-      <option value="">すべて</option><option value="男子">👦 男子</option><option value="女子">👧 女子</option>
+    <select class="filter-input" id="filterOpponent" onchange="applyFilters()" style="min-width:120px;"><option value="">相手：すべて</option></select>
+    <select class="filter-input" id="filterCategory" onchange="applyFilters()">
+      <option value="">男女：すべて</option><option value="男子">👦 男子</option><option value="女子">👧 女子</option>
     </select>
     <select class="filter-input" id="filterJr" onchange="applyFilters()">
       <option value="">Jr：すべて</option><option value="false">通常</option><option value="true">Jr</option>
@@ -503,14 +771,13 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
     <select class="filter-input" id="filterResult" onchange="applyFilters()">
       <option value="">勝敗：すべて</option><option value="勝">勝</option><option value="負">負</option><option value="引">引き分け</option>
     </select>
-    <span class="filter-label">📅 期間</span>
-    <input type="date" id="filterDateFrom" onchange="applyFilters()">
-    <span class="filter-label">〜</span>
-    <input type="date" id="filterDateTo" onchange="applyFilters()">
+    <input type="date" id="filterDateFrom" onchange="applyFilters()" placeholder="開始日">
+    <input type="date" id="filterDateTo" onchange="applyFilters()" placeholder="終了日">
     <button class="btn-reset" onclick="clearFilters()">✕ リセット</button>
   </div>
   <div class="dashboard-layout">
-    <div>
+    <!-- スマホでは月別が上に来るよう order で制御 -->
+    <div style="order:2;">
       <div class="table-wrap">
         <table>
           <thead><tr>
@@ -528,21 +795,23 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
       </div>
       <div id="matchPagination" class="pagination"></div>
     </div>
-    <div class="monthly-card">
-      <div class="monthly-card-header"><h3>📅 月別勝敗集計</h3></div>
-      <div class="monthly-card-body">
-        <div class="cat-tab-group" id="monthlyCatTabs">
-          <div class="cat-tab active" data-cat="全体"   onclick="switchMonthlyCat(this)">全体</div>
-          <div class="cat-tab"       data-cat="全体Jr" onclick="switchMonthlyCat(this)">全体Jr</div>
-          <div class="cat-tab"       data-cat="男子"   onclick="switchMonthlyCat(this)">男子</div>
-          <div class="cat-tab"       data-cat="男子Jr" onclick="switchMonthlyCat(this)">男子Jr</div>
-          <div class="cat-tab"       data-cat="女子"   onclick="switchMonthlyCat(this)">女子</div>
-          <div class="cat-tab"       data-cat="女子Jr" onclick="switchMonthlyCat(this)">女子Jr</div>
+    <div style="order:1;">
+      <div class="monthly-card">
+        <div class="monthly-card-header"><h3>📅 月別勝敗集計</h3></div>
+        <div class="monthly-card-body">
+          <div class="cat-tab-group" id="monthlyCatTabs">
+            <div class="cat-tab active" data-cat="全体"   onclick="switchMonthlyCat(this)">全体</div>
+            <div class="cat-tab"       data-cat="全体Jr" onclick="switchMonthlyCat(this)">全体Jr</div>
+            <div class="cat-tab"       data-cat="男子"   onclick="switchMonthlyCat(this)">男子</div>
+            <div class="cat-tab"       data-cat="男子Jr" onclick="switchMonthlyCat(this)">男子Jr</div>
+            <div class="cat-tab"       data-cat="女子"   onclick="switchMonthlyCat(this)">女子</div>
+            <div class="cat-tab"       data-cat="女子Jr" onclick="switchMonthlyCat(this)">女子Jr</div>
+          </div>
+          <table class="monthly-table">
+            <thead><tr><th>月</th><th>勝</th><th>負</th><th>引</th><th>勝率</th></tr></thead>
+            <tbody id="monthlySummaryBody"></tbody>
+          </table>
         </div>
-        <table class="monthly-table">
-          <thead><tr><th>月</th><th>勝</th><th>負</th><th>引</th><th>勝率</th></tr></thead>
-          <tbody id="monthlySummaryBody"></tbody>
-        </table>
       </div>
     </div>
   </div>
@@ -638,7 +907,7 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
     <h2>🏀 試合データ管理</h2>
     <div class="admin-toolbar">
       <button class="btn btn-success btn-sm" onclick="openMatchModal()">➕ 新規追加</button>
-      <input class="filter-input" id="adminMatchFilter" placeholder="🔍 キーワード検索…" oninput="renderAdminMatches()" style="min-width:180px;">
+      <input class="filter-input" id="adminMatchFilter" placeholder="🔍 キーワード検索…" oninput="renderAdminMatches()" style="min-width:180px;flex:1;">
     </div>
     <div class="table-wrap">
       <table>
@@ -652,7 +921,7 @@ table.stats-main-table tfoot td{padding:4px 4px;border:1px solid #bbb;text-align
     <h2>📊 スタッツデータ管理</h2>
     <div class="admin-toolbar">
       <button class="btn btn-success btn-sm" onclick="openStatsModal()">➕ 新規追加</button>
-      <input class="filter-input" id="adminStatsFilter" placeholder="🔍 選手名・相手で検索…" oninput="renderAdminStats()" style="min-width:180px;">
+      <input class="filter-input" id="adminStatsFilter" placeholder="🔍 選手名・相手で検索…" oninput="renderAdminStats()" style="min-width:180px;flex:1;">
     </div>
     <div class="table-wrap">
       <table>
@@ -746,25 +1015,18 @@ async function saveToFirebase(docName, arr){
 
 /* ════════ 初期化 ════════ */
 async function init(){
-  // Firebase準備完了を待つ
   if(!window.fbLoad){
     await new Promise(resolve=>window.addEventListener('firebaseReady',resolve,{once:true}));
   }
-
   try{
-    // Firestoreから並行読み込み
     [matchesData, statsData, playersData] = await Promise.all([
       window.fbLoad('matches'),
       window.fbLoad('stats'),
       window.fbLoad('players')
     ]);
-
-    // データが空の場合はプロンプトを表示
     if(matchesData.length===0 && statsData.length===0){
       showToast('💡 データが空です。管理画面からJSONファイルを読み込んでください。');
     }
-
-    // リアルタイム監視を開始
     window.fbWatch('matches', (data)=>{
       matchesData=data;
       buildOpponentFilter();
@@ -780,19 +1042,15 @@ async function init(){
       playersData=data;
       renderPlayerBtns();
     });
-
   }catch(e){
     console.error('Firebase読み込みエラー:', e);
     showToast('⚠️ データ読み込みに失敗しました。Firebaseの設定を確認してください。');
   }
-
   buildOpponentFilter();
   buildStatsOpponentFilter();
   renderPlayerBtns();
   applyFilters();
   renderMonthlySummary();
-
-  // ローディング画面を非表示
   document.getElementById('loadingScreen').classList.add('hidden');
   firebaseReady=true;
 }
@@ -805,6 +1063,8 @@ function showPage(name){
   document.getElementById('tab-'+name).classList.add('active');
   if(name==='admin'){renderAdminMatches();renderAdminStats();renderPlayerMaster();}
   if(name==='stats'){buildStatsOpponentFilter();renderStatsPage();}
+  // モバイルでページ切り替え後、先頭にスクロール
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 /* ════════ PDF印刷 ════════ */
@@ -944,7 +1204,7 @@ function renderMonthlySummary(){
   MONTH_KEYS.forEach(k=>{tW[k]=0;tL[k]=0;tD[k]=0;});
   data.forEach(m=>{
     const mk=m.date.slice(0,7);if(tW[mk]===undefined)return;
-    if(m.result==='勝')tW[mk]++;else if(m.result==='負')mL=tL,tL[mk]++;else tD[mk]++;
+    if(m.result==='勝')tW[mk]++;else if(m.result==='負')tL[mk]++;else tD[mk]++;
   });
   let aW=0,aL=0,aD=0;
   const rows=MONTH_KEYS.map((k,i)=>{
@@ -1154,7 +1414,7 @@ function renderAdminMatches(){
   const items=list.slice((adminMatchPage-1)*ADMIN_PAGE_SIZE,adminMatchPage*ADMIN_PAGE_SIZE);
   document.getElementById('adminMatchBody').innerHTML=items.map(m=>{
     const res=m.result==='勝'?`<span class="badge badge-win">勝</span>`:m.result==='負'?`<span class="badge badge-lose">負</span>`:`<span class="badge badge-draw">引</span>`;
-    return`<tr><td>${m.date}</td><td><span class="badge ${m.category==='男子'?'badge-male':'badge-female'}">${m.category}</span>${m.isJr?'<span class="badge badge-jr">Jr</span>':''}</td><td>${escH(m.matchName)}</td><td>${escH(m.opponent)}</td><td class="td-center">${m.scoreFor}–${m.scoreAgainst}</td><td class="td-center">${res}</td><td class="td-center"><button class="btn btn-primary btn-sm" onclick="openMatchModal(${m.id})">✏️</button> <button class="btn btn-danger btn-sm" onclick="deleteMatch(${m.id})">🗑️</button></td></tr>`;
+    return`<tr><td>${m.date}</td><td><span class="badge ${m.category==='男子'?'badge-male':'badge-female'}">${m.category}</span>${m.isJr?'<span class="badge badge-jr">Jr</span>':''}</td><td>${escH(m.matchName)}</td><td>${escH(m.opponent)}</td><td class="td-center">${m.scoreFor}–${m.scoreAgainst}</td><td class="td-center">${res}</td><td class="td-center" style="white-space:nowrap;"><button class="btn btn-primary btn-sm" onclick="openMatchModal(${m.id})">✏️</button> <button class="btn btn-danger btn-sm" onclick="deleteMatch(${m.id})">🗑️</button></td></tr>`;
   }).join('');
   renderAdminPagination('adminMatchPagination',total,pages,adminMatchPage,'adminMatchGo');
 }
@@ -1168,7 +1428,7 @@ function renderAdminStats(){
   const items=list.slice((adminStatsPage-1)*ADMIN_PAGE_SIZE,adminStatsPage*ADMIN_PAGE_SIZE);
   document.getElementById('adminStatsBody').innerHTML=items.map(s=>{
     const fgM=getFgMade(s),fgA=getFgAtt(s);
-    return`<tr><td>${escH(s.playerName)}</td><td>${s.date}</td><td>${escH(s.matchName)}</td><td>${escH(s.opponent)}</td><td class="td-center">${fgM}/${fgA}</td><td class="td-center"><button class="btn btn-primary btn-sm" onclick="openStatsModal(${s.id})">✏️</button> <button class="btn btn-danger btn-sm" onclick="deleteStat(${s.id})">🗑️</button></td></tr>`;
+    return`<tr><td>${escH(s.playerName)}</td><td>${s.date}</td><td>${escH(s.matchName)}</td><td>${escH(s.opponent)}</td><td class="td-center">${fgM}/${fgA}</td><td class="td-center" style="white-space:nowrap;"><button class="btn btn-primary btn-sm" onclick="openStatsModal(${s.id})">✏️</button> <button class="btn btn-danger btn-sm" onclick="deleteStat(${s.id})">🗑️</button></td></tr>`;
   }).join('');
   renderAdminPagination('adminStatsPagination',total,pages,adminStatsPage,'adminStatsGo');
 }
@@ -1189,7 +1449,7 @@ function renderPlayerMaster(){
   const groups=[{k:'female',lbl:'👧 女子'},{k:'male',lbl:'👦 男子'},{k:'ob',lbl:'🎓 OB'}];
   document.getElementById('playerMasterGrid').innerHTML=groups.map(g=>{
     const ps=playersData.filter(p=>p.group===g.k);
-    return`<div style="min-width:160px;"><div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:6px;">${g.lbl}</div>${ps.map(p=>`<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:13px;">${escH(p.name)}</span><button class="btn btn-primary btn-sm" onclick="openPlayerModal(${p.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="deletePlayer(${p.id})">🗑️</button></div>`).join('')}</div>`;
+    return`<div style="min-width:150px;"><div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:6px;">${g.lbl}</div>${ps.map(p=>`<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:13px;">${escH(p.name)}</span><button class="btn btn-primary btn-sm" onclick="openPlayerModal(${p.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="deletePlayer(${p.id})">🗑️</button></div>`).join('')}</div>`;
   }).join('');
 }
 
