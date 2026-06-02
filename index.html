@@ -5,47 +5,42 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>2026年度 刀根山サンダース 試合結果</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<!-- Firebase SDK (compat版：グローバルで使えるため確実) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<script>
+/* ══ Firebase 初期化（compat版：window.firebase で即使用可能） ══ */
+const firebaseConfig = {
+  apiKey:            "AIzaSyDyHEv72GDqgSba2KFgM-x550dHRT6FGgM",
+  authDomain:        "thunders-web.firebaseapp.com",
+  projectId:         "thunders-web",
+  storageBucket:     "thunders-web.firebasestorage.app",
+  messagingSenderId: "792066557837",
+  appId:             "1:792066557837:web:eb84212de79133a0129fc4"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-  const firebaseConfig = {
-    apiKey:            "AIzaSyDyHEv72GDqgSba2KFgM-x550dHRT6FGgM",
-    authDomain:        "thunders-web.firebaseapp.com",
-    projectId:         "thunders-web",
-    storageBucket:     "thunders-web.firebasestorage.app",
-    messagingSenderId: "792066557837",
-    appId:             "1:792066557837:web:eb84212de79133a0129fc4"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db  = getFirestore(app);
-  window._fbDb = db;
-
-  window.fbLoad = async function(docName) {
-    const snap = await getDoc(doc(db, "data", docName));
-    if (snap.exists()) {
+window.fbLoad = async function(docName) {
+  const snap = await db.collection("data").doc(docName).get();
+  if (snap.exists) {
+    const d = snap.data();
+    return Array.isArray(d.items) ? d.items : [];
+  }
+  return [];
+};
+window.fbSave = async function(docName, arr) {
+  await db.collection("data").doc(docName).set({ items: arr });
+};
+window.fbWatch = function(docName, callback) {
+  return db.collection("data").doc(docName).onSnapshot((snap) => {
+    if (snap.exists) {
       const d = snap.data();
-      return Array.isArray(d.items) ? d.items : [];
+      callback(Array.isArray(d.items) ? d.items : []);
     }
-    return [];
-  };
-
-  window.fbSave = async function(docName, arr) {
-    await setDoc(doc(db, "data", docName), { items: arr });
-  };
-
-  window.fbWatch = function(docName, callback) {
-    return onSnapshot(doc(db, "data", docName), (snap) => {
-      if (snap.exists()) {
-        const d = snap.data();
-        callback(Array.isArray(d.items) ? d.items : []);
-      }
-    });
-  };
-
-  window.dispatchEvent(new Event('firebaseReady'));
+  });
+};
 </script>
 
 <style>
@@ -137,6 +132,8 @@ button{cursor:pointer;font-family:var(--font);}
   background:#c62828;color:#fff;border:none;border-radius:6px;
   padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;
 }
+/* 続けて入力ボタン */
+.btn-continue{background:#7b1fa2;color:#fff;}
 
 /* ══════════════════════════════
    セクションカード
@@ -170,17 +167,14 @@ button{cursor:pointer;font-family:var(--font);}
   padding:6px 8px;font-size:13px;font-family:var(--font);height:34px;
 }
 .filter-label{font-size:12px;color:#666;white-space:nowrap;font-weight:600;}
-.date-filter-group{
-  display:flex;align-items:center;gap:6px;
-}
+.date-filter-group{display:flex;align-items:center;gap:6px;}
 .date-filter-group input[type="date"]{flex:1;}
 
 /* ══════════════════════════════
-   チャートエリア（ダッシュボード上部）
+   チャートエリア
 ══════════════════════════════ */
 .chart-row{
-  display:grid;
-  grid-template-columns:220px 1fr;
+  display:grid;grid-template-columns:220px 1fr;
   gap:12px;margin-bottom:16px;
 }
 .chart-card{
@@ -200,10 +194,8 @@ button{cursor:pointer;font-family:var(--font);}
    ダッシュボード 2列レイアウト
 ══════════════════════════════ */
 .dashboard-layout{
-  display:grid;
-  grid-template-columns:1fr 270px;
-  gap:12px;
-  align-items:start;
+  display:grid;grid-template-columns:1fr 270px;
+  gap:12px;align-items:start;
 }
 .dashboard-main{min-width:0;}
 
@@ -226,20 +218,15 @@ tbody tr:nth-child(even){background:#f7f9fc;}
 tbody tr:hover{background:#e8f0ff;}
 td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .td-center{text-align:center;}
-.score-cell{
-  text-align:center;font-weight:700;font-size:13px;
-  white-space:nowrap;
-}
+.score-cell{text-align:center;font-weight:700;font-size:13px;white-space:nowrap;}
 
 /* ══════════════════════════════
    バッジ
-   ★ .badge-label = PC表示の文字部分
-     スマホ（〜767px）では非表示
+   .badge-label = PC(768px以上)のみ文字表示
 ══════════════════════════════ */
 .badge{
   display:inline-flex;align-items:center;justify-content:center;
-  gap:2px;
-  padding:3px 6px;border-radius:20px;
+  gap:2px;padding:3px 6px;border-radius:20px;
   font-size:12px;font-weight:700;white-space:nowrap;
 }
 .badge-male{background:#e3f0ff;color:var(--male-color);}
@@ -248,26 +235,15 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .badge-win{background:#e8f5e9;color:var(--win);font-size:11px;padding:2px 8px;}
 .badge-lose{background:#fde9e9;color:var(--lose);font-size:11px;padding:2px 8px;}
 .badge-draw{background:#f0f0f0;color:var(--draw);font-size:11px;padding:2px 8px;}
-
-/* PC（768px以上）では文字表示 */
 .badge-label{display:inline;}
-/* スマホ（〜767px）では文字非表示 */
-@media(max-width:767px){
-  .badge-label{display:none;}
-}
+@media(max-width:767px){.badge-label{display:none;}}
 
 .yt-icon{display:inline-block;vertical-align:middle;}
 .yt-icon:hover{opacity:.75;}
+.match-name-cell{display:flex;align-items:center;gap:5px;}
 
 /* ══════════════════════════════
-   ★ 試合名セル内のJrバッジ配置
-══════════════════════════════ */
-.match-name-cell{
-  display:flex;align-items:center;gap:5px;
-}
-
-/* ══════════════════════════════
-   月別集計カード（右サイドバー）
+   月別集計カード
 ══════════════════════════════ */
 .monthly-card{
   border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);
@@ -370,17 +346,15 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 
 /* ══════════════════════════════
    個人スタッツ：チャート3列
-   ★ PDF出力時も3列横並びで用紙幅に収める
 ══════════════════════════════ */
 .stats-charts-row{
   display:grid;
-  grid-template-columns:1fr 1fr 1fr; /* 常に3列 */
+  grid-template-columns:1fr 1fr 1fr;
   gap:12px;margin-bottom:16px;
 }
 .stats-chart-card{
   background:var(--white);border-radius:var(--radius);
   padding:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);
-  /* PDF時にカードが途切れないよう */
   break-inside:avoid;
 }
 .stats-chart-card h4{
@@ -409,8 +383,7 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 }
 table.stats-main-table{
   border-collapse:collapse;font-size:11px;white-space:nowrap;
-  min-width:900px;
-  width:100%;
+  min-width:900px;width:100%;
 }
 table.stats-main-table thead tr.h-group th{
   padding:4px 3px;font-size:11px;font-weight:700;text-align:center;border:1px solid #bbb;
@@ -428,12 +401,9 @@ table.stats-main-table thead tr.h-sub th{
 .th-sub-jikan{background:#ffe0b2;color:#e65100;}
 .th-sub-fgm  {background:#fff3cd;color:#856404;}
 .th-sub-fga  {background:#ffe8cc;color:#7a4e00;}
-.th-sub-fgpct{background:#e8f5e9;color:#2e7d32;}
 .th-sub-ftm  {background:#dbeafe;color:#1e40af;}
 .th-sub-fta  {background:#bfdbfe;color:#1e3a8a;}
-.th-sub-ftpct{background:#dcfce7;color:#166534;}
 .th-sub-reb  {background:#f0fdf4;color:#14532d;}
-.th-sub-other{background:#f1f5f9;color:#475569;}
 table.stats-main-table tbody td{
   padding:3px 4px;border:1px solid #ddd;text-align:center;font-size:11px;
 }
@@ -466,6 +436,7 @@ table.stats-main-table tfoot td{
 
 /* ══════════════════════════════
    オーバーレイ・モーダル
+   ★ モーダル背景クリックで閉じない → pointer-events制御
 ══════════════════════════════ */
 .overlay{
   display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
@@ -484,12 +455,15 @@ table.stats-main-table tfoot td{
 .modal-overlay{
   display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);
   z-index:900;align-items:center;justify-content:center;padding:12px;
+  /* ★ 背景クリックで閉じないようにするためのポインターイベント制御 */
 }
 .modal-overlay.open{display:flex;}
 .modal-box{
   background:var(--white);border-radius:var(--radius);padding:24px;
   width:min(680px,100%);max-height:90vh;overflow-y:auto;
   box-shadow:0 8px 24px rgba(0,0,0,.2);
+  /* ★ クリックイベントをモーダル内で止める（JS側でも制御） */
+  position:relative;
 }
 .modal-box h3{
   font-size:16px;color:var(--primary);margin-bottom:16px;
@@ -505,7 +479,7 @@ table.stats-main-table tfoot td{
   padding:7px 10px;font-size:13px;font-family:var(--font);
 }
 .form-group textarea{resize:vertical;min-height:60px;}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap;}
 .modal-section-label{
   font-size:12px;font-weight:700;color:var(--primary);
   margin:12px 0 6px;border-left:3px solid var(--accent);
@@ -542,8 +516,7 @@ table.stats-main-table tfoot td{
   position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
   background:#333;color:#fff;padding:10px 20px;border-radius:8px;
   font-size:13px;z-index:2000;opacity:0;transition:.3s;
-  pointer-events:none;white-space:nowrap;max-width:90vw;
-  text-align:center;
+  pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center;
 }
 .toast.show{opacity:1;}
 
@@ -556,125 +529,80 @@ table.stats-main-table tfoot td{
    印刷（PDF出力）
 ══════════════════════════════ */
 @media print{
-  .nav-tabs,.filter-area,.app-header nav,.btn-admin-open,.btn-pdf,
+  .nav-tabs,.filter-area,.app-header,.btn-admin-open,.btn-pdf,
   .btn-reset,.admin-toolbar,#loadingScreen,.saving-indicator,
   .page:not(.active){display:none!important;}
   .page.active{display:block!important;padding:0;}
   body{background:#fff;}
   .monthly-card{position:static;}
-
-  /* 動画列を非表示 */
   .video-col{display:none!important;}
-
-  /* 個人スタッツPDF時に選手選択UI・フィルター行を非表示 */
-  .player-group-tabs,
-  .player-btn-grid,
-  .stats-filter-row{display:none!important;}
-
-  /* ★ グラフエリアを3列横並びで用紙幅いっぱいに収める */
+  .player-group-tabs,.player-btn-grid,.stats-filter-row{display:none!important;}
   .stats-charts-row{
-    display:grid !important;
-    grid-template-columns:1fr 1fr 1fr !important;
-    gap:6px !important;
-    width:100% !important;
-    margin-bottom:10px !important;
+    display:grid!important;
+    grid-template-columns:1fr 1fr 1fr!important;
+    gap:6px!important;width:100%!important;margin-bottom:10px!important;
   }
   .stats-chart-card{
-    padding:6px !important;
-    box-shadow:none !important;
-    border:1px solid #ddd !important;
-    break-inside:avoid !important;
+    padding:6px!important;box-shadow:none!important;
+    border:1px solid #ddd!important;break-inside:avoid!important;
   }
-  /* グラフの高さをPDF用に調整 */
-  .stats-chart-wrap{
-    height:160px !important;
-  }
-  /* サマリーカードも印刷用に調整 */
-  .stats-summary-cards{
-    grid-template-columns:repeat(6,1fr) !important;
-    gap:5px !important;
-  }
-  .stats-card{
-    padding:6px !important;
-    box-shadow:none !important;
-    border:1px solid #ddd !important;
-  }
-  .stats-card .sc-val{font-size:14px !important;}
-  .stats-card .sc-lbl{font-size:9px !important;}
+  .stats-chart-wrap{height:160px!important;}
+  .stats-summary-cards{grid-template-columns:repeat(6,1fr)!important;gap:5px!important;}
+  .stats-card{padding:6px!important;box-shadow:none!important;border:1px solid #ddd!important;}
+  .stats-card .sc-val{font-size:14px!important;}
+  .stats-card .sc-lbl{font-size:9px!important;}
 }
 
 /* ══════════════════════════════
    レスポンシブ：〜900px
 ══════════════════════════════ */
 @media(max-width:900px){
-  .dashboard-layout{
-    grid-template-columns:1fr;
-  }
-  .monthly-card{
-    position:static;
-  }
-  /* スタッツチャートは900px以下でも3列維持
-     （小さくなるが横スクロールより見やすい） */
-  .stats-summary-cards{
-    grid-template-columns:repeat(4,1fr);
-  }
+  .dashboard-layout{grid-template-columns:1fr;}
+  .monthly-card{position:static;}
+  .stats-summary-cards{grid-template-columns:repeat(4,1fr);}
 }
 
 /* ══════════════════════════════
-   レスポンシブ：〜700px（スマホ大）
+   レスポンシブ：〜700px
 ══════════════════════════════ */
 @media(max-width:700px){
   .page{padding:10px;}
-
   .chart-row{grid-template-columns:1fr;}
   .chart-wrap{height:150px;}
-
   .filter-area{padding:10px;flex-direction:column;align-items:stretch;}
   .filter-input{min-width:0;width:100%;}
-  .filter-area select{width:100%;}
-  .filter-area input[type="date"]{width:100%;}
+  .filter-area select,.filter-area input[type="date"]{width:100%;}
   .date-filter-group{width:100%;}
-  .date-filter-group input[type="date"]{flex:1;}
-
   .form-row{grid-template-columns:1fr;}
-
-  /* スマホではチャートを1列 */
   .stats-charts-row{grid-template-columns:1fr;}
   .stats-chart-wrap{height:170px;}
-
   .stats-summary-cards{grid-template-columns:repeat(3,1fr);}
   .stats-card .sc-val{font-size:17px;}
-
   .stats-player-header{padding:10px 14px;}
   .stats-player-name{font-size:17px;}
   .stats-player-icon{font-size:28px;}
 }
 
 /* ══════════════════════════════
-   レスポンシブ：〜480px（スマホ小）
+   レスポンシブ：〜480px
 ══════════════════════════════ */
 @media(max-width:480px){
   .page{padding:8px;}
   .app-header h1{font-size:12px;}
-
   .stats-summary-cards{grid-template-columns:repeat(2,1fr);}
-
   .player-btn{padding:6px 10px;font-size:12px;}
   .player-group-tab{padding:6px 12px;font-size:12px;}
-
   .cat-tab{padding:3px 6px;font-size:10px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ローディング画面 -->
 <div id="loadingScreen">
   <div class="spin"></div>
   <p>🏀 データを読み込み中...</p>
 </div>
 
-<!-- 保存中インジケーター -->
 <div class="saving-indicator" id="savingIndicator">💾 保存中...</div>
 
 <!-- Auth Overlay -->
@@ -810,7 +738,9 @@ table.stats-main-table tfoot td{
       <div class="form-group"><label>ブロック</label><input type="number" id="sBlk" min="0" value="0"></div>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-success" onclick="saveStat()">💾 保存</button>
+      <!-- ★ 続けて入力ボタン -->
+      <button class="btn btn-continue" onclick="saveStatAndContinue()">➕ 続けて入力</button>
+      <button class="btn btn-success" onclick="saveStat()">💾 保存して閉じる</button>
       <button class="btn btn-reset" onclick="closeModal('statsModal')">キャンセル</button>
     </div>
   </div>
@@ -857,7 +787,6 @@ table.stats-main-table tfoot td{
   <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
     <button class="btn-pdf" onclick="printPage('dashboard')">🖨️ PDF出力</button>
   </div>
-
   <div class="chart-row">
     <div class="chart-card">
       <h3>勝率（絞り込み連動）</h3>
@@ -908,7 +837,6 @@ table.stats-main-table tfoot td{
   </div>
 
   <div class="dashboard-layout">
-    <!-- 左：試合一覧テーブル -->
     <div class="dashboard-main">
       <div class="table-wrap">
         <table>
@@ -927,7 +855,6 @@ table.stats-main-table tfoot td{
       </div>
       <div id="matchPagination" class="pagination"></div>
     </div>
-    <!-- 右：月別勝敗集計 -->
     <div class="monthly-card">
       <div class="monthly-card-header"><h3>📅 月別勝敗集計</h3></div>
       <div class="monthly-card-body">
@@ -972,7 +899,6 @@ table.stats-main-table tfoot td{
       <button class="btn-pdf" onclick="printPage('stats')" style="margin-left:auto;">🖨️ PDF出力</button>
     </div>
   </div>
-
   <div id="statsPlayerBlock" style="display:none;">
     <div class="stats-player-header" id="statsPlayerHeader">
       <span class="stats-player-icon" id="statsPlayerIcon"></span>
@@ -982,7 +908,6 @@ table.stats-main-table tfoot td{
       </div>
     </div>
     <div id="statsSummaryCards" class="stats-summary-cards"></div>
-    <!-- ★ 3列グラフ：常に横並び -->
     <div class="stats-charts-row">
       <div class="stats-chart-card">
         <h4>🕸️ 能力レーダー</h4>
@@ -1090,22 +1015,14 @@ table.stats-main-table tfoot td{
   </div>
   <div class="section-card">
     <h2>📂 データ管理（JSONインポート）</h2>
-    <p style="font-size:13px;color:#666;margin-bottom:10px;">
-      既存のJSONファイルをFirestoreに一括登録できます
-    </p>
+    <p style="font-size:13px;color:#666;margin-bottom:10px;">既存のJSONファイルをFirestoreに一括登録できます</p>
     <div style="display:flex;flex-wrap:wrap;gap:10px;">
-      <input type="file" id="importMatchFile"   accept=".json" style="display:none"
-             onchange="importData(event,'matches')">
-      <input type="file" id="importStatsFile"   accept=".json" style="display:none"
-             onchange="importData(event,'stats')">
-      <input type="file" id="importPlayersFile" accept=".json" style="display:none"
-             onchange="importData(event,'players')">
-      <button class="btn btn-accent btn-sm"
-              onclick="document.getElementById('importMatchFile').click()">📤 試合データ読込</button>
-      <button class="btn btn-accent btn-sm"
-              onclick="document.getElementById('importStatsFile').click()">📤 スタッツ読込</button>
-      <button class="btn btn-accent btn-sm"
-              onclick="document.getElementById('importPlayersFile').click()">📤 選手マスタ読込</button>
+      <input type="file" id="importMatchFile"   accept=".json" style="display:none" onchange="importData(event,'matches')">
+      <input type="file" id="importStatsFile"   accept=".json" style="display:none" onchange="importData(event,'stats')">
+      <input type="file" id="importPlayersFile" accept=".json" style="display:none" onchange="importData(event,'players')">
+      <button class="btn btn-accent btn-sm" onclick="document.getElementById('importMatchFile').click()">📤 試合データ読込</button>
+      <button class="btn btn-accent btn-sm" onclick="document.getElementById('importStatsFile').click()">📤 スタッツ読込</button>
+      <button class="btn btn-accent btn-sm" onclick="document.getElementById('importPlayersFile').click()">📤 選手マスタ読込</button>
       <button class="btn btn-primary btn-sm" onclick="exportData('matches')">📥 試合データDL</button>
       <button class="btn btn-primary btn-sm" onclick="exportData('stats')">📥 スタッツDL</button>
       <button class="btn btn-primary btn-sm" onclick="exportData('players')">📥 選手マスタDL</button>
@@ -1127,7 +1044,6 @@ let editingMatchId=null, editingStatsId=null, editingPlayerId=null;
 let adminMatchPage=1, adminStatsPage=1;
 let donutChartInst=null, barChartInst=null;
 let statsRadarInst=null, statsPtsInst=null, statsQFgInst=null;
-let firebaseReady=false;
 
 const MONTH_KEYS=[
   '2026-02','2026-03','2026-04','2026-05','2026-06','2026-07',
@@ -1157,8 +1073,7 @@ function isJrMatch(m){return m.isJr===true||m.isJr==='true';}
 /* ════════ 保存インジケーター ════════ */
 function showSaving(){
   const el=document.getElementById('savingIndicator');
-  el.textContent='💾 保存中...';el.style.background='#1a7a3c';
-  el.classList.add('show');
+  el.textContent='💾 保存中...';el.style.background='#1a7a3c';el.classList.add('show');
 }
 function hideSaving(ok=true){
   const el=document.getElementById('savingIndicator');
@@ -1174,17 +1089,13 @@ async function saveToFirebase(docName,arr){
     await window.fbSave(docName,arr);
     hideSaving(true);
   }catch(e){
-    console.error(e);
-    hideSaving(false);
+    console.error(e);hideSaving(false);
     showToast('⚠️ 保存に失敗しました。ネット接続を確認してください。');
   }
 }
 
 /* ════════ 初期化 ════════ */
 async function init(){
-  if(!window.fbLoad){
-    await new Promise(resolve=>window.addEventListener('firebaseReady',resolve,{once:true}));
-  }
   try{
     [matchesData,statsData,playersData]=await Promise.all([
       window.fbLoad('matches'),
@@ -1194,6 +1105,7 @@ async function init(){
     if(matchesData.length===0&&statsData.length===0){
       showToast('💡 データが空です。管理画面からJSONファイルを読み込んでください。');
     }
+    /* リアルタイム監視 */
     window.fbWatch('matches',(data)=>{
       matchesData=data;
       buildOpponentFilter();applyFilters();renderMonthlySummary();
@@ -1208,7 +1120,7 @@ async function init(){
     });
   }catch(e){
     console.error('Firebase読み込みエラー:',e);
-    showToast('⚠️ データ読み込みに失敗しました。Firebaseの設定を確認してください。');
+    showToast('⚠️ データ読み込みに失敗しました。');
   }
   buildOpponentFilter();
   buildStatsOpponentFilter();
@@ -1216,7 +1128,6 @@ async function init(){
   applyFilters();
   renderMonthlySummary();
   document.getElementById('loadingScreen').classList.add('hidden');
-  firebaseReady=true;
 }
 
 /* ════════ ページナビ ════════ */
@@ -1239,15 +1150,13 @@ function printPage(pageName){
   });
 }
 
-/* ════════ ダッシュボードフィルター ════════ */
+/* ════════ フィルター ════════ */
 function buildOpponentFilter(){
   const sel=document.getElementById('filterOpponent');
   const cur=sel.value;
   const opps=[...new Set(matchesData.map(m=>m.opponent))].sort();
   sel.innerHTML='<option value="">相手：すべて</option>';
-  opps.forEach(o=>{
-    const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);
-  });
+  opps.forEach(o=>{const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);});
   sel.value=cur;
 }
 function clearFilters(){
@@ -1284,25 +1193,15 @@ function sortAndRender(){
   renderMatchTable();
 }
 
-/*
- * ★修正1: 区分列はアイコン＋文字（PCは文字あり、スマホは文字なし）
- *   .badge-label クラスで文字部分を制御（CSS: スマホ767px以下で非表示）
- * ★修正2: Jrバッジを試合名列の右に移動
- *   区分列にはJrを表示しない
- *   試合名セルに .match-name-cell div でラップし末尾にJrバッジ
- */
+/* ════════ 試合テーブル描画 ════════ */
 function renderMatchTable(){
   const total=filteredMatches.length;
   const items=filteredMatches.slice((currentPage-1)*MATCH_PAGE_SIZE,currentPage*MATCH_PAGE_SIZE);
   document.getElementById('matchTableBody').innerHTML=items.map(m=>{
-    /* 区分列：アイコン＋文字（PCのみ文字表示） Jrは含めない */
     const catB=m.category==='男子'
-      ?`<span class="badge badge-male">👦<span class="badge-label">男子</span></span>`
-      :`<span class="badge badge-female">👧<span class="badge-label">女子</span></span>`;
-
-    /* Jrバッジ（試合名の右に表示） */
+      ?`<span class="badge badge-male">👦<span class="badge-label"> 男子</span></span>`
+      :`<span class="badge badge-female">👧<span class="badge-label"> 女子</span></span>`;
     const jrB=isJrMatch(m)?`<span class="badge badge-jr">Jr</span>`:'';
-
     const resB=m.result==='勝'
       ?`<span class="badge badge-win">勝</span>`
       :m.result==='負'
@@ -1319,11 +1218,7 @@ function renderMatchTable(){
       <td>${fmtDate(m.date)}</td>
       <td>${escH(m.venue)}</td>
       <td class="td-center">${catB}</td>
-      <td>
-        <div class="match-name-cell">
-          <span>${escH(m.matchName)}</span>${jrB}
-        </div>
-      </td>
+      <td><div class="match-name-cell"><span>${escH(m.matchName)}</span>${jrB}</div></td>
       <td>${escH(m.opponent)}</td>
       <td class="score-cell">${m.scoreFor}–${m.scoreAgainst}</td>
       <td class="td-center">${resB}</td>
@@ -1358,23 +1253,12 @@ function updateCharts(){
   const loses=filteredMatches.filter(m=>m.result==='負').length;
   const draws=filteredMatches.filter(m=>m.result==='引').length;
   const total=wins+loses+draws;
-  document.getElementById('donutPct').textContent=
-    total>0?(wins/total*100).toFixed(1)+'%':'-%';
+  document.getElementById('donutPct').textContent=total>0?(wins/total*100).toFixed(1)+'%':'-%';
   if(donutChartInst)donutChartInst.destroy();
   donutChartInst=new Chart(document.getElementById('donutChart'),{
     type:'doughnut',
-    data:{
-      labels:['勝','負','引'],
-      datasets:[{data:[wins,loses,draws],backgroundColor:['#1a7a3c','#c0392b','#5a6a7a'],borderWidth:0}]
-    },
-    options:{
-      cutout:'70%',
-      plugins:{
-        legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},
-        tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw}試合`}}
-      },
-      animation:{duration:400}
-    }
+    data:{labels:['勝','負','引'],datasets:[{data:[wins,loses,draws],backgroundColor:['#1a7a3c','#c0392b','#5a6a7a'],borderWidth:0}]},
+    options:{cutout:'70%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw}試合`}}},animation:{duration:400}}
   });
   const mW={},mL={},mD={};
   MONTH_KEYS.forEach(k=>{mW[k]=0;mL[k]=0;mD[k]=0;});
@@ -1385,31 +1269,21 @@ function updateCharts(){
   if(barChartInst)barChartInst.destroy();
   barChartInst=new Chart(document.getElementById('barChart'),{
     type:'bar',
-    data:{
-      labels:MONTH_LABELS,
-      datasets:[
-        {label:'勝',data:MONTH_KEYS.map(k=>mW[k]),backgroundColor:'#1a7a3c'},
-        {label:'負',data:MONTH_KEYS.map(k=>mL[k]),backgroundColor:'#c0392b'},
-        {label:'引',data:MONTH_KEYS.map(k=>mD[k]),backgroundColor:'#5a6a7a'},
-      ]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      scales:{
-        x:{stacked:true,ticks:{font:{size:10}}},
-        y:{stacked:true,beginAtZero:true,ticks:{stepSize:1,font:{size:10}}}
-      },
-      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}}
-    }
+    data:{labels:MONTH_LABELS,datasets:[
+      {label:'勝',data:MONTH_KEYS.map(k=>mW[k]),backgroundColor:'#1a7a3c'},
+      {label:'負',data:MONTH_KEYS.map(k=>mL[k]),backgroundColor:'#c0392b'},
+      {label:'引',data:MONTH_KEYS.map(k=>mD[k]),backgroundColor:'#5a6a7a'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      scales:{x:{stacked:true,ticks:{font:{size:10}}},y:{stacked:true,beginAtZero:true,ticks:{stepSize:1,font:{size:10}}}},
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}}}
   });
 }
 
 /* ════════ 月別集計 ════════ */
 function switchMonthlyCat(el){
   document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  currentMonthlyCat=el.dataset.cat;
-  renderMonthlySummary();
+  el.classList.add('active');currentMonthlyCat=el.dataset.cat;renderMonthlySummary();
 }
 function renderMonthlySummary(){
   function f(m){
@@ -1428,30 +1302,25 @@ function renderMonthlySummary(){
   MONTH_KEYS.forEach(k=>{tW[k]=0;tL[k]=0;tD[k]=0;});
   data.forEach(m=>{
     const mk=m.date.slice(0,7);if(tW[mk]===undefined)return;
-    if(m.result==='勝')tW[mk]++;else if(m.result==='負')tL[mk]++;else mD[mk]++;
+    if(m.result==='勝')tW[mk]++;else if(m.result==='負')tL[mk]++;else tD[mk]++;
   });
   let aW=0,aL=0,aD=0;
   const rows=MONTH_KEYS.map((k,i)=>{
-    const w=tW[k],l=tL[k],d=tD[k],tot=w+l+d;
-    aW+=w;aL+=l;aD+=d;
+    const w=tW[k],l=tL[k],d=tD[k],tot=w+l+d;aW+=w;aL+=l;aD+=d;
     const rate=tot>0?(w/tot*100).toFixed(1):'-';
     const cls=tot>0&&Number(rate)>=50?'win-rate-high':tot>0?'win-rate-low':'';
-    return`<tr>
-      <td>${MONTH_LABELS[i]}</td>
+    return`<tr><td>${MONTH_LABELS[i]}</td>
       <td style="color:var(--win);font-weight:600;">${w||''}</td>
       <td style="color:var(--lose);">${l||''}</td>
       <td style="color:var(--draw);">${d||''}</td>
-      <td class="${cls}">${rate==='-'?'-':rate+'%'}</td>
-    </tr>`;
+      <td class="${cls}">${rate==='-'?'-':rate+'%'}</td></tr>`;
   });
   const aT=aW+aL+aD,aR=aT>0?(aW/aT*100).toFixed(1)+'%':'-';
-  rows.push(`<tr class="total-row">
-    <td>合計</td>
+  rows.push(`<tr class="total-row"><td>合計</td>
     <td style="color:var(--win);font-weight:700;">${aW}</td>
     <td style="color:var(--lose);">${aL}</td>
     <td style="color:var(--draw);">${aD}</td>
-    <td class="${aT>0&&aW/aT>=.5?'win-rate-high':'win-rate-low'}">${aR}</td>
-  </tr>`);
+    <td class="${aT>0&&aW/aT>=.5?'win-rate-high':'win-rate-low'}">${aR}</td></tr>`);
   document.getElementById('monthlySummaryBody').innerHTML=rows.join('');
 }
 
@@ -1461,9 +1330,7 @@ function buildStatsOpponentFilter(){
   const cur=sel.value;
   const opps=[...new Set(statsData.map(s=>s.opponent))].sort();
   sel.innerHTML='<option value="">すべて</option>';
-  opps.forEach(o=>{
-    const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);
-  });
+  opps.forEach(o=>{const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);});
   sel.value=cur;
 }
 function switchPlayerGroup(grp){
@@ -1474,8 +1341,6 @@ function switchPlayerGroup(grp){
   });
   renderPlayerBtns();clearStatsDisplay();
 }
-
-/* ★ あいうえお順ソート */
 function renderPlayerBtns(){
   const grid=document.getElementById('playerBtnGrid');
   const players=playersData
@@ -1483,13 +1348,11 @@ function renderPlayerBtns(){
     .slice()
     .sort((a,b)=>a.name.localeCompare(b.name,'ja'));
   if(!players.length){
-    grid.innerHTML='<span style="color:#888;font-size:13px;">選手が登録されていません</span>';
-    return;
+    grid.innerHTML='<span style="color:#888;font-size:13px;">選手が登録されていません</span>';return;
   }
   grid.innerHTML=players.map(p=>{
     const sel=selectedPlayer===p.name
-      ?(p.group==='female'?'selected-female':p.group==='male'?'selected-male':'selected-ob')
-      :'';
+      ?(p.group==='female'?'selected-female':p.group==='male'?'selected-male':'selected-ob'):'';
     return`<button class="player-btn ${sel}" onclick="selectPlayer('${escH(p.name)}')">${escH(p.name)}</button>`;
   }).join('');
 }
@@ -1518,13 +1381,10 @@ function renderStatsPage(){
     if(dt&&s.date>dt)return false;
     return true;
   }).sort((a,b)=>a.date<b.date?-1:1);
-
   if(!rows.length){
     clearStatsDisplay();
-    document.getElementById('statsNoData').textContent='該当するデータがありません';
-    return;
+    document.getElementById('statsNoData').textContent='該当するデータがありません';return;
   }
-
   const pInfo=playersData.find(p=>p.name===selectedPlayer)||{group:'female'};
   const grad=pInfo.group==='female'
     ?'linear-gradient(135deg,var(--female-color),#e91e63)'
@@ -1540,41 +1400,32 @@ function renderStatsPage(){
   const fgMQ={q1:0,q2:0,q3:0,q4:0},fgAQ={q1:0,q2:0,q3:0,q4:0};
   const ftMQ={q1:0,q2:0,q3:0,q4:0},ftAQ={q1:0,q2:0,q3:0,q4:0};
   const qCnt={q1:0,q2:0,q3:0,q4:0};
-
   rows.forEach(s=>{
     ['q1','q2','q3','q4'].forEach(q=>{
       if(getQ(s,q))qCnt[q]++;
       fgMQ[q]+=getFgMadeQ(s,q);fgAQ[q]+=getFgAttQ(s,q);
       ftMQ[q]+=getFtMadeQ(s,q);ftAQ[q]+=getFtAttQ(s,q);
     });
-    tFgM+=getFgMade(s);tFgA+=getFgAtt(s);
-    tFtM+=getFtMade(s);tFtA+=getFtAtt(s);
-    tRO+=getRebOff(s);tRD+=getRebDef(s);
-    tAst+=s.ast||0;tStl+=s.stl||0;tBlk+=s.blk||0;
+    tFgM+=getFgMade(s);tFgA+=getFgAtt(s);tFtM+=getFtMade(s);tFtA+=getFtAtt(s);
+    tRO+=getRebOff(s);tRD+=getRebDef(s);tAst+=s.ast||0;tStl+=s.stl||0;tBlk+=s.blk||0;
     tQs+=getQCount(s);
   });
-
   const totalPts=tFgM*2+tFtM;
   const fgPct=tFgA>0?(tFgM/tFgA*100).toFixed(1):'-';
   const ftPct=tFtA>0?(tFtM/tFtA*100).toFixed(1):'-';
   const avgPts=rows.length>0?(totalPts/rows.length).toFixed(1):0;
-
-  document.getElementById('statsPlayerSub').textContent=
-    `${rows.length}試合 / 出場${tQs}Q / 平均${avgPts}点`;
+  document.getElementById('statsPlayerSub').textContent=`${rows.length}試合 / 出場${tQs}Q / 平均${avgPts}点`;
   document.getElementById('statsTablePlayerName').textContent=selectedPlayer;
-
   document.getElementById('statsSummaryCards').innerHTML=[
     {v:rows.length,l:'試合数'},{v:tQs,l:'出場Q数'},{v:totalPts,l:'総得点'},
     {v:avgPts,l:'平均得点'},{v:`${tFgM}/${tFgA}`,l:'FG成功/試投'},
-    {v:fgPct==='-'?'-':fgPct+'%',l:'FG成功率'},
-    {v:`${tFtM}/${tFtA}`,l:'FT成功/試投'},
+    {v:fgPct==='-'?'-':fgPct+'%',l:'FG成功率'},{v:`${tFtM}/${tFtA}`,l:'FT成功/試投'},
     {v:ftPct==='-'?'-':ftPct+'%',l:'FT成功率'},
     {v:tRO+tRD,l:'REB合計'},{v:tAst,l:'AST'},{v:tStl,l:'STL'},{v:tBlk,l:'BLK'},
   ].map(c=>`<div class="stats-card"><div class="sc-val">${c.v}</div><div class="sc-lbl">${c.l}</div></div>`).join('');
 
   const gameLabels=rows.map(s=>fmtDate(s.date));
-  const fgPctN=tFgA>0?tFgM/tFgA*100:0;
-  const ftPctN=tFtA>0?tFtM/tFtA*100:0;
+  const fgPctN=tFgA>0?tFgM/tFgA*100:0,ftPctN=tFtA>0?tFtM/tFtA*100:0;
   const ptsScore=Math.min(totalPts/rows.length/20*100,100);
   const rebScore=Math.min((tRO+tRD)/rows.length/10*100,100);
   const astScore=Math.min(tAst/rows.length/5*100,100);
@@ -1583,63 +1434,34 @@ function renderStatsPage(){
   if(statsRadarInst)statsRadarInst.destroy();
   statsRadarInst=new Chart(document.getElementById('statsRadarChart'),{
     type:'radar',
-    data:{
-      labels:['得点力','FG精度','FT精度','リバウンド','アシスト','スティール'],
-      datasets:[{
-        label:selectedPlayer,
-        data:[ptsScore,fgPctN,ftPctN,rebScore,astScore,stlScore],
-        backgroundColor:'rgba(37,99,168,.2)',borderColor:'#2563a8',
-        pointBackgroundColor:'#2563a8',pointRadius:4,borderWidth:2
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      scales:{r:{beginAtZero:true,max:100,
-        ticks:{stepSize:25,font:{size:9},callback:v=>v+'%'},
-        pointLabels:{font:{size:10}}
-      }},
-      plugins:{legend:{display:false}}
-    }
+    data:{labels:['得点力','FG精度','FT精度','リバウンド','アシスト','スティール'],
+      datasets:[{label:selectedPlayer,data:[ptsScore,fgPctN,ftPctN,rebScore,astScore,stlScore],
+        backgroundColor:'rgba(37,99,168,.2)',borderColor:'#2563a8',pointBackgroundColor:'#2563a8',pointRadius:4,borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      scales:{r:{beginAtZero:true,max:100,ticks:{stepSize:25,font:{size:9},callback:v=>v+'%'},pointLabels:{font:{size:10}}}},
+      plugins:{legend:{display:false}}}
   });
-
   if(statsPtsInst)statsPtsInst.destroy();
   statsPtsInst=new Chart(document.getElementById('statsPtsChart'),{
     type:'bar',
-    data:{
-      labels:gameLabels,
-      datasets:[
-        {label:'2P得点',data:rows.map(s=>getFgMade(s)*2),backgroundColor:'#f5a623',stack:'pts'},
-        {label:'FT得点',data:rows.map(s=>getFtMade(s)),backgroundColor:'#4a90c4',stack:'pts'},
-      ]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      scales:{
-        x:{stacked:true,ticks:{font:{size:9}}},
-        y:{stacked:true,beginAtZero:true,ticks:{stepSize:2,font:{size:10}}}
-      },
-      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}
-    }
+    data:{labels:gameLabels,datasets:[
+      {label:'2P得点',data:rows.map(s=>getFgMade(s)*2),backgroundColor:'#f5a623',stack:'pts'},
+      {label:'FT得点',data:rows.map(s=>getFtMade(s)),backgroundColor:'#4a90c4',stack:'pts'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      scales:{x:{stacked:true,ticks:{font:{size:9}}},y:{stacked:true,beginAtZero:true,ticks:{stepSize:2,font:{size:10}}}},
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}}
   });
-
   if(statsQFgInst)statsQFgInst.destroy();
   statsQFgInst=new Chart(document.getElementById('statsQFgChart'),{
     type:'bar',
-    data:{
-      labels:['1Q','2Q','3Q','4Q'],
-      datasets:[
-        {label:'FG成功',data:[fgMQ.q1,fgMQ.q2,fgMQ.q3,fgMQ.q4],backgroundColor:'#f5a623'},
-        {label:'FG失敗',data:[fgAQ.q1-fgMQ.q1,fgAQ.q2-fgMQ.q2,fgAQ.q3-fgMQ.q3,fgAQ.q4-fgMQ.q4],backgroundColor:'#e0e0e0'},
-      ]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      scales:{
-        x:{stacked:true,ticks:{font:{size:11}}},
-        y:{stacked:true,beginAtZero:true,ticks:{stepSize:1,font:{size:10}}}
-      },
-      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}
-    }
+    data:{labels:['1Q','2Q','3Q','4Q'],datasets:[
+      {label:'FG成功',data:[fgMQ.q1,fgMQ.q2,fgMQ.q3,fgMQ.q4],backgroundColor:'#f5a623'},
+      {label:'FG失敗',data:[fgAQ.q1-fgMQ.q1,fgAQ.q2-fgMQ.q2,fgAQ.q3-fgMQ.q3,fgAQ.q4-fgMQ.q4],backgroundColor:'#e0e0e0'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      scales:{x:{stacked:true,ticks:{font:{size:11}}},y:{stacked:true,beginAtZero:true,ticks:{stepSize:1,font:{size:10}}}},
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}}
   });
 
   function nd(v){return!v||v===0?'':v;}
@@ -1649,97 +1471,58 @@ function renderStatsPage(){
     const p=(m/a*100).toFixed(1);
     return`<span class="${Number(p)>=50?'pct-high':'pct-low'}">${p}%</span>`;
   }
-
   document.getElementById('statsMainBody').innerHTML=rows.map(s=>{
     const fgM1=getFgMadeQ(s,'q1'),fgM2=getFgMadeQ(s,'q2'),fgM3=getFgMadeQ(s,'q3'),fgM4=getFgMadeQ(s,'q4');
     const fgA1=getFgAttQ(s,'q1'), fgA2=getFgAttQ(s,'q2'), fgA3=getFgAttQ(s,'q3'), fgA4=getFgAttQ(s,'q4');
     const ftM1=getFtMadeQ(s,'q1'),ftM2=getFtMadeQ(s,'q2'),ftM3=getFtMadeQ(s,'q3'),ftM4=getFtMadeQ(s,'q4');
     const ftA1=getFtAttQ(s,'q1'), ftA2=getFtAttQ(s,'q2'), ftA3=getFtAttQ(s,'q3'), ftA4=getFtAttQ(s,'q4');
-    const fgMt=fgM1+fgM2+fgM3+fgM4, fgAt=fgA1+fgA2+fgA3+fgA4;
-    const ftMt=ftM1+ftM2+ftM3+ftM4, ftAt=ftA1+ftA2+ftA3+ftA4;
+    const fgMt=fgM1+fgM2+fgM3+fgM4,fgAt=fgA1+fgA2+fgA3+fgA4;
+    const ftMt=ftM1+ftM2+ftM3+ftM4,ftAt=ftA1+ftA2+ftA3+ftA4;
     const qCntRow=['q1','q2','q3','q4'].filter(q=>getQ(s,q)).length;
     const jr=(s.isJr===true||s.isJr==='true')?' (Jr)':'';
     return`<tr>
-      <td>${fmtDate(s.date)}</td>
-      <td>${escH(s.category||'')}${jr}</td>
-      <td style="text-align:left;">${escH(s.matchName)}</td>
-      <td>${escH(s.opponent)}</td>
-      <td class="bl-thick-left">${qMark(getQ(s,'q1'))}</td>
-      <td>${qMark(getQ(s,'q2'))}</td>
-      <td>${qMark(getQ(s,'q3'))}</td>
-      <td>${qMark(getQ(s,'q4'))}</td>
+      <td>${fmtDate(s.date)}</td><td>${escH(s.category||'')}${jr}</td>
+      <td style="text-align:left;">${escH(s.matchName)}</td><td>${escH(s.opponent)}</td>
+      <td class="bl-thick-left">${qMark(getQ(s,'q1'))}</td><td>${qMark(getQ(s,'q2'))}</td>
+      <td>${qMark(getQ(s,'q3'))}</td><td>${qMark(getQ(s,'q4'))}</td>
       <td style="font-weight:700;">${qCntRow||''}</td>
-      <td class="bl-thick-left td-fgm">${nd(fgM1)}</td>
-      <td class="td-fgm">${nd(fgM2)}</td>
-      <td class="td-fgm">${nd(fgM3)}</td>
-      <td class="td-fgm">${nd(fgM4)}</td>
+      <td class="bl-thick-left td-fgm">${nd(fgM1)}</td><td class="td-fgm">${nd(fgM2)}</td>
+      <td class="td-fgm">${nd(fgM3)}</td><td class="td-fgm">${nd(fgM4)}</td>
       <td class="td-fgm" style="font-weight:700;">${nd(fgMt)}</td>
-      <td class="bl-thick-left td-fga">${nd(fgA1)}</td>
-      <td class="td-fga">${nd(fgA2)}</td>
-      <td class="td-fga">${nd(fgA3)}</td>
-      <td class="td-fga">${nd(fgA4)}</td>
+      <td class="bl-thick-left td-fga">${nd(fgA1)}</td><td class="td-fga">${nd(fgA2)}</td>
+      <td class="td-fga">${nd(fgA3)}</td><td class="td-fga">${nd(fgA4)}</td>
       <td class="td-fga" style="font-weight:700;">${nd(fgAt)}</td>
       <td class="bl-thick-left">${pctCell(fgMt,fgAt)}</td>
-      <td class="bl-thick-left td-ftm">${nd(ftM1)}</td>
-      <td class="td-ftm">${nd(ftM2)}</td>
-      <td class="td-ftm">${nd(ftM3)}</td>
-      <td class="td-ftm">${nd(ftM4)}</td>
+      <td class="bl-thick-left td-ftm">${nd(ftM1)}</td><td class="td-ftm">${nd(ftM2)}</td>
+      <td class="td-ftm">${nd(ftM3)}</td><td class="td-ftm">${nd(ftM4)}</td>
       <td class="td-ftm" style="font-weight:700;">${nd(ftMt)}</td>
-      <td class="bl-thick-left td-fta">${nd(ftA1)}</td>
-      <td class="td-fta">${nd(ftA2)}</td>
-      <td class="td-fta">${nd(ftA3)}</td>
-      <td class="td-fta">${nd(ftA4)}</td>
+      <td class="bl-thick-left td-fta">${nd(ftA1)}</td><td class="td-fta">${nd(ftA2)}</td>
+      <td class="td-fta">${nd(ftA3)}</td><td class="td-fta">${nd(ftA4)}</td>
       <td class="td-fta" style="font-weight:700;">${nd(ftAt)}</td>
       <td class="bl-thick-left">${pctCell(ftMt,ftAt)}</td>
-      <td class="bl-thick-left">${nd(getRebOff(s))}</td>
-      <td>${nd(getRebDef(s))}</td>
-      <td>${nd(s.ast)}</td>
-      <td>${nd(s.stl)}</td>
-      <td>${nd(s.blk)}</td>
+      <td class="bl-thick-left">${nd(getRebOff(s))}</td><td>${nd(getRebDef(s))}</td>
+      <td>${nd(s.ast)}</td><td>${nd(s.stl)}</td><td>${nd(s.blk)}</td>
     </tr>`;
   }).join('');
-
-  const fgPF=tFgA>0
-    ?`<span class="${Number(fgPct)>=50?'pct-high':'pct-low'}">${fgPct}%</span>`:'-';
-  const ftPF=tFtA>0
-    ?`<span class="${Number(ftPct)>=50?'pct-high':'pct-low'}">${ftPct}%</span>`:'-';
-
+  const fgPF=tFgA>0?`<span class="${Number(fgPct)>=50?'pct-high':'pct-low'}">${fgPct}%</span>`:'-';
+  const ftPF=tFtA>0?`<span class="${Number(ftPct)>=50?'pct-high':'pct-low'}">${ftPct}%</span>`:'-';
   document.getElementById('statsMainFoot').innerHTML=`<tr>
     <td colspan="4" style="text-align:left;">合計（${rows.length}試合）</td>
-    <td class="bl-thick-left">${qCnt.q1||''}</td>
-    <td>${qCnt.q2||''}</td>
-    <td>${qCnt.q3||''}</td>
-    <td>${qCnt.q4||''}</td>
-    <td>${tQs}</td>
-    <td class="bl-thick-left">${fgMQ.q1||''}</td>
-    <td>${fgMQ.q2||''}</td>
-    <td>${fgMQ.q3||''}</td>
-    <td>${fgMQ.q4||''}</td>
-    <td>${tFgM}</td>
-    <td class="bl-thick-left">${fgAQ.q1||''}</td>
-    <td>${fgAQ.q2||''}</td>
-    <td>${fgAQ.q3||''}</td>
-    <td>${fgAQ.q4||''}</td>
-    <td>${tFgA}</td>
+    <td class="bl-thick-left">${qCnt.q1||''}</td><td>${qCnt.q2||''}</td>
+    <td>${qCnt.q3||''}</td><td>${qCnt.q4||''}</td><td>${tQs}</td>
+    <td class="bl-thick-left">${fgMQ.q1||''}</td><td>${fgMQ.q2||''}</td>
+    <td>${fgMQ.q3||''}</td><td>${fgMQ.q4||''}</td><td>${tFgM}</td>
+    <td class="bl-thick-left">${fgAQ.q1||''}</td><td>${fgAQ.q2||''}</td>
+    <td>${fgAQ.q3||''}</td><td>${fgAQ.q4||''}</td><td>${tFgA}</td>
     <td class="bl-thick-left">${fgPF}</td>
-    <td class="bl-thick-left">${ftMQ.q1||''}</td>
-    <td>${ftMQ.q2||''}</td>
-    <td>${ftMQ.q3||''}</td>
-    <td>${ftMQ.q4||''}</td>
-    <td>${tFtM}</td>
-    <td class="bl-thick-left">${ftAQ.q1||''}</td>
-    <td>${ftAQ.q2||''}</td>
-    <td>${ftAQ.q3||''}</td>
-    <td>${ftAQ.q4||''}</td>
-    <td>${tFtA}</td>
+    <td class="bl-thick-left">${ftMQ.q1||''}</td><td>${ftMQ.q2||''}</td>
+    <td>${ftMQ.q3||''}</td><td>${ftMQ.q4||''}</td><td>${tFtM}</td>
+    <td class="bl-thick-left">${ftAQ.q1||''}</td><td>${ftAQ.q2||''}</td>
+    <td>${ftAQ.q3||''}</td><td>${ftAQ.q4||''}</td><td>${tFtA}</td>
     <td class="bl-thick-left">${ftPF}</td>
-    <td class="bl-thick-left">${tRO}</td>
-    <td>${tRD}</td>
-    <td>${tAst}</td>
-    <td>${tStl}</td>
-    <td>${tBlk}</td>
+    <td class="bl-thick-left">${tRO}</td><td>${tRD}</td>
+    <td>${tAst}</td><td>${tStl}</td><td>${tBlk}</td>
   </tr>`;
-
   document.getElementById('statsPlayerBlock').style.display='block';
   document.getElementById('statsNoData').style.display='none';
 }
@@ -1752,26 +1535,19 @@ function renderAdminMatches(){
   if(adminMatchPage>pages)adminMatchPage=pages;
   const items=list.slice((adminMatchPage-1)*ADMIN_PAGE_SIZE,adminMatchPage*ADMIN_PAGE_SIZE);
   document.getElementById('adminMatchBody').innerHTML=items.map(m=>{
-    const res=m.result==='勝'
-      ?`<span class="badge badge-win">勝</span>`
-      :m.result==='負'
-        ?`<span class="badge badge-lose">負</span>`
-        :`<span class="badge badge-draw">引</span>`;
+    const res=m.result==='勝'?`<span class="badge badge-win">勝</span>`
+      :m.result==='負'?`<span class="badge badge-lose">負</span>`:`<span class="badge badge-draw">引</span>`;
     return`<tr>
       <td>${m.date}</td>
-      <td>
-        <span class="badge ${m.category==='男子'?'badge-male':'badge-female'}">${m.category}</span>
-        ${m.isJr?'<span class="badge badge-jr">Jr</span>':''}
-      </td>
-      <td>${escH(m.matchName)}</td>
-      <td>${escH(m.opponent)}</td>
+      <td><span class="badge ${m.category==='男子'?'badge-male':'badge-female'}">${m.category}</span>
+          ${m.isJr?'<span class="badge badge-jr">Jr</span>':''}</td>
+      <td>${escH(m.matchName)}</td><td>${escH(m.opponent)}</td>
       <td class="td-center">${m.scoreFor}–${m.scoreAgainst}</td>
       <td class="td-center">${res}</td>
       <td class="td-center">
         <button class="btn btn-primary btn-sm" onclick="openMatchModal(${m.id})">✏️</button>
         <button class="btn btn-danger btn-sm"  onclick="deleteMatch(${m.id})">🗑️</button>
-      </td>
-    </tr>`;
+      </td></tr>`;
   }).join('');
   renderAdminPagination('adminMatchPagination',total,pages,adminMatchPage,'adminMatchGo');
 }
@@ -1786,16 +1562,13 @@ function renderAdminStats(){
   document.getElementById('adminStatsBody').innerHTML=items.map(s=>{
     const fgM=getFgMade(s),fgA=getFgAtt(s);
     return`<tr>
-      <td>${escH(s.playerName)}</td>
-      <td>${s.date}</td>
-      <td>${escH(s.matchName)}</td>
-      <td>${escH(s.opponent)}</td>
+      <td>${escH(s.playerName)}</td><td>${s.date}</td>
+      <td>${escH(s.matchName)}</td><td>${escH(s.opponent)}</td>
       <td class="td-center">${fgM}/${fgA}</td>
       <td class="td-center">
         <button class="btn btn-primary btn-sm" onclick="openStatsModal(${s.id})">✏️</button>
         <button class="btn btn-danger btn-sm"  onclick="deleteStat(${s.id})">🗑️</button>
-      </td>
-    </tr>`;
+      </td></tr>`;
   }).join('');
   renderAdminPagination('adminStatsPagination',total,pages,adminStatsPage,'adminStatsGo');
 }
@@ -1818,12 +1591,11 @@ function renderPlayerMaster(){
     const ps=playersData.filter(p=>p.group===g.k);
     return`<div style="min-width:160px;">
       <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:6px;">${g.lbl}</div>
-      ${ps.map(p=>`
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-          <span style="font-size:13px;">${escH(p.name)}</span>
-          <button class="btn btn-primary btn-sm" onclick="openPlayerModal(${p.id})">✏️</button>
-          <button class="btn btn-danger btn-sm"  onclick="deletePlayer(${p.id})">🗑️</button>
-        </div>`).join('')}
+      ${ps.map(p=>`<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span style="font-size:13px;">${escH(p.name)}</span>
+        <button class="btn btn-primary btn-sm" onclick="openPlayerModal(${p.id})">✏️</button>
+        <button class="btn btn-danger btn-sm"  onclick="deletePlayer(${p.id})">🗑️</button>
+      </div>`).join('')}
     </div>`;
   }).join('');
 }
@@ -1845,8 +1617,7 @@ function openMatchModal(id){
     document.getElementById('mVideoUrl').value=m.videoUrl||'';
     document.getElementById('mMemo').value=m.memo||'';
   }else{
-    ['mDate','mVenue','mMatchName','mOpponent','mVideoUrl','mMemo']
-      .forEach(i=>document.getElementById(i).value='');
+    ['mDate','mVenue','mMatchName','mOpponent','mVideoUrl','mMemo'].forEach(i=>document.getElementById(i).value='');
     document.getElementById('mCategory').value='男子';
     document.getElementById('mIsJr').value='false';
     document.getElementById('mScoreFor').value='0';
@@ -1883,11 +1654,49 @@ async function saveMatch(){
 async function deleteMatch(id){
   if(!confirm('この試合データを削除しますか？'))return;
   matchesData=matchesData.filter(m=>m.id!==id);
-  await saveToFirebase('matches',matchesData);
-  showToast('🗑️ 削除しました');
+  await saveToFirebase('matches',matchesData);showToast('🗑️ 削除しました');
 }
 
 /* ════════ CRUD – スタッツ ════════ */
+/* スタッツフォームから値を構築する共通ヘルパー */
+function buildStatRecord(){
+  const playerName=document.getElementById('sPName').value.trim();
+  const date=document.getElementById('sSDate').value;
+  const matchName=document.getElementById('sSMatchName').value.trim();
+  const opponent=document.getElementById('sSOpponent').value.trim();
+  if(!playerName||!date||!matchName||!opponent)return null;
+  const gv=id=>Number(document.getElementById(id).value)||0;
+  const gbv=id=>document.getElementById(id).value==='true';
+  return{
+    playerName,date,matchName,opponent,
+    category:document.getElementById('sSCategory').value,
+    isJr:document.getElementById('sSIsJr').value==='true',
+    no:gv('sPNo'),
+    quarters:{q1:gbv('sQ1'),q2:gbv('sQ2'),q3:gbv('sQ3'),q4:gbv('sQ4')},
+    fg:{
+      made:{q1:gv('sFgMadeQ1'),q2:gv('sFgMadeQ2'),q3:gv('sFgMadeQ3'),q4:gv('sFgMadeQ4')},
+      att: {q1:gv('sFgAttQ1'), q2:gv('sFgAttQ2'), q3:gv('sFgAttQ3'), q4:gv('sFgAttQ4')}
+    },
+    ft:{
+      made:{q1:gv('sFtMadeQ1'),q2:gv('sFtMadeQ2'),q3:gv('sFtMadeQ3'),q4:gv('sFtMadeQ4')},
+      att: {q1:gv('sFtAttQ1'), q2:gv('sFtAttQ2'), q3:gv('sFtAttQ3'), q4:gv('sFtAttQ4')}
+    },
+    reb:{off:gv('sRebOff'),def:gv('sRebDef')},
+    ast:gv('sAst'),stl:gv('sStl'),blk:gv('sBlk')
+  };
+}
+
+/* スタッツの数値入力欄のみリセット（日付・カテゴリー等は保持） */
+function resetStatsNumbers(){
+  ['sQ1','sQ2','sQ3','sQ4'].forEach(i=>document.getElementById(i).value='true');
+  ['sFgMadeQ1','sFgMadeQ2','sFgMadeQ3','sFgMadeQ4',
+   'sFgAttQ1', 'sFgAttQ2', 'sFgAttQ3', 'sFgAttQ4',
+   'sFtMadeQ1','sFtMadeQ2','sFtMadeQ3','sFtMadeQ4',
+   'sFtAttQ1', 'sFtAttQ2', 'sFtAttQ3', 'sFtAttQ4',
+   'sRebOff','sRebDef','sAst','sStl','sBlk']
+    .forEach(i=>document.getElementById(i).value='0');
+}
+
 function openStatsModal(id){
   editingStatsId=id||null;
   document.getElementById('statsModalTitle').textContent=id?'スタッツ編集':'スタッツ追加';
@@ -1919,41 +1728,14 @@ function openStatsModal(id){
     document.getElementById('sPNo').value='0';
     document.getElementById('sSCategory').value='女子';
     document.getElementById('sSIsJr').value='false';
-    ['sQ1','sQ2','sQ3','sQ4'].forEach(i=>document.getElementById(i).value='false');
-    ['sFgMadeQ1','sFgMadeQ2','sFgMadeQ3','sFgMadeQ4',
-     'sFgAttQ1', 'sFgAttQ2', 'sFgAttQ3', 'sFgAttQ4',
-     'sFtMadeQ1','sFtMadeQ2','sFtMadeQ3','sFtMadeQ4',
-     'sFtAttQ1', 'sFtAttQ2', 'sFtAttQ3', 'sFtAttQ4',
-     'sRebOff','sRebDef','sAst','sStl','sBlk']
-      .forEach(i=>document.getElementById(i).value='0');
+    resetStatsNumbers();
   }
   document.getElementById('statsModal').classList.add('open');
 }
+
 async function saveStat(){
-  const playerName=document.getElementById('sPName').value.trim();
-  const date=document.getElementById('sSDate').value;
-  const matchName=document.getElementById('sSMatchName').value.trim();
-  const opponent=document.getElementById('sSOpponent').value.trim();
-  if(!playerName||!date||!matchName||!opponent){showToast('⚠️ 必須項目を入力してください');return;}
-  const gv=id=>Number(document.getElementById(id).value)||0;
-  const gbv=id=>document.getElementById(id).value==='true';
-  const rec={
-    playerName,date,matchName,opponent,
-    category:document.getElementById('sSCategory').value,
-    isJr:document.getElementById('sSIsJr').value==='true',
-    no:gv('sPNo'),
-    quarters:{q1:gbv('sQ1'),q2:gbv('sQ2'),q3:gbv('sQ3'),q4:gbv('sQ4')},
-    fg:{
-      made:{q1:gv('sFgMadeQ1'),q2:gv('sFgMadeQ2'),q3:gv('sFgMadeQ3'),q4:gv('sFgMadeQ4')},
-      att: {q1:gv('sFgAttQ1'), q2:gv('sFgAttQ2'), q3:gv('sFgAttQ3'), q4:gv('sFgAttQ4')}
-    },
-    ft:{
-      made:{q1:gv('sFtMadeQ1'),q2:gv('sFtMadeQ2'),q3:gv('sFtMadeQ3'),q4:gv('sFtMadeQ4')},
-      att: {q1:gv('sFtAttQ1'), q2:gv('sFtAttQ2'), q3:gv('sFtAttQ3'), q4:gv('sFtAttQ4')}
-    },
-    reb:{off:gv('sRebOff'),def:gv('sRebDef')},
-    ast:gv('sAst'),stl:gv('sStl'),blk:gv('sBlk')
-  };
+  const rec=buildStatRecord();
+  if(!rec){showToast('⚠️ 必須項目を入力してください');return;}
   if(editingStatsId){
     const i=statsData.findIndex(x=>x.id===editingStatsId);
     if(i>=0)statsData[i]={...statsData[i],...rec};
@@ -1963,11 +1745,44 @@ async function saveStat(){
   await saveToFirebase('stats',statsData);
   closeModal('statsModal');showToast('✅ スタッツを保存しました');
 }
+
+/* ★ 続けて入力：日付・カテゴリー・Jr・試合名・対戦相手を保持して数値のみリセット */
+async function saveStatAndContinue(){
+  const rec=buildStatRecord();
+  if(!rec){showToast('⚠️ 必須項目を入力してください');return;}
+  /* 保持する値を退避 */
+  const keepDate    =document.getElementById('sSDate').value;
+  const keepCat     =document.getElementById('sSCategory').value;
+  const keepJr      =document.getElementById('sSIsJr').value;
+  const keepMatch   =document.getElementById('sSMatchName').value;
+  const keepOpponent=document.getElementById('sSOpponent').value;
+  if(editingStatsId){
+    const i=statsData.findIndex(x=>x.id===editingStatsId);
+    if(i>=0)statsData[i]={...statsData[i],...rec};
+    editingStatsId=null;
+  }else{
+    rec.id=Date.now();statsData.push(rec);
+  }
+  await saveToFirebase('stats',statsData);
+  showToast('✅ 保存しました。続けて入力できます');
+  /* 選手名・背番号もリセット、保持項目を復元 */
+  document.getElementById('sPName').value='';
+  document.getElementById('sPNo').value='0';
+  document.getElementById('sSDate').value=keepDate;
+  document.getElementById('sSCategory').value=keepCat;
+  document.getElementById('sSIsJr').value=keepJr;
+  document.getElementById('sSMatchName').value=keepMatch;
+  document.getElementById('sSOpponent').value=keepOpponent;
+  resetStatsNumbers();
+  document.getElementById('statsModalTitle').textContent='スタッツ追加';
+  /* 選手名フィールドにフォーカス */
+  setTimeout(()=>document.getElementById('sPName').focus(),100);
+}
+
 async function deleteStat(id){
   if(!confirm('このスタッツデータを削除しますか？'))return;
   statsData=statsData.filter(s=>s.id!==id);
-  await saveToFirebase('stats',statsData);
-  showToast('🗑️ 削除しました');
+  await saveToFirebase('stats',statsData);showToast('🗑️ 削除しました');
 }
 
 /* ════════ CRUD – 選手 ════════ */
@@ -2000,8 +1815,7 @@ async function savePlayer(){
 async function deletePlayer(id){
   if(!confirm('この選手を削除しますか？'))return;
   playersData=playersData.filter(p=>p.id!==id);
-  await saveToFirebase('players',playersData);
-  showToast('🗑️ 削除しました');
+  await saveToFirebase('players',playersData);showToast('🗑️ 削除しました');
 }
 
 /* ════════ データインポート ════════ */
@@ -2015,13 +1829,11 @@ async function importData(e,type){
       if(type==='matches')     matchesData=data;
       else if(type==='stats')  statsData=data;
       else if(type==='players')playersData=data;
-      await saveToFirebase(type,
-        type==='matches'?matchesData:type==='stats'?statsData:playersData);
+      await saveToFirebase(type,type==='matches'?matchesData:type==='stats'?statsData:playersData);
       showToast('✅ データを読み込みFirestoreに保存しました ('+data.length+'件)');
     }catch{showToast('⚠️ JSONファイルの形式が正しくありません');}
   };
-  reader.readAsText(file);
-  e.target.value='';
+  reader.readAsText(file);e.target.value='';
 }
 function exportData(type){
   const map={matches:matchesData,stats:statsData,players:playersData};
@@ -2070,24 +1882,25 @@ function showToast(msg){
 
 /* ════════ 起動 ════════ */
 document.addEventListener('DOMContentLoaded',()=>{
+  /* ソートヘッダー */
   document.querySelectorAll('th.sortable').forEach(th=>{
     th.addEventListener('click',()=>{
-      if(sortCol===th.dataset.col){
-        sortDir=sortDir==='asc'?'desc':'asc';
-      }else{
-        sortCol=th.dataset.col;sortDir='asc';
-      }
+      if(sortCol===th.dataset.col){sortDir=sortDir==='asc'?'desc':'asc';}
+      else{sortCol=th.dataset.col;sortDir='asc';}
       sortAndRender();
     });
   });
-  ['matchModal','statsModal','playerModal'].forEach(id=>{
-    document.getElementById(id).addEventListener('click',e=>{
-      if(e.target===document.getElementById(id))closeModal(id);
-    });
-  });
+
+  /*
+   * ★ モーダル背景クリックで閉じないよう
+   *   overlay/modal-overlayへのクリックイベントは何もしない。
+   *   閉じるのはキャンセルボタンのみ。
+   */
+  /* authOverlayだけは背景クリックで閉じる（ログイン画面は閉じてOK） */
   document.getElementById('authOverlay').addEventListener('click',e=>{
     if(e.target===document.getElementById('authOverlay'))closeAuth();
   });
+
   init();
 });
 </script>
