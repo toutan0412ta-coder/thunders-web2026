@@ -169,6 +169,7 @@ button{cursor:pointer;font-family:var(--font);}
   border:1px solid var(--border);border-radius:6px;
   padding:6px 8px;font-size:13px;font-family:var(--font);height:34px;
 }
+/* ★修正3: filter-label を常時表示（スマホでも非表示にしない） */
 .filter-label{font-size:12px;color:#666;white-space:nowrap;font-weight:600;}
 
 /* ══════════════════════════════
@@ -194,8 +195,6 @@ button{cursor:pointer;font-family:var(--font);}
 
 /* ══════════════════════════════
    ダッシュボード 2列レイアウト
-   左：試合テーブル  右：月別集計
-   ★ orderは使わず HTML順を維持
 ══════════════════════════════ */
 .dashboard-layout{
   display:grid;
@@ -203,7 +202,7 @@ button{cursor:pointer;font-family:var(--font);}
   gap:12px;
   align-items:start;
 }
-.dashboard-main{min-width:0;} /* グリッド内でテーブルがはみ出さないよう */
+.dashboard-main{min-width:0;}
 
 /* ══════════════════════════════
    テーブル共通
@@ -224,21 +223,29 @@ tbody tr:nth-child(even){background:#f7f9fc;}
 tbody tr:hover{background:#e8f0ff;}
 td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .td-center{text-align:center;}
-.score-cell{text-align:center;font-weight:700;font-size:14px;}
+
+/* ★修正2: 点数セルを1行で表示 */
+.score-cell{
+  text-align:center;font-weight:700;font-size:13px;
+  white-space:nowrap;
+}
 
 /* ══════════════════════════════
    バッジ
+   ★修正1: badge-male / badge-female はアイコンのみ（文字なし）
 ══════════════════════════════ */
 .badge{
-  display:inline-block;padding:2px 8px;border-radius:20px;
-  font-size:11px;font-weight:700;white-space:nowrap;
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:3px 6px;border-radius:20px;
+  font-size:13px;font-weight:700;white-space:nowrap;
 }
+/* アイコンのみ表示。文字は JS側で出力しない */
 .badge-male{background:#e3f0ff;color:var(--male-color);}
 .badge-female{background:#fce4f0;color:var(--female-color);}
-.badge-jr{background:#fff3e0;color:#e65100;}
-.badge-win{background:#e8f5e9;color:var(--win);}
-.badge-lose{background:#fde9e9;color:var(--lose);}
-.badge-draw{background:#f0f0f0;color:var(--draw);}
+.badge-jr{background:#fff3e0;color:#e65100;font-size:11px;padding:2px 6px;}
+.badge-win{background:#e8f5e9;color:var(--win);font-size:11px;padding:2px 8px;}
+.badge-lose{background:#fde9e9;color:var(--lose);font-size:11px;padding:2px 8px;}
+.badge-draw{background:#f0f0f0;color:var(--draw);font-size:11px;padding:2px 8px;}
 .yt-icon{display:inline-block;vertical-align:middle;}
 .yt-icon:hover{opacity:.75;}
 
@@ -364,7 +371,6 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 
 /* ══════════════════════════════
    個人スタッツ：テーブル
-   ★ 横スクロールのみで対応。列削除なし
 ══════════════════════════════ */
 .stats-name-bar{
   display:flex;align-items:center;
@@ -383,7 +389,7 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 }
 table.stats-main-table{
   border-collapse:collapse;font-size:11px;white-space:nowrap;
-  min-width:900px; /* 横スクロールを確実に発動させる最小幅 */
+  min-width:900px;
   width:100%;
 }
 table.stats-main-table thead tr.h-group th{
@@ -527,7 +533,9 @@ table.stats-main-table tfoot td{
 .admin-toolbar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
 
 /* ══════════════════════════════
-   印刷
+   印刷（PDF出力）
+   ★修正5: .video-col（動画列）を非表示
+   ★修正6: 個人スタッツの選択UI・フィルターを非表示
 ══════════════════════════════ */
 @media print{
   .nav-tabs,.filter-area,.app-header nav,.btn-admin-open,.btn-pdf,
@@ -536,25 +544,29 @@ table.stats-main-table tfoot td{
   .page.active{display:block!important;padding:0;}
   body{background:#fff;}
   .monthly-card{position:static;}
+
+  /* ★修正5: ダッシュボードの動画列を非表示 */
+  .video-col{display:none!important;}
+
+  /* ★修正6: 個人スタッツPDF時に選手選択UI・フィルター行を非表示 */
+  .player-group-tabs,
+  .player-btn-grid,
+  .stats-filter-row{display:none!important;}
 }
 
 /* ══════════════════════════════
    レスポンシブ：〜900px
-   ダッシュボードを1列化。
-   ★ orderは一切使わない。HTML順（テーブル→月別）を維持
 ══════════════════════════════ */
 @media(max-width:900px){
   .dashboard-layout{
-    grid-template-columns:1fr; /* 1列に */
+    grid-template-columns:1fr;
   }
   .monthly-card{
-    position:static; /* sticky解除 */
+    position:static;
   }
-  /* スタッツチャートを2列に */
   .stats-charts-row{
     grid-template-columns:1fr 1fr;
   }
-  /* サマリーカード4列 */
   .stats-summary-cards{
     grid-template-columns:repeat(4,1fr);
   }
@@ -566,34 +578,33 @@ table.stats-main-table tfoot td{
 @media(max-width:700px){
   .page{padding:10px;}
 
-  /* チャート縦積み */
   .chart-row{grid-template-columns:1fr;}
   .chart-wrap{height:150px;}
 
-  /* フィルター：キーワードは全幅、セレクトは2列 */
-  .filter-area{padding:10px;}
+  /* ★修正3: スマホでもフィルターラベルを表示するため .filter-label の非表示を廃止 */
+  /* フィルターエリア全体を縦積みに */
+  .filter-area{padding:10px;flex-direction:column;align-items:stretch;}
   .filter-input{min-width:0;width:100%;}
-  .filter-area select{
-    flex:1 1 calc(50% - 4px);min-width:0;
-  }
-  .filter-area input[type="date"]{
-    flex:1 1 calc(50% - 4px);min-width:0;
-  }
-  /* フィルターラベルは非表示（セレクト内に文言あり） */
-  .filter-label{display:none;}
+  .filter-area select{width:100%;}
+  .filter-area input[type="date"]{width:100%;}
 
-  /* モーダルフォーム1列 */
+  /* 日付ラベルはインラインで表示 */
+  .filter-label{display:inline;font-size:12px;}
+
+  /* ★修正3: 日付ラベルと日付inputをまとめるラッパー */
+  .date-filter-group{
+    display:flex;align-items:center;gap:6px;width:100%;
+  }
+  .date-filter-group input[type="date"]{flex:1;}
+
   .form-row{grid-template-columns:1fr;}
 
-  /* スタッツチャート1列 */
   .stats-charts-row{grid-template-columns:1fr;}
   .stats-chart-wrap{height:170px;}
 
-  /* サマリーカード3列 */
   .stats-summary-cards{grid-template-columns:repeat(3,1fr);}
   .stats-card .sc-val{font-size:17px;}
 
-  /* 選手ヘッダー */
   .stats-player-header{padding:10px 14px;}
   .stats-player-name{font-size:17px;}
   .stats-player-icon{font-size:28px;}
@@ -606,18 +617,11 @@ table.stats-main-table tfoot td{
   .page{padding:8px;}
   .app-header h1{font-size:12px;}
 
-  /* フィルターのセレクト・日付を全幅 */
-  .filter-area select,
-  .filter-area input[type="date"]{flex:1 1 100%;}
-
-  /* サマリーカード2列 */
   .stats-summary-cards{grid-template-columns:repeat(2,1fr);}
 
-  /* 選手ボタン・グループタブ */
   .player-btn{padding:6px 10px;font-size:12px;}
   .player-group-tab{padding:6px 12px;font-size:12px;}
 
-  /* 月別集計タブ */
   .cat-tab{padding:3px 6px;font-size:10px;}
 }
 </style>
@@ -832,15 +836,17 @@ table.stats-main-table tfoot td{
     </div>
   </div>
 
-  <!-- フィルター -->
+  <!--
+    ★修正3: フィルターエリアに日付ラベルを「開始日：」「終了日：」として表示
+    スマホ（〜700px）では date-filter-group でラベルとinputを横並びに
+  -->
   <div class="filter-area">
     <input class="filter-input" id="filterKeyword" placeholder="🔍 試合名・場所・相手…" oninput="applyFilters()">
     <select id="filterOpponent" onchange="applyFilters()" style="min-width:130px;">
       <option value="">相手：すべて</option>
     </select>
-    <span class="filter-label">男女：</span>
     <select id="filterCategory" onchange="applyFilters()">
-      <option value="">すべて</option>
+      <option value="">男女：すべて</option>
       <option value="男子">👦 男子</option>
       <option value="女子">👧 女子</option>
     </select>
@@ -855,18 +861,18 @@ table.stats-main-table tfoot td{
       <option value="負">負</option>
       <option value="引">引き分け</option>
     </select>
-    <span class="filter-label">📅 期間</span>
-    <input type="date" id="filterDateFrom" onchange="applyFilters()">
-    <span class="filter-label">〜</span>
-    <input type="date" id="filterDateTo" onchange="applyFilters()">
+    <!-- ★修正3: 日付部分に「開始日：」「終了日：」ラベルを付与 -->
+    <div class="date-filter-group">
+      <span class="filter-label">📅 開始日：</span>
+      <input type="date" id="filterDateFrom" onchange="applyFilters()">
+    </div>
+    <div class="date-filter-group">
+      <span class="filter-label">終了日：</span>
+      <input type="date" id="filterDateTo" onchange="applyFilters()">
+    </div>
     <button class="btn-reset" onclick="clearFilters()">✕ リセット</button>
   </div>
 
-  <!--
-    ダッシュボード本体：左=試合テーブル、右=月別集計
-    ★ HTML順を変えない。orderプロパティ使用禁止。
-    スマホ(〜900px)では1列になるので月別は自然にテーブルの下に来る
-  -->
   <div class="dashboard-layout">
     <!-- 左：試合一覧テーブル -->
     <div class="dashboard-main">
@@ -875,12 +881,13 @@ table.stats-main-table tfoot td{
           <thead><tr>
             <th class="sortable" data-col="date">日付</th>
             <th class="sortable" data-col="venue">場所</th>
-            <th class="sortable" data-col="category">カテゴリー</th>
+            <th class="sortable" data-col="category">区分</th>
             <th class="sortable" data-col="matchName">試合名</th>
             <th class="sortable" data-col="opponent">対戦相手</th>
             <th class="sortable td-center" data-col="scoreFor">点数</th>
             <th class="sortable td-center" data-col="result">勝敗</th>
-            <th class="td-center">動画</th>
+            <!-- ★修正5: video-col クラスを付与してPDF時に非表示 -->
+            <th class="td-center video-col">動画</th>
           </tr></thead>
           <tbody id="matchTableBody"></tbody>
         </table>
@@ -910,6 +917,10 @@ table.stats-main-table tfoot td{
 
 <!-- ═══ STATS ═══ -->
 <div class="page" id="page-stats">
+  <!--
+    ★修正6: .section-card 内の選手選択UI・フィルター行は
+    @media print で .player-group-tabs / .player-btn-grid / .stats-filter-row を非表示
+  -->
   <div class="section-card">
     <div class="player-group-tabs" id="playerGroupTabs">
       <button class="player-group-tab active-tab" data-grp="female" onclick="switchPlayerGroup('female')">👧 女子</button>
@@ -920,10 +931,15 @@ table.stats-main-table tfoot td{
     <div class="stats-filter-row">
       <span class="filter-label">対戦相手：</span>
       <select id="statsFilterOpponent" onchange="renderStatsPage()"><option value="">すべて</option></select>
-      <span class="filter-label">📅 期間：</span>
-      <input type="date" id="statsDateFrom" onchange="renderStatsPage()">
-      <span class="filter-label">〜</span>
-      <input type="date" id="statsDateTo" onchange="renderStatsPage()">
+      <!-- ★修正3: 個人スタッツフィルターの日付にもラベル付与 -->
+      <div class="date-filter-group">
+        <span class="filter-label">📅 開始日：</span>
+        <input type="date" id="statsDateFrom" onchange="renderStatsPage()">
+      </div>
+      <div class="date-filter-group">
+        <span class="filter-label">終了日：</span>
+        <input type="date" id="statsDateTo" onchange="renderStatsPage()">
+      </div>
       <button class="btn-reset" onclick="clearStatsFilters()">✕ リセット</button>
       <button class="btn-pdf" onclick="printPage('stats')" style="margin-left:auto;">🖨️ PDF出力</button>
     </div>
@@ -956,7 +972,6 @@ table.stats-main-table tfoot td{
       <span class="snb-label">選手名</span>
       <span class="snb-name" id="statsTablePlayerName"></span>
     </div>
-    <!-- ★ 横スクロールのみ。min-width:900px で確実にスクロールが発動 -->
     <div class="stats-table-wrap">
       <table class="stats-main-table">
         <thead>
@@ -1239,19 +1254,27 @@ function sortAndRender(){
   });
   renderMatchTable();
 }
+
+/* ════════ 試合テーブル描画
+   ★修正1: バッジはアイコンのみ（「男子」「女子」の文字なし）
+   ★修正2: score-cell に white-space:nowrap 適用済み（CSS側）
+   ★修正5: 動画セルに video-col クラス付与
+════════ */
 function renderMatchTable(){
   const total=filteredMatches.length;
   const items=filteredMatches.slice((currentPage-1)*MATCH_PAGE_SIZE,currentPage*MATCH_PAGE_SIZE);
   document.getElementById('matchTableBody').innerHTML=items.map(m=>{
+    /* ★修正1: アイコンのみ。文字列「男子」「女子」は出力しない */
     const catB=m.category==='男子'
-      ?`<span class="badge badge-male">👦 男子</span>`
-      :`<span class="badge badge-female">👧 女子</span>`;
+      ?`<span class="badge badge-male" title="男子">👦</span>`
+      :`<span class="badge badge-female" title="女子">👧</span>`;
     const jrB=m.isJr?`<span class="badge badge-jr">Jr</span>`:'';
     const resB=m.result==='勝'
       ?`<span class="badge badge-win">勝</span>`
       :m.result==='負'
         ?`<span class="badge badge-lose">負</span>`
         :`<span class="badge badge-draw">引</span>`;
+    /* ★修正5: yt セルに class="video-col" */
     const yt=m.videoUrl
       ?`<a href="${escH(m.videoUrl)}" target="_blank" rel="noopener" class="yt-icon" title="動画">
           <svg width="22" height="16" viewBox="0 0 22 16">
@@ -1265,9 +1288,9 @@ function renderMatchTable(){
       <td>${catB}${jrB}</td>
       <td>${escH(m.matchName)}</td>
       <td>${escH(m.opponent)}</td>
-      <td class="score-cell">${m.scoreFor} – ${m.scoreAgainst}</td>
+      <td class="score-cell">${m.scoreFor}–${m.scoreAgainst}</td>
       <td class="td-center">${resB}</td>
-      <td class="td-center">${yt}</td>
+      <td class="td-center video-col">${yt}</td>
     </tr>`;
   }).join('');
   renderMatchPagination(total);
@@ -1414,9 +1437,14 @@ function switchPlayerGroup(grp){
   });
   renderPlayerBtns();clearStatsDisplay();
 }
+
+/* ★修正4: 選手ボタンをあいうえお順（localeCompare）でソート */
 function renderPlayerBtns(){
   const grid=document.getElementById('playerBtnGrid');
-  const players=playersData.filter(p=>p.group===currentPlayerGroup);
+  const players=playersData
+    .filter(p=>p.group===currentPlayerGroup)
+    .slice()
+    .sort((a,b)=>a.name.localeCompare(b.name,'ja'));
   if(!players.length){
     grid.innerHTML='<span style="color:#888;font-size:13px;">選手が登録されていません</span>';
     return;
@@ -2009,7 +2037,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     th.addEventListener('click',()=>{
       if(sortCol===th.dataset.col){
         sortDir=sortDir==='asc'?'desc':'asc';
-      }else{
+      }else{	
         sortCol=th.dataset.col;sortDir='asc';
       }
       sortAndRender();
