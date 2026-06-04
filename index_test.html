@@ -6,46 +6,8 @@
 <title>2026年度 刀根山サンダース 試合結果</title>
 <link rel="icon" type="image/png" href="https://www.genspark.ai/api/files/s/eHyeMNkf">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey:            "AIzaSyDyHEv72GDqgSba2KFgM-x550dHRT6FGgM",
-  authDomain:        "thunders-web.firebaseapp.com",
-  projectId:         "thunders-web",
-  storageBucket:     "thunders-web.firebasestorage.app",
-  messagingSenderId: "792066557837",
-  appId:             "1:792066557837:web:eb84212de79133a0129fc4"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-window.fbLoad = async function(docName) {
-  const snap = await db.collection("data").doc(docName).get();
-  if (snap.exists) {
-    const d = snap.data();
-    return Array.isArray(d.items) ? d.items : [];
-  }
-  return [];
-};
-window.fbSave = async function(docName, arr) {
-  await db.collection("data").doc(docName).set({ items: arr });
-};
-window.fbWatch = function(docName, callback) {
-  return db.collection("data").doc(docName).onSnapshot((snap) => {
-    if (snap.exists) {
-      const d = snap.data();
-      callback(Array.isArray(d.items) ? d.items : []);
-    }
-  });
-};
-</script>
 
 <style>
-/* ══════════════════════════════
-   CSS変数・リセット
-══════════════════════════════ */
 :root{
   --primary:#1a3a5c;--primary-light:#2563a8;--accent:#e8a020;
   --win:#1a7a3c;--lose:#c0392b;--draw:#5a6a7a;
@@ -58,9 +20,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 a{color:var(--primary-light);text-decoration:none;}
 button{cursor:pointer;font-family:var(--font);}
 
-/* ══════════════════════════════
-   ローディング
-══════════════════════════════ */
 #loadingScreen{
   position:fixed;inset:0;background:var(--primary);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -74,9 +33,6 @@ button{cursor:pointer;font-family:var(--font);}
 #loadingScreen p{font-size:16px;font-weight:600;}
 #loadingScreen.hidden{display:none;}
 
-/* ══════════════════════════════
-   ヘッダー
-══════════════════════════════ */
 .app-header{
   background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
   color:#fff;padding:14px 20px;
@@ -90,9 +46,6 @@ button{cursor:pointer;font-family:var(--font);}
   padding:7px 16px;font-size:13px;font-weight:700;white-space:nowrap;
 }
 
-/* ══════════════════════════════
-   ナビ
-══════════════════════════════ */
 .nav-tabs{
   display:flex;background:var(--primary);
   border-bottom:3px solid var(--accent);
@@ -108,15 +61,9 @@ button{cursor:pointer;font-family:var(--font);}
 .nav-tab:hover{background:rgba(255,255,255,.1);color:#fff;}
 .nav-tab.active{background:var(--accent);color:#fff;font-weight:700;}
 
-/* ══════════════════════════════
-   ページ共通
-══════════════════════════════ */
 .page{display:none;padding:16px;max-width:1600px;margin:0 auto;}
 .page.active{display:block;}
 
-/* ══════════════════════════════
-   ボタン
-══════════════════════════════ */
 .btn{border:none;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;}
 .btn-primary{background:var(--primary-light);color:#fff;}
 .btn-accent{background:var(--accent);color:#fff;}
@@ -133,9 +80,6 @@ button{cursor:pointer;font-family:var(--font);}
 }
 .btn-continue{background:#7b1fa2;color:#fff;}
 
-/* ══════════════════════════════
-   セクションカード
-══════════════════════════════ */
 .section-card{
   background:var(--white);border-radius:var(--radius);
   box-shadow:0 2px 8px rgba(0,0,0,.08);padding:16px;margin-bottom:16px;
@@ -145,9 +89,6 @@ button{cursor:pointer;font-family:var(--font);}
   padding-bottom:6px;border-bottom:2px solid var(--border);
 }
 
-/* ══════════════════════════════
-   フィルター
-══════════════════════════════ */
 .filter-area{
   background:var(--white);border-radius:var(--radius);
   padding:12px 16px;margin-bottom:12px;
@@ -168,9 +109,6 @@ button{cursor:pointer;font-family:var(--font);}
 .date-filter-group{display:flex;align-items:center;gap:6px;}
 .date-filter-group input[type="date"]{flex:1;}
 
-/* ══════════════════════════════
-   チャートエリア
-══════════════════════════════ */
 .chart-row{
   display:grid;grid-template-columns:220px 1fr;
   gap:12px;margin-bottom:16px;
@@ -188,18 +126,12 @@ button{cursor:pointer;font-family:var(--font);}
 .donut-center .pct{font-size:22px;font-weight:700;color:var(--primary);}
 .donut-center .lbl{font-size:10px;color:#666;}
 
-/* ══════════════════════════════
-   ダッシュボード 2列レイアウト
-══════════════════════════════ */
 .dashboard-layout{
   display:grid;grid-template-columns:1fr 270px;
   gap:12px;align-items:start;
 }
 .dashboard-main{min-width:0;}
 
-/* ══════════════════════════════
-   テーブル共通
-══════════════════════════════ */
 .table-wrap{
   background:var(--white);border-radius:var(--radius);
   box-shadow:0 2px 8px rgba(0,0,0,.08);
@@ -218,9 +150,6 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .td-center{text-align:center;}
 .score-cell{text-align:center;font-weight:700;font-size:13px;white-space:nowrap;}
 
-/* ══════════════════════════════
-   バッジ
-══════════════════════════════ */
 .badge{
   display:inline-flex;align-items:center;justify-content:center;
   gap:2px;padding:3px 6px;border-radius:20px;
@@ -245,9 +174,6 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .yt-icon:hover{opacity:.75;}
 .match-name-cell{display:flex;align-items:center;gap:5px;}
 
-/* ══════════════════════════════
-   月別集計カード
-══════════════════════════════ */
 .monthly-card{
   border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);
   overflow:hidden;position:sticky;top:12px;
@@ -283,9 +209,6 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .win-rate-high{color:var(--win);font-weight:700;}
 .win-rate-low{color:var(--lose);}
 
-/* ══════════════════════════════
-   ページネーション
-══════════════════════════════ */
 .pagination{display:flex;align-items:center;gap:6px;padding:10px 0;flex-wrap:wrap;}
 .page-btn{
   border:1px solid var(--border);background:var(--white);color:var(--text);
@@ -296,9 +219,6 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .page-btn:disabled{opacity:.4;cursor:not-allowed;}
 .page-info{font-size:12px;color:#666;}
 
-/* ══════════════════════════════
-   個人スタッツ：グループタブ・選手ボタン
-══════════════════════════════ */
 .player-group-tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
 .player-group-tab{
   border:2px solid var(--border);background:var(--white);
@@ -312,10 +232,7 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
   border:2px solid var(--border);background:var(--white);
   border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;transition:.2s;cursor:pointer;
 }
-.player-btn .player-num{
-  font-size:11px;font-weight:700;opacity:.75;
-  margin-right:4px;color:inherit;
-}
+.player-btn .player-num{font-size:11px;font-weight:700;opacity:.75;margin-right:4px;color:inherit;}
 .player-btn.selected-female{border-color:var(--female-color);background:#fce4f0;color:var(--female-color);}
 .player-btn.selected-male  {border-color:var(--male-color);background:#e3f0ff;color:var(--male-color);}
 .player-btn.selected-ob    {border-color:var(--ob-color);background:#f3e5f5;color:var(--ob-color);}
@@ -327,9 +244,6 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
   padding:6px 8px;font-size:13px;font-family:var(--font);height:34px;
 }
 
-/* ══════════════════════════════
-   個人スタッツ：ヘッダー・サマリー
-══════════════════════════════ */
 .stats-player-header{
   display:flex;align-items:center;gap:14px;
   padding:14px 18px;border-radius:var(--radius);
@@ -342,7 +256,6 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
   background:rgba(255,255,255,.25);
   border:1px solid rgba(255,255,255,.5);
   border-radius:6px;padding:2px 9px;
-  letter-spacing:.05em;
 }
 .stats-player-sub{font-size:13px;opacity:.85;}
 
@@ -358,28 +271,17 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .stats-card .sc-val{font-size:20px;font-weight:700;color:var(--primary);}
 .stats-card .sc-lbl{font-size:11px;color:#666;margin-top:2px;}
 
-/* ══════════════════════════════
-   個人スタッツ：チャート3列
-══════════════════════════════ */
 .stats-charts-row{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
+  display:grid;grid-template-columns:1fr 1fr 1fr;
   gap:12px;margin-bottom:16px;
 }
 .stats-chart-card{
   background:var(--white);border-radius:var(--radius);
-  padding:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);
-  break-inside:avoid;
+  padding:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);break-inside:avoid;
 }
-.stats-chart-card h4{
-  font-size:12px;color:var(--primary);margin-bottom:6px;
-  text-align:center;font-weight:700;
-}
+.stats-chart-card h4{font-size:12px;color:var(--primary);margin-bottom:6px;text-align:center;font-weight:700;}
 .stats-chart-wrap{position:relative;height:200px;}
 
-/* ══════════════════════════════
-   個人スタッツ：テーブル
-══════════════════════════════ */
 .stats-name-bar{
   display:flex;align-items:center;
   background:#fff;border:2px solid var(--border);
@@ -406,22 +308,22 @@ table.stats-main-table{
 table.stats-main-table thead tr.h-group th{
   padding:4px 3px;font-size:11px;font-weight:700;text-align:center;border:1px solid #bbb;
 }
-.th-base  {background:#e0e0e0;color:#333;}
-.th-jikan {background:#f5a623;color:#fff;}
-.th-fg    {background:#f5a623;color:#fff;}
-.th-ft    {background:#4a90c4;color:#fff;}
-.th-reb   {background:#66bb6a;color:#fff;}
-.th-other {background:#78909c;color:#fff;}
+.th-base{background:#e0e0e0;color:#333;}
+.th-jikan{background:#f5a623;color:#fff;}
+.th-fg{background:#f5a623;color:#fff;}
+.th-ft{background:#4a90c4;color:#fff;}
+.th-reb{background:#66bb6a;color:#fff;}
+.th-other{background:#78909c;color:#fff;}
 table.stats-main-table thead tr.h-sub th{
   padding:3px 3px;font-size:10px;text-align:center;border:1px solid #bbb;font-weight:600;
 }
-.th-sub-base {background:#f5f5f5;color:#555;}
+.th-sub-base{background:#f5f5f5;color:#555;}
 .th-sub-jikan{background:#ffe0b2;color:#e65100;}
-.th-sub-fgm  {background:#fff3cd;color:#856404;}
-.th-sub-fga  {background:#ffe8cc;color:#7a4e00;}
-.th-sub-ftm  {background:#dbeafe;color:#1e40af;}
-.th-sub-fta  {background:#bfdbfe;color:#1e3a8a;}
-.th-sub-reb  {background:#f0fdf4;color:#14532d;}
+.th-sub-fgm{background:#fff3cd;color:#856404;}
+.th-sub-fga{background:#ffe8cc;color:#7a4e00;}
+.th-sub-ftm{background:#dbeafe;color:#1e40af;}
+.th-sub-fta{background:#bfdbfe;color:#1e3a8a;}
+.th-sub-reb{background:#f0fdf4;color:#14532d;}
 table.stats-main-table tbody td{
   padding:3px 4px;border:1px solid #ddd;text-align:center;font-size:11px;
 }
@@ -435,16 +337,13 @@ table.stats-main-table tfoot td{
 .q-check{color:#1a7a3c;font-weight:700;font-size:12px;}
 .q-empty{color:#ddd;font-size:10px;}
 .pct-high{color:#1a7a3c;font-weight:700;}
-.pct-low {color:#c0392b;}
+.pct-low{color:#c0392b;}
 .td-fgm{color:#b35900;}
 .td-fga{color:#7a4e00;}
 .td-ftm{color:#1e40af;}
 .td-fta{color:#1e3a8a;}
 .no-data{text-align:center;padding:40px;color:#888;font-size:15px;}
 
-/* ══════════════════════════════
-   保存インジケーター
-══════════════════════════════ */
 .saving-indicator{
   position:fixed;top:60px;right:16px;background:#1a7a3c;color:#fff;
   padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;
@@ -452,9 +351,6 @@ table.stats-main-table tfoot td{
 }
 .saving-indicator.show{opacity:1;}
 
-/* ══════════════════════════════
-   オーバーレイ・モーダル
-══════════════════════════════ */
 .overlay{
   display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
   z-index:1000;align-items:center;justify-content:center;padding:16px;
@@ -477,8 +373,7 @@ table.stats-main-table tfoot td{
 .modal-box{
   background:var(--white);border-radius:var(--radius);padding:24px;
   width:min(680px,100%);max-height:90vh;overflow-y:auto;
-  box-shadow:0 8px 24px rgba(0,0,0,.2);
-  position:relative;
+  box-shadow:0 8px 24px rgba(0,0,0,.2);position:relative;
 }
 .modal-box h3{
   font-size:16px;color:var(--primary);margin-bottom:16px;
@@ -487,9 +382,7 @@ table.stats-main-table tfoot td{
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
 .form-group{display:flex;flex-direction:column;gap:4px;}
 .form-group label{font-size:12px;color:#555;font-weight:600;}
-.form-group input,
-.form-group select,
-.form-group textarea{
+.form-group input,.form-group select,.form-group textarea{
   border:1px solid var(--border);border-radius:6px;
   padding:7px 10px;font-size:13px;font-family:var(--font);
 }
@@ -501,32 +394,26 @@ table.stats-main-table tfoot td{
   padding:4px 8px;border-radius:3px;background:#fffde7;
 }
 
-/* ══════════════════════════════
-   スタッツ入力テーブル（モーダル内）
-══════════════════════════════ */
 .stats-input-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px;}
 .stats-input-table th{padding:5px 6px;text-align:center;font-size:11px;font-weight:700;}
 .stats-input-table td{padding:3px 4px;text-align:center;}
 .stats-input-table input[type="number"]{
   width:48px;border:1px solid var(--border);border-radius:4px;
-  padding:4px 4px;font-size:12px;text-align:center;font-family:var(--font);
+  padding:4px;font-size:12px;text-align:center;font-family:var(--font);
 }
 .stats-input-table select{
   width:60px;border:1px solid var(--border);border-radius:4px;
   padding:3px;font-size:11px;font-family:var(--font);
 }
 .sit-head-jikan{background:#f5a623;color:#fff;}
-.sit-head-fg   {background:#f5a623;color:#fff;}
-.sit-head-ft   {background:#4a90c4;color:#fff;}
-.sit-sub-jikan {background:#ffe0b2;color:#e65100;}
-.sit-sub-fgm   {background:#fff3cd;color:#856404;}
-.sit-sub-fga   {background:#ffe8cc;color:#7a4e00;}
-.sit-sub-ftm   {background:#dbeafe;color:#1e40af;}
-.sit-sub-fta   {background:#bfdbfe;color:#1e3a8a;}
+.sit-head-fg{background:#f5a623;color:#fff;}
+.sit-head-ft{background:#4a90c4;color:#fff;}
+.sit-sub-jikan{background:#ffe0b2;color:#e65100;}
+.sit-sub-fgm{background:#fff3cd;color:#856404;}
+.sit-sub-fga{background:#ffe8cc;color:#7a4e00;}
+.sit-sub-ftm{background:#dbeafe;color:#1e40af;}
+.sit-sub-fta{background:#bfdbfe;color:#1e3a8a;}
 
-/* ══════════════════════════════
-   トースト
-══════════════════════════════ */
 .toast{
   position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
   background:#333;color:#fff;padding:10px 20px;border-radius:8px;
@@ -535,32 +422,14 @@ table.stats-main-table tfoot td{
 }
 .toast.show{opacity:1;}
 
-/* ══════════════════════════════
-   管理ツールバー
-══════════════════════════════ */
 .admin-toolbar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
 
-/* ══════════════════════════════
-   用語集ページ
-══════════════════════════════ */
-.glossary-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  gap:16px;
-}
-.glossary-category{
-  background:var(--white);border-radius:var(--radius);
-  box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden;
-}
-.glossary-category-header{
-  padding:10px 14px;font-size:13px;font-weight:700;color:#fff;
-  display:flex;align-items:center;gap:7px;
-}
+/* 用語集 */
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
+.glossary-category{background:var(--white);border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden;}
+.glossary-category-header{padding:10px 14px;font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;gap:7px;}
 .glossary-category-body{padding:10px 14px;}
-.glossary-item{
-  display:flex;gap:10px;padding:8px 0;
-  border-bottom:1px solid var(--border);
-}
+.glossary-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
 .glossary-item:last-child{border-bottom:none;}
 .glossary-term{
   min-width:68px;font-size:13px;font-weight:700;color:var(--primary);
@@ -570,18 +439,13 @@ table.stats-main-table tfoot td{
 }
 .glossary-desc{font-size:12px;color:#444;line-height:1.6;}
 .glossary-desc strong{color:var(--primary);font-weight:700;}
-
-/* 用語集ヘッダー色テーマ */
-.gh-fg   {background:linear-gradient(90deg,#f5a623,#e68900);}
-.gh-ft   {background:linear-gradient(90deg,#4a90c4,#2563a8);}
-.gh-reb  {background:linear-gradient(90deg,#43a047,#1a7a3c);}
+.gh-fg{background:linear-gradient(90deg,#f5a623,#e68900);}
+.gh-ft{background:linear-gradient(90deg,#4a90c4,#2563a8);}
+.gh-reb{background:linear-gradient(90deg,#43a047,#1a7a3c);}
 .gh-other{background:linear-gradient(90deg,#78909c,#546e7a);}
-.gh-q    {background:linear-gradient(90deg,#8e24aa,#6a1b9a);}
+.gh-q{background:linear-gradient(90deg,#8e24aa,#6a1b9a);}
 .gh-result{background:linear-gradient(90deg,#e53935,#c62828);}
 
-/* ══════════════════════════════
-   印刷（PDF出力）
-══════════════════════════════ */
 @media print{
   .nav-tabs,.filter-area,.app-header,.btn-admin-open,.btn-pdf,
   .btn-reset,.admin-toolbar,#loadingScreen,.saving-indicator,
@@ -591,56 +455,29 @@ table.stats-main-table tfoot td{
   .monthly-card{position:static;}
   .video-col{display:none!important;}
   .player-group-tabs,.player-btn-grid,.stats-filter-row{display:none!important;}
-  .stats-charts-row{
-    display:grid!important;
-    grid-template-columns:1fr 1fr 1fr!important;
-    gap:6px!important;width:100%!important;margin-bottom:10px!important;
-  }
-  .stats-chart-card{
-    padding:6px!important;box-shadow:none!important;
-    border:1px solid #ddd!important;break-inside:avoid!important;
-  }
+  .stats-charts-row{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;gap:6px!important;}
+  .stats-chart-card{padding:6px!important;box-shadow:none!important;border:1px solid #ddd!important;break-inside:avoid!important;}
   .stats-chart-wrap{height:160px!important;}
   .stats-summary-cards{grid-template-columns:repeat(6,1fr)!important;gap:5px!important;}
   .stats-card{padding:6px!important;box-shadow:none!important;border:1px solid #ddd!important;}
-  .stats-card .sc-val{font-size:14px!important;}
-  .stats-card .sc-lbl{font-size:9px!important;}
 }
-
-/* ══════════════════════════════
-   レスポンシブ：〜900px
-══════════════════════════════ */
 @media(max-width:900px){
   .dashboard-layout{grid-template-columns:1fr;}
   .monthly-card{position:static;}
   .stats-summary-cards{grid-template-columns:repeat(4,1fr);}
 }
-
-/* ══════════════════════════════
-   レスポンシブ：〜700px
-══════════════════════════════ */
 @media(max-width:700px){
   .page{padding:10px;}
   .chart-row{grid-template-columns:1fr;}
-  .chart-wrap{height:150px;}
   .filter-area{padding:10px;flex-direction:column;align-items:stretch;}
   .filter-input{min-width:0;width:100%;}
   .filter-area select,.filter-area input[type="date"]{width:100%;}
   .date-filter-group{width:100%;}
   .form-row{grid-template-columns:1fr;}
   .stats-charts-row{grid-template-columns:1fr;}
-  .stats-chart-wrap{height:170px;}
   .stats-summary-cards{grid-template-columns:repeat(3,1fr);}
-  .stats-card .sc-val{font-size:17px;}
-  .stats-player-header{padding:10px 14px;}
-  .stats-player-name{font-size:17px;}
-  .stats-player-icon{font-size:28px;}
   .glossary-grid{grid-template-columns:1fr;}
 }
-
-/* ══════════════════════════════
-   レスポンシブ：〜480px
-══════════════════════════════ */
 @media(max-width:480px){
   .page{padding:8px;}
   .app-header h1{font-size:12px;}
@@ -657,10 +494,9 @@ table.stats-main-table tfoot td{
   <div class="spin"></div>
   <p>🏀 データを読み込み中...</p>
 </div>
-
 <div class="saving-indicator" id="savingIndicator">💾 保存中...</div>
 
-<!-- Auth Overlay -->
+<!-- Auth -->
 <div class="overlay" id="authOverlay">
   <div class="auth-card">
     <h2>🔐 管理者認証</h2>
@@ -708,13 +544,12 @@ table.stats-main-table tfoot td{
   </div>
 </div>
 
-<!-- Stats Modal（背番号欄を削除済み） -->
+<!-- Stats Modal -->
 <div class="modal-overlay" id="statsModal">
   <div class="modal-box">
     <h3 id="statsModalTitle">スタッツデータ</h3>
     <div class="form-row">
       <div class="form-group"><label>選手名 *</label><input type="text" id="sPName"></div>
-      <!-- 背番号入力欄は選手マスタで管理するため削除 -->
     </div>
     <div class="form-row">
       <div class="form-group"><label>日付 *</label><input type="date" id="sSDate"></div>
@@ -745,16 +580,11 @@ table.stats-main-table tfoot td{
           </tr>
           <tr>
             <th style="background:#f5f5f5;color:#555;">クォーター</th>
-            <th class="sit-sub-jikan">1Q</th><th class="sit-sub-jikan">2Q</th>
-            <th class="sit-sub-jikan">3Q</th><th class="sit-sub-jikan">4Q</th>
-            <th class="sit-sub-fgm">1Q</th><th class="sit-sub-fgm">2Q</th>
-            <th class="sit-sub-fgm">3Q</th><th class="sit-sub-fgm">4Q</th>
-            <th class="sit-sub-fga">1Q</th><th class="sit-sub-fga">2Q</th>
-            <th class="sit-sub-fga">3Q</th><th class="sit-sub-fga">4Q</th>
-            <th class="sit-sub-ftm">1Q</th><th class="sit-sub-ftm">2Q</th>
-            <th class="sit-sub-ftm">3Q</th><th class="sit-sub-ftm">4Q</th>
-            <th class="sit-sub-fta">1Q</th><th class="sit-sub-fta">2Q</th>
-            <th class="sit-sub-fta">3Q</th><th class="sit-sub-fta">4Q</th>
+            <th class="sit-sub-jikan">1Q</th><th class="sit-sub-jikan">2Q</th><th class="sit-sub-jikan">3Q</th><th class="sit-sub-jikan">4Q</th>
+            <th class="sit-sub-fgm">1Q</th><th class="sit-sub-fgm">2Q</th><th class="sit-sub-fgm">3Q</th><th class="sit-sub-fgm">4Q</th>
+            <th class="sit-sub-fga">1Q</th><th class="sit-sub-fga">2Q</th><th class="sit-sub-fga">3Q</th><th class="sit-sub-fga">4Q</th>
+            <th class="sit-sub-ftm">1Q</th><th class="sit-sub-ftm">2Q</th><th class="sit-sub-ftm">3Q</th><th class="sit-sub-ftm">4Q</th>
+            <th class="sit-sub-fta">1Q</th><th class="sit-sub-fta">2Q</th><th class="sit-sub-fta">3Q</th><th class="sit-sub-fta">4Q</th>
           </tr>
         </thead>
         <tbody>
@@ -800,7 +630,7 @@ table.stats-main-table tfoot td{
   </div>
 </div>
 
-<!-- Player Modal（背番号フィールド追加） -->
+<!-- Player Modal -->
 <div class="modal-overlay" id="playerModal">
   <div class="modal-box">
     <h3 id="playerModalTitle">選手マスタ</h3>
@@ -829,21 +659,19 @@ table.stats-main-table tfoot td{
 
 <div class="toast" id="toast"></div>
 
-<!-- ヘッダー -->
 <header class="app-header">
   <h1>🏀 2026年度 刀根山サンダース 試合結果</h1>
   <button class="btn-admin-open" onclick="openAdminAuth()">⚙️ 管理</button>
 </header>
 
-<!-- ナビ -->
 <nav class="nav-tabs">
   <div class="nav-tab active" id="tab-dashboard" onclick="showPage('dashboard')">📊 ダッシュボード</div>
-  <div class="nav-tab" id="tab-stats"     onclick="showPage('stats')">👤 個人スタッツ</div>
-  <div class="nav-tab" id="tab-glossary"  onclick="showPage('glossary')">📖 用語集</div>
+  <div class="nav-tab" id="tab-stats"    onclick="showPage('stats')">👤 個人スタッツ</div>
+  <div class="nav-tab" id="tab-glossary" onclick="showPage('glossary')">📖 用語集</div>
   <div class="nav-tab admin-only" id="tab-admin" onclick="showPage('admin')" style="display:none">⚙️ 管理</div>
 </nav>
 
-<!-- ═══ DASHBOARD ═══ -->
+<!-- DASHBOARD -->
 <div class="page active" id="page-dashboard">
   <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
     <button class="btn-pdf" onclick="printPage('dashboard')">🖨️ PDF出力</button>
@@ -864,12 +692,9 @@ table.stats-main-table tfoot td{
       <div class="chart-wrap" style="height:180px;"><canvas id="barChart"></canvas></div>
     </div>
   </div>
-
   <div class="filter-area">
     <input class="filter-input" id="filterKeyword" placeholder="🔍 試合名・場所・相手…" oninput="applyFilters()">
-    <select id="filterOpponent" onchange="applyFilters()" style="min-width:130px;">
-      <option value="">相手：すべて</option>
-    </select>
+    <select id="filterOpponent" onchange="applyFilters()" style="min-width:130px;"><option value="">相手：すべて</option></select>
     <select id="filterCategory" onchange="applyFilters()">
       <option value="">男女：すべて</option>
       <option value="男子">👦 男子</option>
@@ -896,7 +721,6 @@ table.stats-main-table tfoot td{
     </div>
     <button class="btn-reset" onclick="clearFilters()">✕ リセット</button>
   </div>
-
   <div class="dashboard-layout">
     <div class="dashboard-main">
       <div class="table-wrap">
@@ -936,7 +760,7 @@ table.stats-main-table tfoot td{
   </div>
 </div>
 
-<!-- ═══ STATS ═══ -->
+<!-- STATS -->
 <div class="page" id="page-stats">
   <div class="section-card">
     <div class="player-group-tabs" id="playerGroupTabs">
@@ -973,18 +797,9 @@ table.stats-main-table tfoot td{
     </div>
     <div id="statsSummaryCards" class="stats-summary-cards"></div>
     <div class="stats-charts-row">
-      <div class="stats-chart-card">
-        <h4>🕸️ 能力レーダー</h4>
-        <div class="stats-chart-wrap"><canvas id="statsRadarChart"></canvas></div>
-      </div>
-      <div class="stats-chart-card">
-        <h4>📊 試合別得点内訳</h4>
-        <div class="stats-chart-wrap"><canvas id="statsPtsChart"></canvas></div>
-      </div>
-      <div class="stats-chart-card">
-        <h4>📈 Q別 FG成功/試投</h4>
-        <div class="stats-chart-wrap"><canvas id="statsQFgChart"></canvas></div>
-      </div>
+      <div class="stats-chart-card"><h4>🕸️ 能力レーダー</h4><div class="stats-chart-wrap"><canvas id="statsRadarChart"></canvas></div></div>
+      <div class="stats-chart-card"><h4>📊 試合別得点内訳</h4><div class="stats-chart-wrap"><canvas id="statsPtsChart"></canvas></div></div>
+      <div class="stats-chart-card"><h4>📈 Q別 FG成功/試投</h4><div class="stats-chart-wrap"><canvas id="statsQFgChart"></canvas></div></div>
     </div>
     <div class="stats-name-bar">
       <span class="snb-label">選手名</span>
@@ -1000,28 +815,23 @@ table.stats-main-table tfoot td{
             <th class="th-base" rowspan="2">試合名</th>
             <th class="th-base" rowspan="2">相手</th>
             <th class="th-jikan" colspan="5">出場時限</th>
-            <th class="th-fg"    colspan="5">2P　成功</th>
-            <th class="th-fg"    colspan="5">2P　試投</th>
-            <th class="th-fg"    rowspan="2" style="background:#f5a623;color:#fff;">成功率</th>
-            <th class="th-ft"    colspan="5">FT　成功</th>
-            <th class="th-ft"    colspan="5">FT　試投</th>
-            <th class="th-ft"    rowspan="2" style="background:#4a90c4;color:#fff;">成功率</th>
-            <th class="th-reb"   colspan="2">REB</th>
+            <th class="th-fg" colspan="5">2P　成功</th>
+            <th class="th-fg" colspan="5">2P　試投</th>
+            <th class="th-fg" rowspan="2" style="background:#f5a623;color:#fff;">成功率</th>
+            <th class="th-ft" colspan="5">FT　成功</th>
+            <th class="th-ft" colspan="5">FT　試投</th>
+            <th class="th-ft" rowspan="2" style="background:#4a90c4;color:#fff;">成功率</th>
+            <th class="th-reb" colspan="2">REB</th>
             <th class="th-other" rowspan="2">AST</th>
             <th class="th-other" rowspan="2">STL</th>
             <th class="th-other" rowspan="2">BLK</th>
           </tr>
           <tr class="h-sub">
-            <th class="th-sub-jikan">1Q</th><th class="th-sub-jikan">2Q</th>
-            <th class="th-sub-jikan">3Q</th><th class="th-sub-jikan">4Q</th><th class="th-sub-jikan">計</th>
-            <th class="th-sub-fgm">1Q</th><th class="th-sub-fgm">2Q</th>
-            <th class="th-sub-fgm">3Q</th><th class="th-sub-fgm">4Q</th><th class="th-sub-fgm">計</th>
-            <th class="th-sub-fga">1Q</th><th class="th-sub-fga">2Q</th>
-            <th class="th-sub-fga">3Q</th><th class="th-sub-fga">4Q</th><th class="th-sub-fga">計</th>
-            <th class="th-sub-ftm">1Q</th><th class="th-sub-ftm">2Q</th>
-            <th class="th-sub-ftm">3Q</th><th class="th-sub-ftm">4Q</th><th class="th-sub-ftm">計</th>
-            <th class="th-sub-fta">1Q</th><th class="th-sub-fta">2Q</th>
-            <th class="th-sub-fta">3Q</th><th class="th-sub-fta">4Q</th><th class="th-sub-fta">計</th>
+            <th class="th-sub-jikan">1Q</th><th class="th-sub-jikan">2Q</th><th class="th-sub-jikan">3Q</th><th class="th-sub-jikan">4Q</th><th class="th-sub-jikan">計</th>
+            <th class="th-sub-fgm">1Q</th><th class="th-sub-fgm">2Q</th><th class="th-sub-fgm">3Q</th><th class="th-sub-fgm">4Q</th><th class="th-sub-fgm">計</th>
+            <th class="th-sub-fga">1Q</th><th class="th-sub-fga">2Q</th><th class="th-sub-fga">3Q</th><th class="th-sub-fga">4Q</th><th class="th-sub-fga">計</th>
+            <th class="th-sub-ftm">1Q</th><th class="th-sub-ftm">2Q</th><th class="th-sub-ftm">3Q</th><th class="th-sub-ftm">4Q</th><th class="th-sub-ftm">計</th>
+            <th class="th-sub-fta">1Q</th><th class="th-sub-fta">2Q</th><th class="th-sub-fta">3Q</th><th class="th-sub-fta">4Q</th><th class="th-sub-fta">計</th>
             <th class="th-sub-reb">OR</th><th class="th-sub-reb">DR</th>
           </tr>
         </thead>
@@ -1033,167 +843,78 @@ table.stats-main-table tfoot td{
   <div class="no-data" id="statsNoData">上のボタンから選手を選択してください</div>
 </div>
 
-<!-- ═══ GLOSSARY ═══ -->
+<!-- GLOSSARY -->
 <div class="page" id="page-glossary">
   <div class="section-card" style="margin-bottom:16px;">
     <h2>📖 バスケットボール用語集</h2>
     <p style="font-size:13px;color:#666;margin-top:4px;">スタッツ表に登場する用語の意味をまとめました。</p>
   </div>
   <div class="glossary-grid">
-
-    <!-- FG（フィールドゴール） -->
     <div class="glossary-category">
       <div class="glossary-category-header gh-fg">🟠 FG（フィールドゴール）・2P</div>
       <div class="glossary-category-body">
-        <div class="glossary-item">
-          <div class="glossary-term">FG</div>
-          <div class="glossary-desc"><strong>フィールドゴール（Field Goal）</strong>。フリースロー以外のシュート（2Pシュート）のこと。このアプリでは <strong>2Pシュート</strong> を指します。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">2P</div>
-          <div class="glossary-desc"><strong>2ポイントフィールドゴール</strong>。3Pラインの内側から成功させたシュート。1本につき2点が入ります。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">FGM<br><small>（成功）</small></div>
-          <div class="glossary-desc"><strong>Field Goals Made</strong>。シュートが入った（成功した）本数。「2P成功」とも表示されます。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">FGA<br><small>（試投）</small></div>
-          <div class="glossary-desc"><strong>Field Goals Attempted</strong>。シュートを打った（試みた）総本数。成功・失敗に関わらず全てカウントします。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">FG%<br><small>（成功率）</small></div>
-          <div class="glossary-desc"><strong>フィールドゴール成功率</strong>。$$FG\% = \frac{FGM}{FGA} \times 100$$ 50%以上を<span style="color:var(--win);font-weight:700;">緑</span>、未満を<span style="color:var(--lose);font-weight:700;">赤</span>で表示します。</div>
-        </div>
+        <div class="glossary-item"><div class="glossary-term">FG</div><div class="glossary-desc"><strong>フィールドゴール（Field Goal）</strong>。フリースロー以外のシュート全般。このアプリでは <strong>2Pシュート</strong> を指します。</div></div>
+        <div class="glossary-item"><div class="glossary-term">2P</div><div class="glossary-desc"><strong>2ポイントフィールドゴール</strong>。3Pライン内側からのシュート。成功で2点が入ります。</div></div>
+        <div class="glossary-item"><div class="glossary-term">FGM（成功）</div><div class="glossary-desc"><strong>Field Goals Made</strong>。シュートが入った本数。「2P成功」と同義です。</div></div>
+        <div class="glossary-item"><div class="glossary-term">FGA（試投）</div><div class="glossary-desc"><strong>Field Goals Attempted</strong>。シュートを打った総本数。成功・失敗を問わずカウントします。</div></div>
+        <div class="glossary-item"><div class="glossary-term">FG%</div><div class="glossary-desc"><strong>フィールドゴール成功率</strong>（FGM ÷ FGA × 100）。50%以上を緑、未満を赤で表示します。</div></div>
       </div>
     </div>
-
-    <!-- FT（フリースロー） -->
     <div class="glossary-category">
       <div class="glossary-category-header gh-ft">🔵 FT（フリースロー）</div>
       <div class="glossary-category-body">
-        <div class="glossary-item">
-          <div class="glossary-term">FT</div>
-          <div class="glossary-desc"><strong>フリースロー（Free Throw）</strong>。相手チームのファウルをもらった際に、ノーマークで打てるシュート。成功すると1点が入ります。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">FTM<br><small>（成功）</small></div>
-          <div class="glossary-desc"><strong>Free Throws Made</strong>。フリースローが入った（成功した）本数。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">FTA<br><small>（試投）</small></div>
-          <div class="glossary-desc"><strong>Free Throws Attempted</strong>。フリースローを打った総本数。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">FT%<br><small>（成功率）</small></div>
-          <div class="glossary-desc"><strong>フリースロー成功率</strong>。$$FT\% = \frac{FTM}{FTA} \times 100$$ 安定したフリースローは得点力を高める重要な指標です。</div>
-        </div>
+        <div class="glossary-item"><div class="glossary-term">FT</div><div class="glossary-desc"><strong>フリースロー（Free Throw）</strong>。相手ファウル時にノーマークで打てるシュート。1本成功で1点です。</div></div>
+        <div class="glossary-item"><div class="glossary-term">FTM（成功）</div><div class="glossary-desc"><strong>Free Throws Made</strong>。フリースローが入った本数。</div></div>
+        <div class="glossary-item"><div class="glossary-term">FTA（試投）</div><div class="glossary-desc"><strong>Free Throws Attempted</strong>。フリースローを打った総本数。</div></div>
+        <div class="glossary-item"><div class="glossary-term">FT%</div><div class="glossary-desc"><strong>フリースロー成功率</strong>（FTM ÷ FTA × 100）。安定したフリースローは得点力を高めます。</div></div>
       </div>
     </div>
-
-    <!-- 得点計算 -->
     <div class="glossary-category">
       <div class="glossary-category-header gh-result">🔴 得点・勝敗</div>
       <div class="glossary-category-body">
-        <div class="glossary-item">
-          <div class="glossary-term">得点</div>
-          <div class="glossary-desc"><strong>総得点</strong>の計算式：$$\text{総得点} = FGM \times 2 + FTM \times 1$$ このアプリでは2P得点とFT得点の合計を表示します。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">勝</div>
-          <div class="glossary-desc">自チームの得点が相手を<strong>上回った</strong>試合。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">負</div>
-          <div class="glossary-desc">自チームの得点が相手を<strong>下回った</strong>試合。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">引</div>
-          <div class="glossary-desc">両チームの得点が<strong>同点</strong>だった試合（引き分け）。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">勝率</div>
-          <div class="glossary-desc">$$\text{勝率} = \frac{\text{勝利数}}{\text{総試合数}} \times 100$$ 引き分けは勝率の計算に分母として含まれます。</div>
-        </div>
+        <div class="glossary-item"><div class="glossary-term">得点</div><div class="glossary-desc"><strong>総得点</strong> = FGM × 2 + FTM × 1。2P得点とFT得点の合計を表示します。</div></div>
+        <div class="glossary-item"><div class="glossary-term">勝</div><div class="glossary-desc">自チームの得点が相手を<strong>上回った</strong>試合。</div></div>
+        <div class="glossary-item"><div class="glossary-term">負</div><div class="glossary-desc">自チームの得点が相手を<strong>下回った</strong>試合。</div></div>
+        <div class="glossary-item"><div class="glossary-term">引</div><div class="glossary-desc">両チームの得点が<strong>同点</strong>だった試合（引き分け）。</div></div>
+        <div class="glossary-item"><div class="glossary-term">勝率</div><div class="glossary-desc"><strong>勝率</strong> = 勝利数 ÷ 総試合数 × 100。引き分けも分母に含まれます。</div></div>
       </div>
     </div>
-
-    <!-- リバウンド -->
     <div class="glossary-category">
       <div class="glossary-category-header gh-reb">🟢 REB（リバウンド）</div>
       <div class="glossary-category-body">
-        <div class="glossary-item">
-          <div class="glossary-term">REB</div>
-          <div class="glossary-desc"><strong>リバウンド（Rebound）</strong>。シュートが外れたボールを確保すること。攻撃側と守備側で種類が異なります。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">OR</div>
-          <div class="glossary-desc"><strong>オフェンスリバウンド（Offensive Rebound）</strong>。自チームのシュートが外れたボールを<strong>自チームが</strong>確保したもの。再攻撃のチャンスを生みます。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">DR</div>
-          <div class="glossary-desc"><strong>ディフェンスリバウンド（Defensive Rebound）</strong>。相手チームのシュートが外れたボールを<strong>自チームが</strong>確保したもの。守備の安定に直結します。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">TR</div>
-          <div class="glossary-desc"><strong>トータルリバウンド（Total Rebound）</strong>。OR＋DR の合計値。このアプリの「REB合計」に該当します。</div>
-        </div>
+        <div class="glossary-item"><div class="glossary-term">REB</div><div class="glossary-desc"><strong>リバウンド（Rebound）</strong>。シュートが外れたボールを確保すること。</div></div>
+        <div class="glossary-item"><div class="glossary-term">OR</div><div class="glossary-desc"><strong>オフェンスリバウンド</strong>。自チームのシュートが外れたボールを自チームが確保。再攻撃のチャンスを生みます。</div></div>
+        <div class="glossary-item"><div class="glossary-term">DR</div><div class="glossary-desc"><strong>ディフェンスリバウンド</strong>。相手シュートが外れたボールを自チームが確保。守備の安定に直結します。</div></div>
+        <div class="glossary-item"><div class="glossary-term">TR</div><div class="glossary-desc"><strong>トータルリバウンド</strong>（OR + DR）。アプリの「REB合計」がこれに当たります。</div></div>
       </div>
     </div>
-
-    <!-- その他スタッツ -->
     <div class="glossary-category">
       <div class="glossary-category-header gh-other">⚙️ その他スタッツ</div>
       <div class="glossary-category-body">
-        <div class="glossary-item">
-          <div class="glossary-term">AST</div>
-          <div class="glossary-desc"><strong>アシスト（Assist）</strong>。シュートを成功させた味方へのパスのこと。チームプレーの貢献度を示す重要な指標です。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">STL</div>
-          <div class="glossary-desc"><strong>スティール（Steal）</strong>。相手のドリブルやパスからボールを奪うこと。守備の積極性を示す指標です。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">BLK</div>
-          <div class="glossary-desc"><strong>ブロック（Block）</strong>。相手のシュートをブロックして防ぐこと。内側の守備力を示します。</div>
-        </div>
+        <div class="glossary-item"><div class="glossary-term">AST</div><div class="glossary-desc"><strong>アシスト（Assist）</strong>。得点に直結した味方へのパス。チームプレーの貢献度を示します。</div></div>
+        <div class="glossary-item"><div class="glossary-term">STL</div><div class="glossary-desc"><strong>スティール（Steal）</strong>。相手のドリブルやパスからボールを奪うこと。守備の積極性を示します。</div></div>
+        <div class="glossary-item"><div class="glossary-term">BLK</div><div class="glossary-desc"><strong>ブロック（Block）</strong>。相手のシュートを防ぐこと。内側の守備力を示します。</div></div>
       </div>
     </div>
-
-    <!-- クォーター・出場 -->
     <div class="glossary-category">
       <div class="glossary-category-header gh-q">🟣 クォーター・出場時限</div>
       <div class="glossary-category-body">
-        <div class="glossary-item">
-          <div class="glossary-term">Q（クォーター）</div>
-          <div class="glossary-desc"><strong>Quarter</strong>。バスケットボールの試合は4つの区間（クォーター）に分かれています。1Q・2Q・3Q・4Qとそれぞれ表記します。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">出場時限</div>
-          <div class="glossary-desc">その選手が<strong>各クォーターに出場したか</strong>を記録したもの。✓は出場、－は不出場を示します。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">出場Q数</div>
-          <div class="glossary-desc">出場したクォーターの<strong>合計数</strong>（最大4）。プレータイムの目安となります。</div>
-        </div>
-        <div class="glossary-item">
-          <div class="glossary-term">Jr</div>
-          <div class="glossary-desc"><strong>ジュニア（Junior）</strong>の略。Jrカテゴリーの試合・スタッツに付くラベルです。通常カテゴリーとは別に集計されます。</div>
-        </div>
+        <div class="glossary-item"><div class="glossary-term">Q（クォーター）</div><div class="glossary-desc"><strong>Quarter</strong>。試合は1Q〜4Qの4区間に分かれます。</div></div>
+        <div class="glossary-item"><div class="glossary-term">出場時限</div><div class="glossary-desc">各クォーターに出場したか記録したもの。✓は出場、－は不出場です。</div></div>
+        <div class="glossary-item"><div class="glossary-term">出場Q数</div><div class="glossary-desc">出場クォーターの合計数（最大4）。プレータイムの目安です。</div></div>
+        <div class="glossary-item"><div class="glossary-term">Jr</div><div class="glossary-desc"><strong>ジュニア（Junior）</strong>カテゴリーの試合・スタッツに付くラベル。通常と別集計されます。</div></div>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- ═══ ADMIN ═══ -->
+<!-- ADMIN -->
 <div class="page" id="page-admin">
   <div class="section-card">
     <h2>🏀 試合データ管理</h2>
     <div class="admin-toolbar">
       <button class="btn btn-success btn-sm" onclick="openMatchModal()">➕ 新規追加</button>
-      <input class="filter-input" id="adminMatchFilter" placeholder="🔍 キーワード検索…"
-             oninput="renderAdminMatches()" style="min-width:180px;">
+      <input class="filter-input" id="adminMatchFilter" placeholder="🔍 キーワード検索…" oninput="renderAdminMatches()" style="min-width:180px;">
     </div>
     <div class="table-wrap">
       <table>
@@ -1210,8 +931,7 @@ table.stats-main-table tfoot td{
     <h2>📊 スタッツデータ管理</h2>
     <div class="admin-toolbar">
       <button class="btn btn-success btn-sm" onclick="openStatsModal()">➕ 新規追加</button>
-      <input class="filter-input" id="adminStatsFilter" placeholder="🔍 選手名・相手で検索…"
-             oninput="renderAdminStats()" style="min-width:180px;">
+      <input class="filter-input" id="adminStatsFilter" placeholder="🔍 選手名・相手で検索…" oninput="renderAdminStats()" style="min-width:180px;">
     </div>
     <div class="table-wrap">
       <table>
@@ -1248,7 +968,42 @@ table.stats-main-table tfoot td{
   </div>
 </div>
 
+<!-- ★ Firebase SDK と アプリコードをすべて </body> 直前に置く ★ -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
+/* ══ Firebase 初期化 ══ */
+const firebaseConfig = {
+  apiKey:            "AIzaSyDyHEv72GDqgSba2KFgM-x550dHRT6FGgM",
+  authDomain:        "thunders-web.firebaseapp.com",
+  projectId:         "thunders-web",
+  storageBucket:     "thunders-web.firebasestorage.app",
+  messagingSenderId: "792066557837",
+  appId:             "1:792066557837:web:eb84212de79133a0129fc4"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+async function fbLoad(docName) {
+  const snap = await db.collection("data").doc(docName).get();
+  if (snap.exists) {
+    const d = snap.data();
+    return Array.isArray(d.items) ? d.items : [];
+  }
+  return [];
+}
+async function fbSave(docName, arr) {
+  await db.collection("data").doc(docName).set({ items: arr });
+}
+function fbWatch(docName, callback) {
+  return db.collection("data").doc(docName).onSnapshot((snap) => {
+    if (snap.exists) {
+      const d = snap.data();
+      callback(Array.isArray(d.items) ? d.items : []);
+    }
+  });
+}
+
 /* ════════ 定数 ════════ */
 const ADMIN_PASS      = 'thunders2026';
 const MATCH_PAGE_SIZE = 100;
@@ -1287,13 +1042,11 @@ function getRebOff(s){return(s.reb&&typeof s.reb==='object')?s.reb.off||0:0;}
 function getRebDef(s){return(s.reb&&typeof s.reb==='object')?s.reb.def||0:0;}
 function getQCount(s){return['q1','q2','q3','q4'].filter(q=>getQ(s,q)).length;}
 function isJrMatch(m){return m.isJr===true||m.isJr==='true';}
-
-/* 選手マスタから背番号を取得するヘルパー */
 function getPlayerNumber(playerName){
-  const p = playersData.find(x => x.name === playerName);
-  if(!p) return null;
-  const n = p.number;
-  if(n === undefined || n === null || n === '') return null;
+  const p=playersData.find(x=>x.name===playerName);
+  if(!p)return null;
+  const n=p.number;
+  if(n===undefined||n===null||n==='')return null;
   return String(n);
 }
 
@@ -1308,53 +1061,48 @@ function hideSaving(ok=true){
   el.style.background=ok?'#1a7a3c':'#c0392b';
   setTimeout(()=>el.classList.remove('show'),2000);
 }
-
-/* ════════ Firebase保存 ════════ */
 async function saveToFirebase(docName,arr){
   showSaving();
-  try{
-    await window.fbSave(docName,arr);
-    hideSaving(true);
-  }catch(e){
-    console.error(e);hideSaving(false);
-    showToast('⚠️ 保存に失敗しました。ネット接続を確認してください。');
-  }
+  try{await fbSave(docName,arr);hideSaving(true);}
+  catch(e){console.error(e);hideSaving(false);showToast('⚠️ 保存に失敗しました。');}
 }
 
 /* ════════ 初期化 ════════ */
 async function init(){
+  const loadingEl=document.getElementById('loadingScreen');
   try{
     [matchesData,statsData,playersData]=await Promise.all([
-      window.fbLoad('matches'),
-      window.fbLoad('stats'),
-      window.fbLoad('players')
+      fbLoad('matches'),
+      fbLoad('stats'),
+      fbLoad('players')
     ]);
-    if(matchesData.length===0&&statsData.length===0){
-      showToast('💡 データが空です。管理画面からJSONファイルを読み込んでください。');
-    }
-    window.fbWatch('matches',(data)=>{
+    /* リアルタイム監視 */
+    fbWatch('matches',(data)=>{
       matchesData=data;
       buildOpponentFilter();applyFilters();renderMonthlySummary();
     });
-    window.fbWatch('stats',(data)=>{
+    fbWatch('stats',(data)=>{
       statsData=data;
       buildStatsOpponentFilter();
       if(selectedPlayer)renderStatsPage();
     });
-    window.fbWatch('players',(data)=>{
-      playersData=data;renderPlayerBtns();
+    fbWatch('players',(data)=>{
+      playersData=data;
+      renderPlayerBtns();
       if(selectedPlayer)renderStatsPage();
     });
   }catch(e){
     console.error('Firebase読み込みエラー:',e);
-    showToast('⚠️ データ読み込みに失敗しました。');
+    showToast('⚠️ データ読み込みに失敗しました: '+e.message);
+  }finally{
+    /* 成否に関わらず必ずローディング解除 */
+    loadingEl.classList.add('hidden');
   }
   buildOpponentFilter();
   buildStatsOpponentFilter();
   renderPlayerBtns();
   applyFilters();
   renderMonthlySummary();
-  document.getElementById('loadingScreen').classList.add('hidden');
 }
 
 /* ════════ ページナビ ════════ */
@@ -1367,7 +1115,6 @@ function showPage(name){
   if(name==='stats'){buildStatsOpponentFilter();renderStatsPage();}
 }
 
-/* ════════ PDF印刷 ════════ */
 function printPage(pageName){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+pageName).classList.add('active');
@@ -1436,14 +1183,10 @@ function renderMatchTable(){
         :`<span class="badge badge-draw">引</span>`;
     const yt=m.videoUrl
       ?`<a href="${escH(m.videoUrl)}" target="_blank" rel="noopener" class="yt-icon" title="動画">
-          <svg width="22" height="16" viewBox="0 0 22 16">
-            <rect width="22" height="16" rx="4" fill="#FF0000"/>
-            <polygon points="9,4 9,12 16,8" fill="white"/>
-          </svg></a>`
+          <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="16" rx="4" fill="#FF0000"/><polygon points="9,4 9,12 16,8" fill="white"/></svg></a>`
       :'<span style="color:#ccc;">—</span>';
     return`<tr>
-      <td>${fmtDate(m.date)}</td>
-      <td>${escH(m.venue)}</td>
+      <td>${fmtDate(m.date)}</td><td>${escH(m.venue)}</td>
       <td class="td-center">${catB}</td>
       <td><div class="match-name-cell"><span>${escH(m.matchName)}</span>${jrB}</div></td>
       <td>${escH(m.opponent)}</td>
@@ -1529,7 +1272,7 @@ function renderMonthlySummary(){
   MONTH_KEYS.forEach(k=>{tW[k]=0;tL[k]=0;tD[k]=0;});
   data.forEach(m=>{
     const mk=m.date.slice(0,7);if(tW[mk]===undefined)return;
-    if(m.result==='勝')tW[mk]++;else if(m.result==='負')tL[mk]++;else mD[mk]++;
+    if(m.result==='勝')tW[mk]++;else if(m.result==='負')tL[mk]++;else tD[mk]++;
   });
   let aW=0,aL=0,aD=0;
   const rows=MONTH_KEYS.map((k,i)=>{
@@ -1574,10 +1317,9 @@ function renderPlayerBtns(){
     .filter(p=>p.group===currentPlayerGroup)
     .slice()
     .sort((a,b)=>{
-      /* 背番号がある場合は番号順、なければ名前順 */
-      const na = a.number !== undefined && a.number !== null && a.number !== '' ? Number(a.number) : Infinity;
-      const nb = b.number !== undefined && b.number !== null && b.number !== '' ? Number(b.number) : Infinity;
-      if(na !== nb) return na - nb;
+      const na=(a.number!==undefined&&a.number!==null&&a.number!=='')?Number(a.number):Infinity;
+      const nb=(b.number!==undefined&&b.number!==null&&b.number!=='')?Number(b.number):Infinity;
+      if(na!==nb)return na-nb;
       return a.name.localeCompare(b.name,'ja');
     });
   if(!players.length){
@@ -1586,8 +1328,8 @@ function renderPlayerBtns(){
   grid.innerHTML=players.map(p=>{
     const sel=selectedPlayer===p.name
       ?(p.group==='female'?'selected-female':p.group==='male'?'selected-male':'selected-ob'):'';
-    const numStr = (p.number !== undefined && p.number !== null && p.number !== '')
-      ? `<span class="player-num">#${p.number}</span>` : '';
+    const numStr=(p.number!==undefined&&p.number!==null&&p.number!=='')
+      ?`<span class="player-num">#${p.number}</span>`:'';
     return`<button class="player-btn ${sel}" onclick="selectPlayer('${escH(p.name)}')">${numStr}${escH(p.name)}</button>`;
   }).join('');
 }
@@ -1628,24 +1370,13 @@ function renderStatsPage(){
       :'linear-gradient(135deg,var(--ob-color),#9c27b0)';
   const icon=pInfo.group==='female'?'👧':pInfo.group==='male'?'👦':'🎓';
 
-  /* 背番号をヘッダーに表示 */
-  const playerNum = getPlayerNumber(selectedPlayer);
-  const numEl = document.getElementById('statsPlayerNumber');
-  if(playerNum !== null){
-    numEl.textContent = '#' + playerNum;
-    numEl.style.display = '';
-  } else {
-    numEl.style.display = 'none';
-  }
-
-  /* テーブル上部の名前バーにも背番号を表示 */
-  const tableNumEl = document.getElementById('statsTablePlayerNumber');
-  if(playerNum !== null){
-    tableNumEl.textContent = '#' + playerNum;
-    tableNumEl.style.display = '';
-  } else {
-    tableNumEl.style.display = 'none';
-  }
+  const playerNum=getPlayerNumber(selectedPlayer);
+  const numEl=document.getElementById('statsPlayerNumber');
+  if(playerNum!==null){numEl.textContent='#'+playerNum;numEl.style.display='';}
+  else{numEl.style.display='none';}
+  const tableNumEl=document.getElementById('statsTablePlayerNumber');
+  if(playerNum!==null){tableNumEl.textContent='#'+playerNum;tableNumEl.style.display='';}
+  else{tableNumEl.style.display='none';}
 
   document.getElementById('statsPlayerHeader').style.background=grad;
   document.getElementById('statsPlayerIcon').textContent=icon;
@@ -1843,19 +1574,17 @@ function renderAdminPagination(elId,total,pages,cur,fn){
 function renderPlayerMaster(){
   const groups=[{k:'female',lbl:'👧 女子'},{k:'male',lbl:'👦 男子'},{k:'ob',lbl:'🎓 OB'}];
   document.getElementById('playerMasterGrid').innerHTML=groups.map(g=>{
-    const ps=playersData
-      .filter(p=>p.group===g.k)
-      .sort((a,b)=>{
-        const na = (a.number !== undefined && a.number !== null && a.number !== '') ? Number(a.number) : Infinity;
-        const nb = (b.number !== undefined && b.number !== null && b.number !== '') ? Number(b.number) : Infinity;
-        if(na !== nb) return na - nb;
-        return a.name.localeCompare(b.name,'ja');
-      });
+    const ps=playersData.filter(p=>p.group===g.k).sort((a,b)=>{
+      const na=(a.number!==undefined&&a.number!==null&&a.number!=='')?Number(a.number):Infinity;
+      const nb=(b.number!==undefined&&b.number!==null&&b.number!=='')?Number(b.number):Infinity;
+      if(na!==nb)return na-nb;
+      return a.name.localeCompare(b.name,'ja');
+    });
     return`<div style="min-width:200px;">
       <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:6px;">${g.lbl}</div>
       ${ps.map(p=>{
-        const numBadge = (p.number !== undefined && p.number !== null && p.number !== '')
-          ? `<span class="badge-number">#${p.number}</span>` : '';
+        const numBadge=(p.number!==undefined&&p.number!==null&&p.number!=='')
+          ?`<span class="badge-number">#${p.number}</span>`:'';
         return`<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
           ${numBadge}
           <span style="font-size:13px;flex:1;">${escH(p.name)}</span>
@@ -1950,7 +1679,6 @@ function buildStatRecord(){
     ast:gv('sAst'),stl:gv('sStl'),blk:gv('sBlk')
   };
 }
-
 function resetStatsNumbers(){
   ['sQ1','sQ2','sQ3','sQ4'].forEach(i=>document.getElementById(i).value='true');
   ['sFgMadeQ1','sFgMadeQ2','sFgMadeQ3','sFgMadeQ4',
@@ -1960,7 +1688,6 @@ function resetStatsNumbers(){
    'sRebOff','sRebDef','sAst','sStl','sBlk']
     .forEach(i=>document.getElementById(i).value='0');
 }
-
 function openStatsModal(id){
   editingStatsId=id||null;
   document.getElementById('statsModalTitle').textContent=id?'スタッツ編集':'スタッツ追加';
@@ -1994,20 +1721,16 @@ function openStatsModal(id){
   }
   document.getElementById('statsModal').classList.add('open');
 }
-
 async function saveStat(){
   const rec=buildStatRecord();
   if(!rec){showToast('⚠️ 必須項目を入力してください');return;}
   if(editingStatsId){
     const i=statsData.findIndex(x=>x.id===editingStatsId);
     if(i>=0)statsData[i]={...statsData[i],...rec};
-  }else{
-    rec.id=Date.now();statsData.push(rec);
-  }
+  }else{rec.id=Date.now();statsData.push(rec);}
   await saveToFirebase('stats',statsData);
   closeModal('statsModal');showToast('✅ スタッツを保存しました');
 }
-
 async function saveStatAndContinue(){
   const rec=buildStatRecord();
   if(!rec){showToast('⚠️ 必須項目を入力してください');return;}
@@ -2020,9 +1743,7 @@ async function saveStatAndContinue(){
     const i=statsData.findIndex(x=>x.id===editingStatsId);
     if(i>=0)statsData[i]={...statsData[i],...rec};
     editingStatsId=null;
-  }else{
-    rec.id=Date.now();statsData.push(rec);
-  }
+  }else{rec.id=Date.now();statsData.push(rec);}
   await saveToFirebase('stats',statsData);
   showToast('✅ 保存しました。続けて入力できます');
   document.getElementById('sPName').value='';
@@ -2035,14 +1756,13 @@ async function saveStatAndContinue(){
   document.getElementById('statsModalTitle').textContent='スタッツ追加';
   setTimeout(()=>document.getElementById('sPName').focus(),100);
 }
-
 async function deleteStat(id){
   if(!confirm('このスタッツデータを削除しますか？'))return;
   statsData=statsData.filter(s=>s.id!==id);
   await saveToFirebase('stats',statsData);showToast('🗑️ 削除しました');
 }
 
-/* ════════ CRUD – 選手（背番号追加） ════════ */
+/* ════════ CRUD – 選手 ════════ */
 function openPlayerModal(id){
   editingPlayerId=id||null;
   document.getElementById('playerModalTitle').textContent=id?'選手マスタ編集':'選手追加';
@@ -2050,8 +1770,7 @@ function openPlayerModal(id){
     const p=playersData.find(x=>x.id===id);if(!p)return;
     document.getElementById('pName').value=p.name;
     document.getElementById('pGroup').value=p.group;
-    document.getElementById('pNumber').value =
-      (p.number !== undefined && p.number !== null) ? p.number : '';
+    document.getElementById('pNumber').value=(p.number!==undefined&&p.number!==null)?p.number:'';
   }else{
     document.getElementById('pName').value='';
     document.getElementById('pGroup').value='female';
@@ -2062,18 +1781,12 @@ function openPlayerModal(id){
 async function savePlayer(){
   const name=document.getElementById('pName').value.trim();
   if(!name){showToast('⚠️ 選手名を入力してください');return;}
-  const numVal = document.getElementById('pNumber').value;
-  const rec={
-    name,
-    group:document.getElementById('pGroup').value,
-    number: numVal !== '' ? Number(numVal) : null
-  };
+  const numVal=document.getElementById('pNumber').value;
+  const rec={name,group:document.getElementById('pGroup').value,number:numVal!==''?Number(numVal):null};
   if(editingPlayerId){
     const i=playersData.findIndex(x=>x.id===editingPlayerId);
     if(i>=0)playersData[i]={...playersData[i],...rec};
-  }else{
-    rec.id=Date.now();playersData.push(rec);
-  }
+  }else{rec.id=Date.now();playersData.push(rec);}
   await saveToFirebase('players',playersData);
   closeModal('playerModal');showToast('✅ 選手マスタを保存しました');
 }
@@ -2091,11 +1804,11 @@ async function importData(e,type){
     try{
       const data=JSON.parse(ev.target.result);
       if(!Array.isArray(data))throw 0;
-      if(type==='matches')     matchesData=data;
-      else if(type==='stats')  statsData=data;
+      if(type==='matches')matchesData=data;
+      else if(type==='stats')statsData=data;
       else if(type==='players')playersData=data;
       await saveToFirebase(type,type==='matches'?matchesData:type==='stats'?statsData:playersData);
-      showToast('✅ データを読み込みFirestoreに保存しました ('+data.length+'件)');
+      showToast('✅ 読み込み完了 ('+data.length+'件)');
     }catch{showToast('⚠️ JSONファイルの形式が正しくありません');}
   };
   reader.readAsText(file);e.target.value='';
@@ -2121,9 +1834,7 @@ function doAuth(){
     isAdmin=true;closeAuth();
     document.querySelectorAll('.admin-only').forEach(el=>el.style.display='');
     showPage('admin');showToast('✅ 管理者としてログインしました');
-  }else{
-    showToast('⚠️ パスワードが違います');
-  }
+  }else{showToast('⚠️ パスワードが違います');}
 }
 function closeAuth(){document.getElementById('authOverlay').classList.remove('open');}
 
