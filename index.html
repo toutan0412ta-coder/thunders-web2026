@@ -94,18 +94,18 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .monthly-card-body{background:var(--white);padding:10px;}
 .cat-tab-group{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;}
 .cat-tab{padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid transparent;font-weight:600;transition:.15s;}
-.cat-tab[data-cat="全体"]   {background:#ede7f6;color:#4527a0;border-color:#b39ddb;}
-.cat-tab[data-cat="全体Jr"] {background:#d1c4e9;color:#311b92;border-color:#9575cd;}
-.cat-tab[data-cat="男子"]   {background:#e3f0ff;color:var(--male-color);border-color:#90caf9;}
-.cat-tab[data-cat="男子Jr"] {background:#bbdefb;color:#0d47a1;border-color:#64b5f6;}
-.cat-tab[data-cat="女子"]   {background:#fce4f0;color:var(--female-color);border-color:#f48fb1;}
-.cat-tab[data-cat="女子Jr"] {background:#f8bbd0;color:#880e4f;border-color:#f06292;}
-.cat-tab[data-cat="全体"].active   {background:#4527a0;color:#fff;border-color:#4527a0;}
-.cat-tab[data-cat="全体Jr"].active {background:#311b92;color:#fff;border-color:#311b92;}
-.cat-tab[data-cat="男子"].active   {background:var(--male-color);color:#fff;border-color:var(--male-color);}
-.cat-tab[data-cat="男子Jr"].active {background:#0d47a1;color:#fff;border-color:#0d47a1;}
-.cat-tab[data-cat="女子"].active   {background:var(--female-color);color:#fff;border-color:var(--female-color);}
-.cat-tab[data-cat="女子Jr"].active {background:#880e4f;color:#fff;border-color:#880e4f;}
+.cat-tab[data-cat="全体"]  {background:#ede7f6;color:#4527a0;border-color:#b39ddb;}
+.cat-tab[data-cat="全体Jr"]{background:#d1c4e9;color:#311b92;border-color:#9575cd;}
+.cat-tab[data-cat="男子"]  {background:#e3f0ff;color:var(--male-color);border-color:#90caf9;}
+.cat-tab[data-cat="男子Jr"]{background:#bbdefb;color:#0d47a1;border-color:#64b5f6;}
+.cat-tab[data-cat="女子"]  {background:#fce4f0;color:var(--female-color);border-color:#f48fb1;}
+.cat-tab[data-cat="女子Jr"]{background:#f8bbd0;color:#880e4f;border-color:#f06292;}
+.cat-tab[data-cat="全体"].active  {background:#4527a0;color:#fff;border-color:#4527a0;}
+.cat-tab[data-cat="全体Jr"].active{background:#311b92;color:#fff;border-color:#311b92;}
+.cat-tab[data-cat="男子"].active  {background:var(--male-color);color:#fff;border-color:var(--male-color);}
+.cat-tab[data-cat="男子Jr"].active{background:#0d47a1;color:#fff;border-color:#0d47a1;}
+.cat-tab[data-cat="女子"].active  {background:var(--female-color);color:#fff;border-color:var(--female-color);}
+.cat-tab[data-cat="女子Jr"].active{background:#880e4f;color:#fff;border-color:#880e4f;}
 .monthly-table{width:100%;border-collapse:collapse;font-size:12px;}
 .monthly-table th{background:var(--primary);color:#fff;padding:5px 6px;text-align:center;}
 .monthly-table td{padding:4px 6px;text-align:center;border-bottom:1px solid var(--border);}
@@ -120,6 +120,16 @@ td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border);}
 .page-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
 .page-btn:disabled{opacity:.4;cursor:not-allowed;}
 .page-info{font-size:12px;color:#666;}
+
+/* ══════════════════════════════
+   個人スタッツ サブタブ
+══════════════════════════════ */
+.stats-subtabs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border);}
+.stats-subtab{padding:9px 22px;font-size:13px;font-weight:600;color:#666;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.15s;white-space:nowrap;}
+.stats-subtab:hover{color:var(--primary);background:#f5f8ff;}
+.stats-subtab.active{color:var(--primary);border-bottom-color:var(--primary);background:#eef3ff;}
+.stats-subpage{display:none;}
+.stats-subpage.active{display:block;}
 
 .player-group-tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
 .player-group-tab{border:2px solid var(--border);background:var(--white);border-radius:8px;padding:7px 16px;font-size:13px;font-weight:600;transition:.2s;}
@@ -181,6 +191,69 @@ table.stats-main-table tfoot td{padding:4px;border:1px solid #bbb;text-align:cen
 .td-fta{color:#1e3a8a;}
 .no-data{text-align:center;padding:40px;color:#888;font-size:15px;}
 
+/* ══════════════════════════════
+   比較パネル共通
+══════════════════════════════ */
+.cmp-panel{background:var(--white);border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.08);padding:16px;margin-bottom:16px;}
+.cmp-panel h3{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--border);}
+
+/* 条件入力エリア */
+.cmp-condition{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:16px;padding:14px;background:#f5f8ff;border-radius:8px;border:1px solid #d0daea;}
+.cmp-condition-group{display:flex;flex-direction:column;gap:4px;}
+.cmp-condition-group label{font-size:11px;font-weight:700;color:#555;}
+.cmp-condition-group select,
+.cmp-condition-group input[type="date"]{border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;font-family:var(--font);height:34px;background:#fff;}
+.cmp-condition-group select{min-width:130px;}
+.cmp-period-label{font-size:12px;font-weight:700;color:var(--primary-light);padding:4px 10px;background:#e8f0ff;border-radius:20px;align-self:flex-end;margin-bottom:4px;}
+.cmp-run-btn{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;align-self:flex-end;transition:.15s;}
+.cmp-run-btn:hover{background:var(--primary-light);}
+
+/* 比較結果：カード2列 */
+.cmp-result{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.cmp-side{border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.cmp-side-header{padding:10px 16px;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.cmp-side-header.side-a{background:linear-gradient(135deg,#1565c0,#1976d2);}
+.cmp-side-header.side-b{background:linear-gradient(135deg,#c62828,#d32f2f);}
+.cmp-side-body{background:#fff;padding:12px;}
+.cmp-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.cmp-stat-item{background:#f7f9fc;border-radius:6px;padding:8px 10px;text-align:center;}
+.cmp-stat-val{font-size:18px;font-weight:700;color:var(--primary);}
+.cmp-stat-val.better{color:var(--win);}
+.cmp-stat-val.worse{color:var(--lose);}
+.cmp-stat-lbl{font-size:10px;color:#666;margin-top:2px;}
+
+/* 比較チャートエリア */
+.cmp-charts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.cmp-chart-card{background:var(--white);border-radius:var(--radius);padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.08);}
+.cmp-chart-card h4{font-size:12px;color:var(--primary);margin-bottom:8px;text-align:center;font-weight:700;}
+.cmp-chart-wrap{position:relative;height:260px;}
+
+/* 比較テーブル */
+.cmp-table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:0 2px 6px rgba(0,0,0,.06);}
+.cmp-table{width:100%;border-collapse:collapse;font-size:12px;}
+.cmp-table thead th{background:var(--primary);color:#fff;padding:8px 10px;text-align:center;white-space:nowrap;}
+.cmp-table thead th.th-a{background:#1565c0;}
+.cmp-table thead th.th-b{background:#c62828;}
+.cmp-table tbody td{padding:7px 10px;border-bottom:1px solid var(--border);text-align:center;}
+.cmp-table tbody tr:nth-child(even) td{background:#f7f9fc;}
+.cmp-table tbody tr:hover td{background:#e8f0ff;}
+.cmp-table .td-item{text-align:left;font-weight:600;color:#444;background:#f5f8ff;}
+.cmp-table .val-better{color:var(--win);font-weight:700;}
+.cmp-table .val-worse{color:var(--lose);}
+.cmp-table .val-equal{color:#555;}
+
+/* 差分バー */
+.diff-bar-wrap{display:flex;align-items:center;gap:6px;}
+.diff-bar{height:6px;border-radius:3px;min-width:4px;transition:width .3s;}
+.diff-bar.pos{background:var(--win);}
+.diff-bar.neg{background:var(--lose);}
+.diff-val{font-size:11px;font-weight:700;white-space:nowrap;}
+.diff-val.pos{color:var(--win);}
+.diff-val.neg{color:var(--lose);}
+.diff-val.zero{color:#aaa;}
+
+.cmp-no-data{text-align:center;padding:40px;color:#888;font-size:14px;}
+
 .saving-indicator{position:fixed;top:60px;right:16px;background:#1a7a3c;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;z-index:500;opacity:0;transition:.3s;pointer-events:none;}
 .saving-indicator.show{opacity:1;}
 
@@ -200,7 +273,6 @@ table.stats-main-table tfoot td{padding:4px;border:1px solid #bbb;text-align:cen
 .form-group textarea{resize:vertical;min-height:60px;}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap;}
 .modal-section-label{font-size:12px;font-weight:700;color:var(--primary);margin:12px 0 6px;border-left:3px solid var(--accent);padding:4px 8px;border-radius:3px;background:#fffde7;}
-
 .stats-input-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px;}
 .stats-input-table th{padding:5px 6px;text-align:center;font-size:11px;font-weight:700;}
 .stats-input-table td{padding:3px 4px;text-align:center;}
@@ -217,7 +289,6 @@ table.stats-main-table tfoot td{padding:4px;border:1px solid #bbb;text-align:cen
 
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:2000;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center;}
 .toast.show{opacity:1;}
-
 .admin-toolbar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center;}
 .sort-ic{font-size:10px;margin-left:4px;opacity:.7;}
 .yt-icon{display:inline-block;vertical-align:middle;}
@@ -234,34 +305,28 @@ table.stats-main-table tfoot td{padding:4px;border:1px solid #bbb;text-align:cen
 .glossary-search-count{font-size:12px;color:#888;white-space:nowrap;flex-shrink:0;}
 .glossary-search-clear{background:none;border:1px solid var(--border);border-radius:5px;padding:5px 10px;font-size:12px;color:#666;cursor:pointer;white-space:nowrap;}
 .glossary-search-clear:hover{background:#f0f4f8;}
-
 .glossary-cat-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
 .glossary-cat-btn{border:2px solid transparent;color:#fff;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;opacity:.8;box-shadow:0 2px 5px rgba(0,0,0,.15);}
 .glossary-cat-btn:hover{opacity:1;transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.2);}
 .glossary-cat-btn.active{opacity:1;transform:translateY(-2px);box-shadow:0 5px 14px rgba(0,0,0,.28);border-color:rgba(255,255,255,.7);}
-
-/* ★修正②：1階層目カテゴリボタン色 — 2番目:オレンジ、3番目:グリーン */
 .glossary-cat-btn[data-cidx="0"]{background:linear-gradient(135deg,#1565c0,#1976d2);}
-.glossary-cat-btn[data-cidx="1"]{background:linear-gradient(135deg,#e65100,#f57c00);}/* ←変更:オレンジ */
-.glossary-cat-btn[data-cidx="2"]{background:linear-gradient(135deg,#2e7d32,#388e3c);}/* ←変更:グリーン */
+.glossary-cat-btn[data-cidx="1"]{background:linear-gradient(135deg,#e65100,#f57c00);}
+.glossary-cat-btn[data-cidx="2"]{background:linear-gradient(135deg,#2e7d32,#388e3c);}
 .glossary-cat-btn[data-cidx="3"]{background:linear-gradient(135deg,#6a1b9a,#7b1fa2);}
 .glossary-cat-btn[data-cidx="4"]{background:linear-gradient(135deg,#c62828,#d32f2f);}
 .glossary-cat-btn[data-cidx="5"]{background:linear-gradient(135deg,#00695c,#00796b);}
 .glossary-cat-btn[data-cidx="6"]{background:linear-gradient(135deg,#4527a0,#512da8);}
 .glossary-cat-btn[data-cidx="7"]{background:linear-gradient(135deg,#558b2f,#689f38);}
-
-/* ★修正②：カテゴリ見出し色も同様に変更 */
 .glossary-cat-heading{color:#fff;padding:12px 18px;font-size:14px;font-weight:700;border-radius:var(--radius) var(--radius) 0 0;display:flex;align-items:center;gap:8px;}
 .glossary-cat-heading[data-cidx="0"]{background:linear-gradient(90deg,#1565c0,#1976d2);}
-.glossary-cat-heading[data-cidx="1"]{background:linear-gradient(90deg,#e65100,#f57c00);}/* ←変更:オレンジ */
-.glossary-cat-heading[data-cidx="2"]{background:linear-gradient(90deg,#2e7d32,#388e3c);}/* ←変更:グリーン */
+.glossary-cat-heading[data-cidx="1"]{background:linear-gradient(90deg,#e65100,#f57c00);}
+.glossary-cat-heading[data-cidx="2"]{background:linear-gradient(90deg,#2e7d32,#388e3c);}
 .glossary-cat-heading[data-cidx="3"]{background:linear-gradient(90deg,#6a1b9a,#7b1fa2);}
 .glossary-cat-heading[data-cidx="4"]{background:linear-gradient(90deg,#c62828,#d32f2f);}
 .glossary-cat-heading[data-cidx="5"]{background:linear-gradient(90deg,#00695c,#00796b);}
 .glossary-cat-heading[data-cidx="6"]{background:linear-gradient(90deg,#4527a0,#512da8);}
 .glossary-cat-heading[data-cidx="7"]{background:linear-gradient(90deg,#558b2f,#689f38);}
 .glossary-cat-count{font-size:12px;opacity:.85;margin-left:auto;font-weight:400;}
-
 .glossary-term-list{background:var(--white);border-radius:0 0 var(--radius) var(--radius);box-shadow:0 3px 12px rgba(0,0,0,.1);overflow:hidden;margin-bottom:20px;}
 .glossary-accordion-item{border-bottom:1px solid #e8edf3;}
 .glossary-accordion-item:last-child{border-bottom:none;}
@@ -270,31 +335,25 @@ table.stats-main-table tfoot td{padding:4px;border:1px solid #bbb;text-align:cen
 .glossary-accordion-trigger.open{background:#eef3ff;color:var(--primary-light);}
 .glossary-accordion-arrow{font-size:11px;color:#999;flex-shrink:0;transition:transform .22s ease;display:inline-block;}
 .glossary-accordion-trigger.open .glossary-accordion-arrow{transform:rotate(90deg);color:var(--primary-light);}
-
 .glossary-term-badge{display:inline-flex;align-items:center;justify-content:center;color:#fff;border-radius:5px;font-size:11px;font-weight:700;padding:2px 9px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.2);}
 .glossary-term-badge[data-cidx="0"]{background:#1565c0;}
-.glossary-term-badge[data-cidx="1"]{background:#e65100;}/* ←変更:オレンジ */
-.glossary-term-badge[data-cidx="2"]{background:#2e7d32;}/* ←変更:グリーン */
+.glossary-term-badge[data-cidx="1"]{background:#e65100;}
+.glossary-term-badge[data-cidx="2"]{background:#2e7d32;}
 .glossary-term-badge[data-cidx="3"]{background:#6a1b9a;}
 .glossary-term-badge[data-cidx="4"]{background:#c62828;}
 .glossary-term-badge[data-cidx="5"]{background:#00695c;}
 .glossary-term-badge[data-cidx="6"]{background:#4527a0;}
 .glossary-term-badge[data-cidx="7"]{background:#558b2f;}
-
 .glossary-accordion-body{max-height:0;overflow:hidden;transition:max-height .35s ease,opacity .28s ease;opacity:0;background:#fafcff;border-top:1px dashed transparent;}
 .glossary-accordion-body.open{max-height:1400px;opacity:1;border-top:1px dashed #d0daea;}
-
-/* ── 3階層目：詳細パネル ── */
 .gterm-detail{padding:16px 20px 20px;display:flex;flex-direction:column;gap:12px;}
 .gterm-title-banner{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);color:#fff;border-radius:8px;padding:12px 16px;}
 .gterm-title-icon{font-size:26px;line-height:1;flex-shrink:0;}
 .gterm-title-text{font-size:18px;font-weight:700;letter-spacing:.04em;}
 .gterm-title-cat{margin-left:auto;font-size:11px;font-weight:700;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:3px 10px;white-space:nowrap;flex-shrink:0;}
-
 .gterm-oneliner{display:flex;align-items:flex-start;gap:10px;background:#fffde7;border-left:4px solid #f9a825;border-radius:0 8px 8px 0;padding:12px 14px;}
 .gterm-oneliner-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
 .gterm-oneliner-text{font-size:14px;font-weight:700;color:#5a3e00;line-height:1.6;}
-
 .gterm-section{background:var(--white);border-radius:8px;border:1px solid var(--border);overflow:hidden;}
 .gterm-section-header{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:12px;font-weight:700;letter-spacing:.05em;}
 .gterm-section-header.detail{background:#e8f0ff;color:#1a3a5c;}
@@ -303,23 +362,18 @@ table.stats-main-table tfoot td{padding:4px;border:1px solid #bbb;text-align:cen
 .gterm-section-header.media{background:#fff3e0;color:#e65100;}
 .gterm-section-body{padding:12px 14px;font-size:13px;color:#333;line-height:1.9;}
 .gterm-empty-section{padding:10px 14px;font-size:12px;color:#aaa;font-style:italic;}
-
 .gterm-related-tags{display:flex;flex-wrap:wrap;gap:8px;padding:10px 14px;}
 .gterm-related-tag{display:inline-flex;align-items:center;gap:4px;background:#f3e5f5;color:#6a1b9a;border:1px solid #ce93d8;border-radius:20px;font-size:12px;font-weight:700;padding:4px 12px;transition:.15s;}
 .gterm-related-tag:hover{background:#e1bee7;}
 .gterm-related-tag.has-link{background:#e8f0ff;color:var(--primary-light);border-color:#90caf9;cursor:pointer;text-decoration:none;}
 .gterm-related-tag.has-link:hover{background:#c8dbf8;border-color:#64b5f6;}
 .gterm-related-tag.has-link::after{content:" →";font-size:11px;opacity:.7;}
-
-/* ★修正③：メディアブロック表示 */
 .gterm-media-list{display:flex;flex-direction:column;gap:14px;padding:12px 14px;}
 .gterm-media-item{border-radius:8px;overflow:hidden;}
 .gterm-media-item img{display:block;max-width:100%;height:auto;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.12);}
 .gterm-media-yt-wrap{position:relative;width:100%;padding-top:56.25%;}
 .gterm-media-yt-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:6px;}
 .gterm-media-caption{font-size:11px;color:#888;margin-top:5px;text-align:center;font-style:italic;}
-
-/* ★修正③：管理モーダル内メディアエディタ */
 .media-editor-wrap{border:1px solid var(--border);border-radius:8px;padding:12px;background:#fafcff;margin-bottom:8px;}
 .media-editor-row{display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap;}
 .media-editor-row label{font-size:11px;color:#555;font-weight:600;min-width:52px;}
@@ -329,7 +383,6 @@ table.stats-main-table tfoot td{padding:4px;border:1px solid #bbb;text-align:cen
 .media-add-btn{background:#e8f5e9;color:var(--win);border:1px solid #a5d6a7;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;margin-top:4px;}
 .media-add-btn:hover{background:#c8e6c9;}
 .media-remove-btn{background:#fde9e9;color:var(--lose);border:1px solid #ffcdd2;border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;}
-
 .related-popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1100;align-items:center;justify-content:center;padding:16px;}
 .related-popup-overlay.open{display:flex;}
 .related-popup-box{background:var(--white);border-radius:var(--radius);width:min(620px,100%);max-height:85vh;overflow-y:auto;box-shadow:0 12px 40px rgba(0,0,0,.3);animation:popIn .22s ease;}
@@ -339,11 +392,9 @@ table.stats-main-table tfoot td{padding:4px;border:1px solid #bbb;text-align:cen
 .related-popup-close{background:none;border:none;font-size:20px;color:#999;cursor:pointer;padding:2px 6px;border-radius:4px;transition:.15s;}
 .related-popup-close:hover{background:#e8edf3;color:#333;}
 .related-popup-body{padding:0;}
-
 mark{background:#fff176;border-radius:2px;padding:0 1px;}
 .glossary-search-result-bar{font-size:12px;color:var(--primary);background:#eef3ff;border-radius:6px;padding:7px 14px;margin-bottom:10px;font-weight:600;}
 .glossary-no-cat{text-align:center;padding:40px;color:#888;font-size:14px;}
-
 .glossary-editor{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;}
 .ge-left{min-width:200px;flex:0 0 200px;}
 .ge-right{flex:1;min-width:280px;}
@@ -360,7 +411,6 @@ mark{background:#fff176;border-radius:2px;padding:0 1px;}
 .ge-term-name{flex:1;}
 .ge-empty{padding:14px;text-align:center;color:#aaa;font-size:13px;}
 .modal-box.modal-wide{width:min(780px,100%);}
-
 .gterm-field-group{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px;}
 .gterm-field-header{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:12px;font-weight:700;}
 .gterm-field-header.f-oneliner{background:#fffde7;color:#856404;}
@@ -390,8 +440,9 @@ mark{background:#fff176;border-radius:2px;padding:0 1px;}
   .glossary-search-wrap,.glossary-cat-tabs,.glossary-search-result-bar{display:none!important;}
   .glossary-accordion-body{max-height:none!important;opacity:1!important;}
   .related-popup-overlay{display:none!important;}
+  .stats-subtabs{display:none!important;}
+  .cmp-panel{break-inside:avoid;}
 }
-
 @media(max-width:900px){
   .dashboard-layout{grid-template-columns:1fr;}
   .monthly-card{position:static;}
@@ -399,6 +450,8 @@ mark{background:#fff176;border-radius:2px;padding:0 1px;}
   .glossary-editor{flex-direction:column;}
   .ge-left{flex:none;width:100%;}
   #adminBottomGrid{grid-template-columns:1fr!important;}
+  .cmp-result{grid-template-columns:1fr;}
+  .cmp-charts{grid-template-columns:1fr;}
 }
 @media(max-width:700px){
   .page{padding:10px;}
@@ -412,6 +465,8 @@ mark{background:#fff176;border-radius:2px;padding:0 1px;}
   .stats-summary-cards{grid-template-columns:repeat(3,1fr);}
   .glossary-cat-btn{padding:7px 12px;font-size:12px;}
   .gterm-title-text{font-size:15px;}
+  .cmp-condition{flex-direction:column;align-items:stretch;}
+  .cmp-stat-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:480px){
   .page{padding:8px;}
@@ -421,6 +476,7 @@ mark{background:#fff176;border-radius:2px;padding:0 1px;}
   .player-group-tab{padding:6px 12px;font-size:12px;}
   .cat-tab{padding:3px 6px;font-size:10px;}
   .glossary-cat-btn{padding:6px 10px;font-size:11px;}
+  .stats-subtab{padding:7px 12px;font-size:12px;}
 }
 </style>
 </head>
@@ -584,7 +640,7 @@ mark{background:#fff176;border-radius:2px;padding:0 1px;}
   </div>
 </div>
 
-<!-- 用語 Modal ★修正③：メディア入力欄を追加 -->
+<!-- 用語 Modal -->
 <div class="modal-overlay" id="gTermModal">
   <div class="modal-box modal-wide">
     <h3 id="gTermModalTitle">用語</h3>
@@ -618,7 +674,6 @@ mark{background:#fff176;border-radius:2px;padding:0 1px;}
         <div class="gterm-field-hint">「、」または「,」で区切って複数入力。登録済み用語はリンクされます</div>
       </div>
     </div>
-    <!-- ★修正③：メディア入力欄 -->
     <div class="gterm-field-group">
       <div class="gterm-field-header f-media">🎬 メディア（画像・YouTube）</div>
       <div class="gterm-field-body">
@@ -723,70 +778,156 @@ mark{background:#fff176;border-radius:2px;padding:0 1px;}
 
 <!-- ══ STATS ══ -->
 <div class="page" id="page-stats">
-  <div class="section-card">
-    <div class="player-group-tabs">
-      <button class="player-group-tab active-tab" data-grp="female" onclick="switchPlayerGroup('female')">👧 女子</button>
-      <button class="player-group-tab" data-grp="male"   onclick="switchPlayerGroup('male')">👦 男子</button>
-      <button class="player-group-tab" data-grp="ob"     onclick="switchPlayerGroup('ob')">🎓 OB</button>
-    </div>
-    <div class="player-btn-grid" id="playerBtnGrid"></div>
-    <div class="stats-filter-row">
-      <span class="filter-label">対戦相手：</span>
-      <select id="statsFilterOpponent" onchange="renderStatsPage()"><option value="">すべて</option></select>
-      <div class="date-filter-group"><span class="filter-label">📅 開始日：</span><input type="date" id="statsDateFrom" onchange="renderStatsPage()"></div>
-      <div class="date-filter-group"><span class="filter-label">終了日：</span><input type="date" id="statsDateTo" onchange="renderStatsPage()"></div>
-      <button class="btn-reset" onclick="clearStatsFilters()">✕ リセット</button>
-      <button class="btn-pdf" onclick="printPage('stats')" style="margin-left:auto;">🖨️ PDF出力</button>
-    </div>
+  <!-- サブタブ -->
+  <div class="stats-subtabs">
+    <div class="stats-subtab active" id="subtab-individual" onclick="switchStatsSubtab('individual')">👤 個人スタッツ</div>
+    <div class="stats-subtab" id="subtab-selfcmp"   onclick="switchStatsSubtab('selfcmp')">📅 個人比較（期間）</div>
+    <div class="stats-subtab" id="subtab-playercmp" onclick="switchStatsSubtab('playercmp')">⚔️ 選手比較</div>
   </div>
-  <div id="statsPlayerBlock" style="display:none;">
-    <div class="stats-player-header" id="statsPlayerHeader">
-      <span class="stats-player-icon" id="statsPlayerIcon"></span>
-      <div>
-        <div class="stats-player-name"><span id="statsPlayerName"></span><span class="stats-player-number" id="statsPlayerNumber" style="display:none;"></span></div>
-        <div class="stats-player-sub" id="statsPlayerSub"></div>
+
+  <!-- ── 個人スタッツ ── -->
+  <div class="stats-subpage active" id="subpage-individual">
+    <div class="section-card">
+      <div class="player-group-tabs">
+        <button class="player-group-tab active-tab" data-grp="female" onclick="switchPlayerGroup('female')">👧 女子</button>
+        <button class="player-group-tab" data-grp="male"   onclick="switchPlayerGroup('male')">👦 男子</button>
+        <button class="player-group-tab" data-grp="ob"     onclick="switchPlayerGroup('ob')">🎓 OB</button>
+      </div>
+      <div class="player-btn-grid" id="playerBtnGrid"></div>
+      <div class="stats-filter-row">
+        <span class="filter-label">対戦相手：</span>
+        <select id="statsFilterOpponent" onchange="renderStatsPage()"><option value="">すべて</option></select>
+        <div class="date-filter-group"><span class="filter-label">📅 開始日：</span><input type="date" id="statsDateFrom" onchange="renderStatsPage()"></div>
+        <div class="date-filter-group"><span class="filter-label">終了日：</span><input type="date" id="statsDateTo" onchange="renderStatsPage()"></div>
+        <button class="btn-reset" onclick="clearStatsFilters()">✕ リセット</button>
+        <button class="btn-pdf" onclick="printPage('stats')" style="margin-left:auto;">🖨️ PDF出力</button>
       </div>
     </div>
-    <div id="statsSummaryCards" class="stats-summary-cards"></div>
-    <div class="stats-charts-row">
-      <div class="stats-chart-card"><h4>🕸️ 能力レーダー</h4><div class="stats-chart-wrap"><canvas id="statsRadarChart"></canvas></div></div>
-      <div class="stats-chart-card"><h4>📊 試合別得点内訳</h4><div class="stats-chart-wrap"><canvas id="statsPtsChart"></canvas></div></div>
-      <div class="stats-chart-card"><h4>📈 Q別 FG成功/試投</h4><div class="stats-chart-wrap"><canvas id="statsQFgChart"></canvas></div></div>
+    <div id="statsPlayerBlock" style="display:none;">
+      <div class="stats-player-header" id="statsPlayerHeader">
+        <span class="stats-player-icon" id="statsPlayerIcon"></span>
+        <div>
+          <div class="stats-player-name"><span id="statsPlayerName"></span><span class="stats-player-number" id="statsPlayerNumber" style="display:none;"></span></div>
+          <div class="stats-player-sub" id="statsPlayerSub"></div>
+        </div>
+      </div>
+      <div id="statsSummaryCards" class="stats-summary-cards"></div>
+      <div class="stats-charts-row">
+        <div class="stats-chart-card"><h4>🕸️ 能力レーダー</h4><div class="stats-chart-wrap"><canvas id="statsRadarChart"></canvas></div></div>
+        <div class="stats-chart-card"><h4>📊 試合別得点内訳</h4><div class="stats-chart-wrap"><canvas id="statsPtsChart"></canvas></div></div>
+        <div class="stats-chart-card"><h4>📈 Q別 FG成功/試投</h4><div class="stats-chart-wrap"><canvas id="statsQFgChart"></canvas></div></div>
+      </div>
+      <div class="stats-name-bar">
+        <span class="snb-label">選手名</span>
+        <span class="snb-name" id="statsTablePlayerName"></span>
+        <span class="snb-number" id="statsTablePlayerNumber" style="display:none;"></span>
+      </div>
+      <div class="stats-table-wrap">
+        <table class="stats-main-table">
+          <thead>
+            <tr class="h-group">
+              <th class="th-base" rowspan="2">日付</th><th class="th-base" rowspan="2">カテゴリー</th>
+              <th class="th-base" rowspan="2">試合名</th><th class="th-base" rowspan="2">相手</th>
+              <th class="th-jikan" colspan="5">出場時限</th>
+              <th class="th-fg" colspan="5">2P 成功</th><th class="th-fg" colspan="5">2P 試投</th>
+              <th class="th-fg" rowspan="2" style="background:#f5a623;color:#fff;">成功率</th>
+              <th class="th-ft" colspan="5">FT 成功</th><th class="th-ft" colspan="5">FT 試投</th>
+              <th class="th-ft" rowspan="2" style="background:#4a90c4;color:#fff;">成功率</th>
+              <th class="th-reb" colspan="2">REB</th>
+              <th class="th-other" rowspan="2">AST</th><th class="th-other" rowspan="2">STL</th><th class="th-other" rowspan="2">BLK</th>
+            </tr>
+            <tr class="h-sub">
+              <th class="th-sub-jikan">1Q</th><th class="th-sub-jikan">2Q</th><th class="th-sub-jikan">3Q</th><th class="th-sub-jikan">4Q</th><th class="th-sub-jikan">計</th>
+              <th class="th-sub-fgm">1Q</th><th class="th-sub-fgm">2Q</th><th class="th-sub-fgm">3Q</th><th class="th-sub-fgm">4Q</th><th class="th-sub-fgm">計</th>
+              <th class="th-sub-fga">1Q</th><th class="th-sub-fga">2Q</th><th class="th-sub-fga">3Q</th><th class="th-sub-fga">4Q</th><th class="th-sub-fga">計</th>
+              <th class="th-sub-ftm">1Q</th><th class="th-sub-ftm">2Q</th><th class="th-sub-ftm">3Q</th><th class="th-sub-ftm">4Q</th><th class="th-sub-ftm">計</th>
+              <th class="th-sub-fta">1Q</th><th class="th-sub-fta">2Q</th><th class="th-sub-fta">3Q</th><th class="th-sub-fta">4Q</th><th class="th-sub-fta">計</th>
+              <th class="th-sub-reb">OR</th><th class="th-sub-reb">DR</th>
+            </tr>
+          </thead>
+          <tbody id="statsMainBody"></tbody>
+          <tfoot id="statsMainFoot"></tfoot>
+        </table>
+      </div>
     </div>
-    <div class="stats-name-bar">
-      <span class="snb-label">選手名</span>
-      <span class="snb-name" id="statsTablePlayerName"></span>
-      <span class="snb-number" id="statsTablePlayerNumber" style="display:none;"></span>
-    </div>
-    <div class="stats-table-wrap">
-      <table class="stats-main-table">
-        <thead>
-          <tr class="h-group">
-            <th class="th-base" rowspan="2">日付</th><th class="th-base" rowspan="2">カテゴリー</th>
-            <th class="th-base" rowspan="2">試合名</th><th class="th-base" rowspan="2">相手</th>
-            <th class="th-jikan" colspan="5">出場時限</th>
-            <th class="th-fg" colspan="5">2P 成功</th><th class="th-fg" colspan="5">2P 試投</th>
-            <th class="th-fg" rowspan="2" style="background:#f5a623;color:#fff;">成功率</th>
-            <th class="th-ft" colspan="5">FT 成功</th><th class="th-ft" colspan="5">FT 試投</th>
-            <th class="th-ft" rowspan="2" style="background:#4a90c4;color:#fff;">成功率</th>
-            <th class="th-reb" colspan="2">REB</th>
-            <th class="th-other" rowspan="2">AST</th><th class="th-other" rowspan="2">STL</th><th class="th-other" rowspan="2">BLK</th>
-          </tr>
-          <tr class="h-sub">
-            <th class="th-sub-jikan">1Q</th><th class="th-sub-jikan">2Q</th><th class="th-sub-jikan">3Q</th><th class="th-sub-jikan">4Q</th><th class="th-sub-jikan">計</th>
-            <th class="th-sub-fgm">1Q</th><th class="th-sub-fgm">2Q</th><th class="th-sub-fgm">3Q</th><th class="th-sub-fgm">4Q</th><th class="th-sub-fgm">計</th>
-            <th class="th-sub-fga">1Q</th><th class="th-sub-fga">2Q</th><th class="th-sub-fga">3Q</th><th class="th-sub-fga">4Q</th><th class="th-sub-fga">計</th>
-            <th class="th-sub-ftm">1Q</th><th class="th-sub-ftm">2Q</th><th class="th-sub-ftm">3Q</th><th class="th-sub-ftm">4Q</th><th class="th-sub-ftm">計</th>
-            <th class="th-sub-fta">1Q</th><th class="th-sub-fta">2Q</th><th class="th-sub-fta">3Q</th><th class="th-sub-fta">4Q</th><th class="th-sub-fta">計</th>
-            <th class="th-sub-reb">OR</th><th class="th-sub-reb">DR</th>
-          </tr>
-        </thead>
-        <tbody id="statsMainBody"></tbody>
-        <tfoot id="statsMainFoot"></tfoot>
-      </table>
+    <div class="no-data" id="statsNoData">上のボタンから選手を選択してください</div>
+  </div>
+
+  <!-- ── 個人比較（期間） ── -->
+  <div class="stats-subpage" id="subpage-selfcmp">
+    <div class="cmp-panel">
+      <h3>📅 個人比較 — 同一選手の2期間を比較</h3>
+      <div class="cmp-condition">
+        <div class="cmp-condition-group">
+          <label>選手</label>
+          <select id="selfCmpPlayer" style="min-width:160px;">
+            <option value="">選手を選択</option>
+          </select>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;">
+          <span class="cmp-period-label" style="background:#dbeafe;color:#1565c0;">期間 A</span>
+          <div class="cmp-condition-group">
+            <label>開始日</label>
+            <input type="date" id="selfCmpAFrom">
+          </div>
+          <div class="cmp-condition-group">
+            <label>終了日</label>
+            <input type="date" id="selfCmpATo">
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;">
+          <span class="cmp-period-label" style="background:#fde8e8;color:#c62828;">期間 B</span>
+          <div class="cmp-condition-group">
+            <label>開始日</label>
+            <input type="date" id="selfCmpBFrom">
+          </div>
+          <div class="cmp-condition-group">
+            <label>終了日</label>
+            <input type="date" id="selfCmpBTo">
+          </div>
+        </div>
+        <button class="cmp-run-btn" onclick="runSelfCmp()">🔍 比較する</button>
+      </div>
+      <div id="selfCmpResult"></div>
     </div>
   </div>
-  <div class="no-data" id="statsNoData">上のボタンから選手を選択してください</div>
+
+  <!-- ── 選手比較 ── -->
+  <div class="stats-subpage" id="subpage-playercmp">
+    <div class="cmp-panel">
+      <h3>⚔️ 選手比較 — 2選手を同期間で比較</h3>
+      <div class="cmp-condition">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;">
+          <span class="cmp-period-label" style="background:#dbeafe;color:#1565c0;">選手 A</span>
+          <div class="cmp-condition-group">
+            <label>選手</label>
+            <select id="playerCmpA" style="min-width:160px;">
+              <option value="">選手を選択</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;">
+          <span class="cmp-period-label" style="background:#fde8e8;color:#c62828;">選手 B</span>
+          <div class="cmp-condition-group">
+            <label>選手</label>
+            <select id="playerCmpB" style="min-width:160px;">
+              <option value="">選手を選択</option>
+            </select>
+          </div>
+        </div>
+        <div class="cmp-condition-group">
+          <label>📅 開始日（共通）</label>
+          <input type="date" id="playerCmpFrom">
+        </div>
+        <div class="cmp-condition-group">
+          <label>終了日（共通）</label>
+          <input type="date" id="playerCmpTo">
+        </div>
+        <button class="cmp-run-btn" onclick="runPlayerCmp()">🔍 比較する</button>
+      </div>
+      <div id="playerCmpResult"></div>
+    </div>
+  </div>
 </div>
 
 <!-- ══ GLOSSARY ══ -->
@@ -892,58 +1033,34 @@ mark{background:#fff176;border-radius:2px;padding:0 1px;}
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script>
-/* ══ Firebase 初期化 ══ */
-const firebaseConfig={
-  apiKey:"AIzaSyDyHEv72GDqgSba2KFgM-x550dHRT6FGgM",
-  authDomain:"thunders-web.firebaseapp.com",
-  projectId:"thunders-web",
-  storageBucket:"thunders-web.firebasestorage.app",
-  messagingSenderId:"792066557837",
-  appId:"1:792066557837:web:eb84212de79133a0129fc4"
-};
+/* ══ Firebase ══ */
+const firebaseConfig={apiKey:"AIzaSyDyHEv72GDqgSba2KFgM-x550dHRT6FGgM",authDomain:"thunders-web.firebaseapp.com",projectId:"thunders-web",storageBucket:"thunders-web.firebasestorage.app",messagingSenderId:"792066557837",appId:"1:792066557837:web:eb84212de79133a0129fc4"};
 firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
+async function fbLoad(n){const s=await db.collection("data").doc(n).get();if(s.exists){const d=s.data();return Array.isArray(d.items)?d.items:[];}return[];}
+async function fbSave(n,a){await db.collection("data").doc(n).set({items:a},{merge:false});}
+function fbWatch(n,cb){return db.collection("data").doc(n).onSnapshot(s=>{if(s.exists){const d=s.data();cb(Array.isArray(d.items)?d.items:[]);}});}
 
-/* ════════ Firebase CRUD ════════ */
-async function fbLoad(docName){
-  const snap=await db.collection("data").doc(docName).get();
-  if(snap.exists){const d=snap.data();return Array.isArray(d.items)?d.items:[];}
-  return[];
-}
-async function fbSave(docName,arr){
-  await db.collection("data").doc(docName).set({items:arr},{merge:false});
-}
-function fbWatch(docName,callback){
-  return db.collection("data").doc(docName).onSnapshot(snap=>{
-    if(snap.exists){const d=snap.data();callback(Array.isArray(d.items)?d.items:[]);}
-  });
-}
-
-/* ════════ 定数 ════════ */
-const ADMIN_PASS='thunders2026';
-const MATCH_PAGE_SIZE=100;
-const ADMIN_PAGE_SIZE=50;
+/* ══ 定数 ══ */
+const ADMIN_PASS='thunders2026',MATCH_PAGE_SIZE=100,ADMIN_PAGE_SIZE=50;
 const GE_COLORS=['#1565c0','#e65100','#2e7d32','#6a1b9a','#c62828','#00695c','#4527a0','#558b2f'];
+const MONTH_KEYS=['2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09','2026-10','2026-11','2026-12','2027-01','2027-02','2027-03'];
+const MONTH_LABELS=['2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'];
 
-/* ════════ 状態変数 ════════ */
+/* ══ 状態変数 ══ */
 let isAdmin=false,matchesData=[],statsData=[],playersData=[],glossaryData=[],filteredMatches=[];
 let currentPage=1,sortCol='date',sortDir='asc',currentMonthlyCat='全体';
 let currentPlayerGroup='female',selectedPlayer=null;
 let editingMatchId=null,editingStatsId=null,editingPlayerId=null;
 let adminMatchPage=1,adminStatsPage=1;
 let donutChartInst=null,barChartInst=null,statsRadarInst=null,statsPtsInst=null,statsQFgInst=null;
-let admMatchSortCol='date',admMatchSortDir='asc';
-let admStatsSortCol='date',admStatsSortDir='asc';
-let glossarySelectedCat=null,glossarySearchText='';
-let geSelectedCatIdx=null,editingGCatIdx=null,editingGTermIdx=null;
-
-/* ★修正③：メディア行の状態管理 */
+let admMatchSortCol='date',admMatchSortDir='asc',admStatsSortCol='date',admStatsSortDir='asc';
+let glossarySelectedCat=null,glossarySearchText='',geSelectedCatIdx=null,editingGCatIdx=null,editingGTermIdx=null;
 let currentMediaList=[];
+/* 比較チャートインスタンス */
+let selfCmpRadarInst=null,selfCmpBarInst=null,playerCmpRadarInst=null,playerCmpBarInst=null;
 
-const MONTH_KEYS=['2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09','2026-10','2026-11','2026-12','2027-01','2027-02','2027-03'];
-const MONTH_LABELS=['2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'];
-
-/* ════════ データヘルパー ════════ */
+/* ══ データヘルパー ══ */
 function getQ(s,q){return s.quarters?!!s.quarters[q]:!!(s[q]);}
 function getFgMadeQ(s,q){return s.fg?.made?.[q]||0;}
 function getFgAttQ(s,q){return s.fg?.att?.[q]||0;}
@@ -957,64 +1074,57 @@ function getRebOff(s){return(s.reb&&typeof s.reb==='object')?s.reb.off||0:0;}
 function getRebDef(s){return(s.reb&&typeof s.reb==='object')?s.reb.def||0:0;}
 function getQCount(s){return['q1','q2','q3','q4'].filter(q=>getQ(s,q)).length;}
 function isJrMatch(m){return m.isJr===true||m.isJr==='true';}
-function getPlayerNumber(n){
-  const p=playersData.find(x=>x.name===n);if(!p)return null;
-  const v=p.number;if(v===undefined||v===null||v==='')return null;return String(v);
-}
+function getPlayerNumber(n){const p=playersData.find(x=>x.name===n);if(!p)return null;const v=p.number;if(v===undefined||v===null||v==='')return null;return String(v);}
 
-/* ════════ ユーティリティ ════════ */
+/* ══ ユーティリティ ══ */
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function fmtDate(d){if(!d)return'';const[,m,day]=d.split('-');return`${parseInt(m)}/${parseInt(day)}`;}
 function escH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 function showSaving(){const el=document.getElementById('savingIndicator');el.textContent='💾 保存中...';el.style.background='#1a7a3c';el.classList.add('show');}
 function hideSaving(ok=true){const el=document.getElementById('savingIndicator');el.textContent=ok?'✅ 保存しました':'❌ 保存失敗';el.style.background=ok?'#1a7a3c':'#c0392b';setTimeout(()=>el.classList.remove('show'),2000);}
-async function saveToFirebase(docName,arr){
-  showSaving();
-  try{await fbSave(docName,arr);hideSaving(true);}
-  catch(e){console.error(e);hideSaving(false);showToast('⚠️ 保存に失敗しました。');}
-}
+async function saveToFirebase(n,a){showSaving();try{await fbSave(n,a);hideSaving(true);}catch(e){console.error(e);hideSaving(false);showToast('⚠️ 保存に失敗しました。');}}
 
-/* ════════ 初期化 ════════ */
+/* ══ 初期化 ══ */
 async function init(){
   const loadingEl=document.getElementById('loadingScreen');
   try{
-    [matchesData,statsData,playersData,glossaryData]=await Promise.all([
-      fbLoad('matches'),fbLoad('stats'),fbLoad('players'),fbLoad('glossary')
-    ]);
+    [matchesData,statsData,playersData,glossaryData]=await Promise.all([fbLoad('matches'),fbLoad('stats'),fbLoad('players'),fbLoad('glossary')]);
     fbWatch('matches',data=>{matchesData=data;buildOpponentFilter();applyFilters();renderMonthlySummary();});
     fbWatch('stats',data=>{statsData=data;buildStatsOpponentFilter();if(selectedPlayer)renderStatsPage();});
-    fbWatch('players',data=>{playersData=data;renderPlayerBtns();if(selectedPlayer)renderStatsPage();});
-    fbWatch('glossary',data=>{
-      if(data&&data.length>0)glossaryData=data;
-      renderGlossaryCats();renderGlossaryEditor();
-    });
-  }catch(e){
-    console.error('Firebase読み込みエラー:',e);
-    showToast('⚠️ データ読み込みに失敗しました: '+e.message);
-  }finally{loadingEl.classList.add('hidden');}
+    fbWatch('players',data=>{playersData=data;renderPlayerBtns();if(selectedPlayer)renderStatsPage();buildCmpPlayerSelects();});
+    fbWatch('glossary',data=>{if(data&&data.length>0)glossaryData=data;renderGlossaryCats();renderGlossaryEditor();});
+  }catch(e){console.error(e);showToast('⚠️ データ読み込みに失敗しました: '+e.message);}
+  finally{loadingEl.classList.add('hidden');}
   buildOpponentFilter();buildStatsOpponentFilter();renderPlayerBtns();applyFilters();renderMonthlySummary();renderGlossaryCats();
+  buildCmpPlayerSelects();
 }
 
-/* ════════ ページナビ ════════ */
+/* ══ ページナビ ══ */
 function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
   if(name==='admin'){renderAdminMatches();renderAdminStats();renderPlayerMaster();renderGlossaryEditor();}
-  if(name==='stats'){buildStatsOpponentFilter();renderStatsPage();}
+  if(name==='stats'){buildStatsOpponentFilter();buildCmpPlayerSelects();renderStatsPage();}
 }
 function printPage(pageName){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+pageName).classList.add('active');
   window.print();
-  document.querySelectorAll('.nav-tab').forEach(t=>{
-    if(t.id==='tab-'+pageName)t.classList.add('active');else t.classList.remove('active');
-  });
+  document.querySelectorAll('.nav-tab').forEach(t=>{if(t.id==='tab-'+pageName)t.classList.add('active');else t.classList.remove('active');});
 }
 
-/* ════════ フィルター ════════ */
+/* ══ サブタブ ══ */
+function switchStatsSubtab(name){
+  document.querySelectorAll('.stats-subtab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.stats-subpage').forEach(p=>p.classList.remove('active'));
+  document.getElementById('subtab-'+name).classList.add('active');
+  document.getElementById('subpage-'+name).classList.add('active');
+}
+
+/* ══ フィルター ══ */
 function buildOpponentFilter(){
   const sel=document.getElementById('filterOpponent');const cur=sel.value;
   const opps=[...new Set(matchesData.map(m=>m.opponent))].sort();
@@ -1029,34 +1139,21 @@ function clearFilters(){
 }
 function applyFilters(){
   const kw=document.getElementById('filterKeyword').value.trim().toLowerCase();
-  const opp=document.getElementById('filterOpponent').value;
-  const cat=document.getElementById('filterCategory').value;
-  const jr=document.getElementById('filterJr').value;
-  const res=document.getElementById('filterResult').value;
-  const df=document.getElementById('filterDateFrom').value;
-  const dt=document.getElementById('filterDateTo').value;
+  const opp=document.getElementById('filterOpponent').value,cat=document.getElementById('filterCategory').value,jr=document.getElementById('filterJr').value,res=document.getElementById('filterResult').value,df=document.getElementById('filterDateFrom').value,dt=document.getElementById('filterDateTo').value;
   filteredMatches=matchesData.filter(m=>{
     if(kw&&!(`${m.date}${m.venue}${m.matchName}${m.opponent}`.toLowerCase()).includes(kw))return false;
-    if(opp&&m.opponent!==opp)return false;
-    if(cat&&m.category!==cat)return false;
-    if(jr!==''&&String(m.isJr)!==jr)return false;
-    if(res&&m.result!==res)return false;
-    if(df&&m.date<df)return false;
-    if(dt&&m.date>dt)return false;
-    return true;
+    if(opp&&m.opponent!==opp)return false;if(cat&&m.category!==cat)return false;
+    if(jr!==''&&String(m.isJr)!==jr)return false;if(res&&m.result!==res)return false;
+    if(df&&m.date<df)return false;if(dt&&m.date>dt)return false;return true;
   });
   currentPage=1;sortAndRender();updateCharts();
 }
 function sortAndRender(){
-  filteredMatches.sort((a,b)=>{
-    let va=a[sortCol]??'',vb=b[sortCol]??'';
-    if(['scoreFor','scoreAgainst'].includes(sortCol)){va=Number(va);vb=Number(vb);}
-    return va<vb?(sortDir==='asc'?-1:1):va>vb?(sortDir==='asc'?1:-1):0;
-  });
+  filteredMatches.sort((a,b)=>{let va=a[sortCol]??'',vb=b[sortCol]??'';if(['scoreFor','scoreAgainst'].includes(sortCol)){va=Number(va);vb=Number(vb);}return va<vb?(sortDir==='asc'?-1:1):va>vb?(sortDir==='asc'?1:-1):0;});
   renderMatchTable();
 }
 
-/* ════════ 試合テーブル ════════ */
+/* ══ 試合テーブル ══ */
 function renderMatchTable(){
   const total=filteredMatches.length;
   const items=filteredMatches.slice((currentPage-1)*MATCH_PAGE_SIZE,currentPage*MATCH_PAGE_SIZE);
@@ -1070,64 +1167,42 @@ function renderMatchTable(){
   renderMatchPagination(total);
 }
 function renderMatchPagination(total){
-  const pages=Math.ceil(total/MATCH_PAGE_SIZE)||1;
-  const el=document.getElementById('matchPagination');
+  const pages=Math.ceil(total/MATCH_PAGE_SIZE)||1;const el=document.getElementById('matchPagination');
   if(pages<=1){el.innerHTML=`<span class="page-info">全${total}件</span>`;return;}
   let h=`<span class="page-info">全${total}件 / ${pages}ページ</span>`;
   h+=`<button class="page-btn" onclick="goMatchPage(${currentPage-1})" ${currentPage<=1?'disabled':''}>◀</button>`;
-  for(let i=Math.max(1,currentPage-2);i<=Math.min(pages,currentPage+2);i++)
-    h+=`<button class="page-btn${i===currentPage?' active':''}" onclick="goMatchPage(${i})">${i}</button>`;
+  for(let i=Math.max(1,currentPage-2);i<=Math.min(pages,currentPage+2);i++)h+=`<button class="page-btn${i===currentPage?' active':''}" onclick="goMatchPage(${i})">${i}</button>`;
   h+=`<button class="page-btn" onclick="goMatchPage(${currentPage+1})" ${currentPage>=pages?'disabled':''}>▶</button>`;
   el.innerHTML=h;
 }
 function goMatchPage(p){currentPage=p;renderMatchTable();}
 
-/* ════════ チャート ════════ */
+/* ══ チャート ══ */
 function updateCharts(){
-  const wins=filteredMatches.filter(m=>m.result==='勝').length;
-  const loses=filteredMatches.filter(m=>m.result==='負').length;
-  const draws=filteredMatches.filter(m=>m.result==='引').length;
-  const total=wins+loses+draws;
+  const wins=filteredMatches.filter(m=>m.result==='勝').length,loses=filteredMatches.filter(m=>m.result==='負').length,draws=filteredMatches.filter(m=>m.result==='引').length,total=wins+loses+draws;
   document.getElementById('donutPct').textContent=total>0?(wins/total*100).toFixed(1)+'%':'-%';
   if(donutChartInst)donutChartInst.destroy();
   donutChartInst=new Chart(document.getElementById('donutChart'),{type:'doughnut',data:{labels:['勝','負','引'],datasets:[{data:[wins,loses,draws],backgroundColor:['#1a7a3c','#c0392b','#5a6a7a'],borderWidth:0}]},options:{cutout:'70%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw}試合`}}},animation:{duration:400}}});
-  const mW={},mL={},mD={};
-  MONTH_KEYS.forEach(k=>{mW[k]=0;mL[k]=0;mD[k]=0;});
+  const mW={},mL={},mD={};MONTH_KEYS.forEach(k=>{mW[k]=0;mL[k]=0;mD[k]=0;});
   filteredMatches.forEach(m=>{const mk=m.date.slice(0,7);if(mW[mk]===undefined)return;if(m.result==='勝')mW[mk]++;else if(m.result==='負')mL[mk]++;else mD[mk]++;});
   if(barChartInst)barChartInst.destroy();
   barChartInst=new Chart(document.getElementById('barChart'),{type:'bar',data:{labels:MONTH_LABELS,datasets:[{label:'勝',data:MONTH_KEYS.map(k=>mW[k]),backgroundColor:'#1a7a3c'},{label:'負',data:MONTH_KEYS.map(k=>mL[k]),backgroundColor:'#c0392b'},{label:'引',data:MONTH_KEYS.map(k=>mD[k]),backgroundColor:'#5a6a7a'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,ticks:{font:{size:10}}},y:{stacked:true,beginAtZero:true,ticks:{stepSize:1,font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}}}});
 }
 
-/* ════════ 月別集計 ════════ */
-function switchMonthlyCat(el){
-  document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');currentMonthlyCat=el.dataset.cat;renderMonthlySummary();
-}
+/* ══ 月別集計 ══ */
+function switchMonthlyCat(el){document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');currentMonthlyCat=el.dataset.cat;renderMonthlySummary();}
 function renderMonthlySummary(){
-  function f(m){
-    switch(currentMonthlyCat){
-      case'全体':return!isJrMatch(m);case'全体Jr':return isJrMatch(m);
-      case'男子':return m.category==='男子'&&!isJrMatch(m);case'男子Jr':return m.category==='男子'&&isJrMatch(m);
-      case'女子':return m.category==='女子'&&!isJrMatch(m);case'女子Jr':return m.category==='女子'&&isJrMatch(m);
-      default:return true;
-    }
-  }
-  const data=matchesData.filter(f);
-  const tW={},tL={},tD={};MONTH_KEYS.forEach(k=>{tW[k]=0;tL[k]=0;tD[k]=0;});
+  function f(m){switch(currentMonthlyCat){case'全体':return!isJrMatch(m);case'全体Jr':return isJrMatch(m);case'男子':return m.category==='男子'&&!isJrMatch(m);case'男子Jr':return m.category==='男子'&&isJrMatch(m);case'女子':return m.category==='女子'&&!isJrMatch(m);case'女子Jr':return m.category==='女子'&&isJrMatch(m);default:return true;}}
+  const data=matchesData.filter(f);const tW={},tL={},tD={};MONTH_KEYS.forEach(k=>{tW[k]=0;tL[k]=0;tD[k]=0;});
   data.forEach(m=>{const mk=m.date.slice(0,7);if(tW[mk]===undefined)return;if(m.result==='勝')tW[mk]++;else if(m.result==='負')tL[mk]++;else tD[mk]++;});
   let aW=0,aL=0,aD=0;
-  const rows=MONTH_KEYS.map((k,i)=>{
-    const w=tW[k],l=tL[k],d=tD[k],tot=w+l+d;aW+=w;aL+=l;aD+=d;
-    const rate=tot>0?(w/tot*100).toFixed(1):'-';
-    const cls=tot>0&&Number(rate)>=50?'win-rate-high':tot>0?'win-rate-low':'';
-    return`<tr><td>${MONTH_LABELS[i]}</td><td style="color:var(--win);font-weight:600;">${w||''}</td><td style="color:var(--lose);">${l||''}</td><td style="color:var(--draw);">${d||''}</td><td class="${cls}">${rate==='-'?'-':rate+'%'}</td></tr>`;
-  });
+  const rows=MONTH_KEYS.map((k,i)=>{const w=tW[k],l=tL[k],d=tD[k],tot=w+l+d;aW+=w;aL+=l;aD+=d;const rate=tot>0?(w/tot*100).toFixed(1):'-';const cls=tot>0&&Number(rate)>=50?'win-rate-high':tot>0?'win-rate-low':'';return`<tr><td>${MONTH_LABELS[i]}</td><td style="color:var(--win);font-weight:600;">${w||''}</td><td style="color:var(--lose);">${l||''}</td><td style="color:var(--draw);">${d||''}</td><td class="${cls}">${rate==='-'?'-':rate+'%'}</td></tr>`;});
   const aT=aW+aL+aD,aR=aT>0?(aW/aT*100).toFixed(1)+'%':'-';
   rows.push(`<tr class="total-row"><td>合計</td><td style="color:var(--win);font-weight:700;">${aW}</td><td style="color:var(--lose);">${aL}</td><td style="color:var(--draw);">${aD}</td><td class="${aT>0&&aW/aT>=.5?'win-rate-high':'win-rate-low'}">${aR}</td></tr>`);
   document.getElementById('monthlySummaryBody').innerHTML=rows.join('');
 }
 
-/* ════════ 個人スタッツ ════════ */
+/* ══ 個人スタッツ ══ */
 function buildStatsOpponentFilter(){
   const sel=document.getElementById('statsFilterOpponent');const cur=sel.value;
   const opps=[...new Set(statsData.map(s=>s.opponent))].sort();
@@ -1135,48 +1210,281 @@ function buildStatsOpponentFilter(){
   opps.forEach(o=>{const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);});
   sel.value=cur;
 }
-function switchPlayerGroup(grp){
-  currentPlayerGroup=grp;selectedPlayer=null;
-  document.querySelectorAll('.player-group-tab').forEach(b=>{b.classList.remove('active-tab');if(b.dataset.grp===grp)b.classList.add('active-tab');});
-  renderPlayerBtns();clearStatsDisplay();
-}
+function switchPlayerGroup(grp){currentPlayerGroup=grp;selectedPlayer=null;document.querySelectorAll('.player-group-tab').forEach(b=>{b.classList.remove('active-tab');if(b.dataset.grp===grp)b.classList.add('active-tab');});renderPlayerBtns();clearStatsDisplay();}
 function renderPlayerBtns(){
   const grid=document.getElementById('playerBtnGrid');
-  const players=playersData.filter(p=>p.group===currentPlayerGroup).slice().sort((a,b)=>{
-    const na=(a.number!==undefined&&a.number!==null&&a.number!=='')?Number(a.number):Infinity;
-    const nb=(b.number!==undefined&&b.number!==null&&b.number!=='')?Number(b.number):Infinity;
-    if(na!==nb)return na-nb;return a.name.localeCompare(b.name,'ja');
-  });
+  const players=playersData.filter(p=>p.group===currentPlayerGroup).slice().sort((a,b)=>{const na=(a.number!==undefined&&a.number!==null&&a.number!=='')?Number(a.number):Infinity;const nb=(b.number!==undefined&&b.number!==null&&b.number!=='')?Number(b.number):Infinity;if(na!==nb)return na-nb;return a.name.localeCompare(b.name,'ja');});
   if(!players.length){grid.innerHTML='<span style="color:#888;font-size:13px;">選手が登録されていません</span>';return;}
-  grid.innerHTML=players.map(p=>{
-    const sel=selectedPlayer===p.name?(p.group==='female'?'selected-female':p.group==='male'?'selected-male':'selected-ob'):'';
-    return`<button class="player-btn ${sel}" onclick="selectPlayer('${escH(p.name)}')">${escH(p.name)}</button>`;
-  }).join('');
+  grid.innerHTML=players.map(p=>{const sel=selectedPlayer===p.name?(p.group==='female'?'selected-female':p.group==='male'?'selected-male':'selected-ob'):'';return`<button class="player-btn ${sel}" onclick="selectPlayer('${escH(p.name)}')">${escH(p.name)}</button>`;}).join('');
 }
 function selectPlayer(name){selectedPlayer=name;renderPlayerBtns();renderStatsPage();}
-function clearStatsDisplay(){
-  document.getElementById('statsPlayerBlock').style.display='none';
-  document.getElementById('statsNoData').style.display='block';
-  document.getElementById('statsNoData').textContent='上のボタンから選手を選択してください';
+function clearStatsDisplay(){document.getElementById('statsPlayerBlock').style.display='none';document.getElementById('statsNoData').style.display='block';document.getElementById('statsNoData').textContent='上のボタンから選手を選択してください';}
+function clearStatsFilters(){document.getElementById('statsFilterOpponent').value='';document.getElementById('statsDateFrom').value='';document.getElementById('statsDateTo').value='';renderStatsPage();}
+
+/* ══ スタッツ集計ヘルパー ══ */
+function calcStats(rows){
+  let fgM=0,fgA=0,ftM=0,ftA=0,rO=0,rD=0,ast=0,stl=0,blk=0,qs=0;
+  rows.forEach(s=>{fgM+=getFgMade(s);fgA+=getFgAtt(s);ftM+=getFtMade(s);ftA+=getFtAtt(s);rO+=getRebOff(s);rD+=getRebDef(s);ast+=s.ast||0;stl+=s.stl||0;blk+=s.blk||0;qs+=getQCount(s);});
+  const n=rows.length;
+  const pts=fgM*2+ftM;
+  return{
+    games:n,qs,pts,avgPts:n?pts/n:0,
+    fgM,fgA,fgPct:fgA?fgM/fgA*100:0,
+    ftM,ftA,ftPct:ftA?ftM/ftA*100:0,
+    reb:rO+rD,rebO:rO,rebD:rD,
+    ast,stl,blk,
+    avgQs:n?qs/n:0,avgReb:n?(rO+rD)/n:0,avgAst:n?ast/n:0,avgStl:n?stl/n:0,avgBlk:n?blk/n:0
+  };
 }
-function clearStatsFilters(){
-  document.getElementById('statsFilterOpponent').value='';
-  document.getElementById('statsDateFrom').value='';
-  document.getElementById('statsDateTo').value='';
-  renderStatsPage();
+
+/* レーダー用スコア算出 */
+function radarScores(st){
+  return[
+    Math.min(st.avgPts/20*100,100),
+    st.fgPct,
+    st.ftPct,
+    Math.min(st.avgReb/10*100,100),
+    Math.min(st.avgAst/5*100,100),
+    Math.min(st.avgStl/3*100,100)
+  ];
 }
+
+/* フィルタリングヘルパー */
+function filterRows(playerName,dateFrom,dateTo){
+  return statsData.filter(s=>{
+    if(s.playerName!==playerName)return false;
+    if(dateFrom&&s.date<dateFrom)return false;
+    if(dateTo&&s.date>dateTo)return false;
+    return true;
+  });
+}
+
+/* ══════════════════════════════════════════════
+   比較：選手セレクト構築
+══════════════════════════════════════════════ */
+function buildCmpPlayerSelects(){
+  const names=[...new Set(statsData.map(s=>s.playerName))].sort((a,b)=>a.localeCompare(b,'ja'));
+  ['selfCmpPlayer','playerCmpA','playerCmpB'].forEach(id=>{
+    const sel=document.getElementById(id);if(!sel)return;
+    const cur=sel.value;
+    sel.innerHTML='<option value="">選手を選択</option>';
+    names.forEach(n=>{const opt=document.createElement('option');opt.value=n;opt.textContent=n;sel.appendChild(opt);});
+    if(names.includes(cur))sel.value=cur;
+  });
+}
+
+/* ══════════════════════════════════════════════
+   比較：共通HTML生成ヘルパー
+══════════════════════════════════════════════ */
+function buildCmpSummaryCards(stA,stB,labelA,labelB){
+  const items=[
+    {k:'games',    lbl:'試合数',      fmt:v=>v,         unit:''},
+    {k:'qs',       lbl:'総出場Q',     fmt:v=>v,         unit:''},
+    {k:'avgPts',   lbl:'平均得点',    fmt:v=>v.toFixed(1),unit:''},
+    {k:'fgPct',    lbl:'FG成功率',    fmt:v=>v.toFixed(1),unit:'%'},
+    {k:'ftPct',    lbl:'FT成功率',    fmt:v=>v.toFixed(1),unit:'%'},
+    {k:'avgReb',   lbl:'平均REB',     fmt:v=>v.toFixed(1),unit:''},
+    {k:'avgAst',   lbl:'平均AST',     fmt:v=>v.toFixed(1),unit:''},
+    {k:'avgStl',   lbl:'平均STL',     fmt:v=>v.toFixed(1),unit:''},
+  ];
+  function side(st,otherSt,cls,label){
+    const cards=items.map(it=>{
+      const va=st[it.k],vb=otherSt[it.k];
+      const better=va>vb,worse=va<vb,eq=va===vb;
+      const valCls=better?'better':worse?'worse':'';
+      return`<div class="cmp-stat-item">
+        <div class="cmp-stat-val ${valCls}">${it.fmt(va)}${it.unit}${better?' ▲':worse?' ▼':''}</div>
+        <div class="cmp-stat-lbl">${it.lbl}</div>
+      </div>`;
+    }).join('');
+    return`<div class="cmp-side">
+      <div class="cmp-side-header ${cls}">${label}<span style="margin-left:auto;font-size:11px;opacity:.8;">${st.games}試合</span></div>
+      <div class="cmp-side-body"><div class="cmp-stat-grid">${cards}</div></div>
+    </div>`;
+  }
+  return`<div class="cmp-result">
+    ${side(stA,stB,'side-a',labelA)}
+    ${side(stB,stA,'side-b',labelB)}
+  </div>`;
+}
+
+function buildCmpCharts(canvasIdRadar,canvasIdBar,stA,stB,labelA,labelB){
+  return`<div class="cmp-charts">
+    <div class="cmp-chart-card">
+      <h4>🕸️ 能力レーダー比較</h4>
+      <div class="cmp-chart-wrap"><canvas id="${canvasIdRadar}"></canvas></div>
+    </div>
+    <div class="cmp-chart-card">
+      <h4>📊 主要スタッツ比較（平均）</h4>
+      <div class="cmp-chart-wrap"><canvas id="${canvasIdBar}"></canvas></div>
+    </div>
+  </div>`;
+}
+
+function renderCmpRadar(canvasId,stA,stB,labelA,labelB,instRef,setInst){
+  if(instRef)instRef.destroy();
+  const inst=new Chart(document.getElementById(canvasId),{
+    type:'radar',
+    data:{
+      labels:['得点力','FG精度','FT精度','リバウンド','アシスト','スティール'],
+      datasets:[
+        {label:labelA,data:radarScores(stA),backgroundColor:'rgba(21,101,192,.18)',borderColor:'#1565c0',pointBackgroundColor:'#1565c0',pointRadius:4,borderWidth:2},
+        {label:labelB,data:radarScores(stB),backgroundColor:'rgba(198,40,40,.18)',borderColor:'#c62828',pointBackgroundColor:'#c62828',pointRadius:4,borderWidth:2}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,scales:{r:{beginAtZero:true,max:100,ticks:{stepSize:25,font:{size:9},callback:v=>v+'%'},pointLabels:{font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:10}}}}
+  });
+  setInst(inst);
+}
+
+function renderCmpBar(canvasId,stA,stB,labelA,labelB,instRef,setInst){
+  if(instRef)instRef.destroy();
+  const inst=new Chart(document.getElementById(canvasId),{
+    type:'bar',
+    data:{
+      labels:['平均得点','FG%','FT%','平均REB','平均AST','平均STL'],
+      datasets:[
+        {label:labelA,data:[stA.avgPts,stA.fgPct,stA.ftPct,stA.avgReb,stA.avgAst,stA.avgStl].map(v=>+v.toFixed(2)),backgroundColor:'rgba(21,101,192,.75)',borderColor:'#1565c0',borderWidth:1},
+        {label:labelB,data:[stB.avgPts,stB.fgPct,stB.ftPct,stB.avgReb,stB.avgAst,stB.avgStl].map(v=>+v.toFixed(2)),backgroundColor:'rgba(198,40,40,.75)',borderColor:'#c62828',borderWidth:1}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,ticks:{font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:10}}}}
+  });
+  setInst(inst);
+}
+
+function buildCmpTable(stA,stB,labelA,labelB){
+  const rows=[
+    ['試合数',        stA.games,     stB.games,     v=>v,              ''],
+    ['総出場Q',       stA.qs,        stB.qs,        v=>v,              ''],
+    ['総得点',        stA.pts,       stB.pts,       v=>v,              ''],
+    ['平均得点',      stA.avgPts,    stB.avgPts,    v=>v.toFixed(1),   ''],
+    ['FG成功',        stA.fgM,       stB.fgM,       v=>v,              ''],
+    ['FG試投',        stA.fgA,       stB.fgA,       v=>v,              ''],
+    ['FG成功率',      stA.fgPct,     stB.fgPct,     v=>v.toFixed(1),   '%'],
+    ['FT成功',        stA.ftM,       stB.ftM,       v=>v,              ''],
+    ['FT試投',        stA.ftA,       stB.ftA,       v=>v,              ''],
+    ['FT成功率',      stA.ftPct,     stB.ftPct,     v=>v.toFixed(1),   '%'],
+    ['OR',            stA.rebO,      stB.rebO,      v=>v,              ''],
+    ['DR',            stA.rebD,      stB.rebD,      v=>v,              ''],
+    ['REB合計',       stA.reb,       stB.reb,       v=>v,              ''],
+    ['平均REB',       stA.avgReb,    stB.avgReb,    v=>v.toFixed(2),   ''],
+    ['AST合計',       stA.ast,       stB.ast,       v=>v,              ''],
+    ['平均AST',       stA.avgAst,    stB.avgAst,    v=>v.toFixed(2),   ''],
+    ['STL合計',       stA.stl,       stB.stl,       v=>v,              ''],
+    ['平均STL',       stA.avgStl,    stB.avgStl,    v=>v.toFixed(2),   ''],
+    ['BLK合計',       stA.blk,       stB.blk,       v=>v,              ''],
+  ];
+  const maxDiff=Math.max(...rows.map(r=>Math.abs(r[1]-r[2])),1);
+  const trs=rows.map(([lbl,va,vb,fmt,unit])=>{
+    const diff=va-vb;
+    const clsA=diff>0?'val-better':diff<0?'val-worse':'val-equal';
+    const clsB=diff<0?'val-better':diff>0?'val-worse':'val-equal';
+    const pct=Math.min(Math.abs(diff)/maxDiff*100,100);
+    const diffBar=`<div class="diff-bar-wrap">
+      <div class="diff-bar ${diff>0?'pos':'neg'}" style="width:${pct.toFixed(0)}px;max-width:80px;"></div>
+      <span class="diff-val ${diff>0?'pos':diff<0?'neg':'zero'}">${diff>0?'+':''}${fmt(diff)}${unit}</span>
+    </div>`;
+    return`<tr>
+      <td class="td-item">${lbl}</td>
+      <td class="${clsA}">${fmt(va)}${unit}</td>
+      <td class="${clsB}">${fmt(vb)}${unit}</td>
+      <td>${diffBar}</td>
+    </tr>`;
+  }).join('');
+  return`<div class="cmp-table-wrap">
+    <table class="cmp-table">
+      <thead><tr>
+        <th style="text-align:left;background:#546e7a;min-width:100px;">項目</th>
+        <th class="th-a">${escH(labelA)}</th>
+        <th class="th-b">${escH(labelB)}</th>
+        <th style="background:#546e7a;min-width:120px;">差（A−B）</th>
+      </tr></thead>
+      <tbody>${trs}</tbody>
+    </table>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════
+   個人比較（期間）
+══════════════════════════════════════════════ */
+function runSelfCmp(){
+  const playerName=document.getElementById('selfCmpPlayer').value;
+  const aFrom=document.getElementById('selfCmpAFrom').value;
+  const aTo  =document.getElementById('selfCmpATo').value;
+  const bFrom=document.getElementById('selfCmpBFrom').value;
+  const bTo  =document.getElementById('selfCmpBTo').value;
+  const resultEl=document.getElementById('selfCmpResult');
+
+  if(!playerName){showToast('⚠️ 選手を選択してください');return;}
+
+  const rowsA=filterRows(playerName,aFrom,aTo);
+  const rowsB=filterRows(playerName,bFrom,bTo);
+
+  if(!rowsA.length&&!rowsB.length){
+    resultEl.innerHTML=`<div class="cmp-no-data">📭 該当するデータがありません</div>`;return;
+  }
+
+  const stA=calcStats(rowsA),stB=calcStats(rowsB);
+  const labelA=`期間A${aFrom||''}〜${aTo||''}（${rowsA.length}試合）`;
+  const labelB=`期間B${bFrom||''}〜${bTo||''}（${rowsB.length}試合）`;
+
+  resultEl.innerHTML=`
+    <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:10px;">👤 ${escH(playerName)}</div>
+    ${buildCmpSummaryCards(stA,stB,labelA,labelB)}
+    ${buildCmpCharts('selfCmpRadar','selfCmpBar',stA,stB,labelA,labelB)}
+    ${buildCmpTable(stA,stB,labelA,labelB)}
+  `;
+
+  /* チャート描画（DOM生成後に実行） */
+  setTimeout(()=>{
+    renderCmpRadar('selfCmpRadar',stA,stB,labelA,labelB,selfCmpRadarInst,inst=>{selfCmpRadarInst=inst;});
+    renderCmpBar('selfCmpBar',stA,stB,labelA,labelB,selfCmpBarInst,inst=>{selfCmpBarInst=inst;});
+  },50);
+}
+
+/* ══════════════════════════════════════════════
+   選手比較
+══════════════════════════════════════════════ */
+function runPlayerCmp(){
+  const nameA=document.getElementById('playerCmpA').value;
+  const nameB=document.getElementById('playerCmpB').value;
+  const df   =document.getElementById('playerCmpFrom').value;
+  const dt   =document.getElementById('playerCmpTo').value;
+  const resultEl=document.getElementById('playerCmpResult');
+
+  if(!nameA||!nameB){showToast('⚠️ 選手Aと選手Bを両方選択してください');return;}
+  if(nameA===nameB){showToast('⚠️ 異なる選手を選択してください');return;}
+
+  const rowsA=filterRows(nameA,df,dt);
+  const rowsB=filterRows(nameB,df,dt);
+
+  if(!rowsA.length&&!rowsB.length){
+    resultEl.innerHTML=`<div class="cmp-no-data">📭 該当するデータがありません</div>`;return;
+  }
+
+  const stA=calcStats(rowsA),stB=calcStats(rowsB);
+  const period=(df||dateTo)?`（${df||''}〜${dt||''}）`:'（全期間）';
+  const labelA=`${nameA}${period}`;
+  const labelB=`${nameB}${period}`;
+
+  resultEl.innerHTML=`
+    ${buildCmpSummaryCards(stA,stB,labelA,labelB)}
+    ${buildCmpCharts('playerCmpRadar','playerCmpBar',stA,stB,labelA,labelB)}
+    ${buildCmpTable(stA,stB,labelA,labelB)}
+  `;
+
+  setTimeout(()=>{
+    renderCmpRadar('playerCmpRadar',stA,stB,labelA,labelB,playerCmpRadarInst,inst=>{playerCmpRadarInst=inst;});
+    renderCmpBar('playerCmpBar',stA,stB,labelA,labelB,playerCmpBarInst,inst=>{playerCmpBarInst=inst;});
+  },50);
+}
+
+/* ══ 個人スタッツ描画 ══ */
 function renderStatsPage(){
   if(!selectedPlayer){clearStatsDisplay();return;}
-  const opp=document.getElementById('statsFilterOpponent').value;
-  const df=document.getElementById('statsDateFrom').value;
-  const dt=document.getElementById('statsDateTo').value;
-  const rows=statsData.filter(s=>{
-    if(s.playerName!==selectedPlayer)return false;
-    if(opp&&s.opponent!==opp)return false;
-    if(df&&s.date<df)return false;
-    if(dt&&s.date>dt)return false;
-    return true;
-  }).sort((a,b)=>a.date<b.date?-1:1);
+  const opp=document.getElementById('statsFilterOpponent').value,df=document.getElementById('statsDateFrom').value,dt=document.getElementById('statsDateTo').value;
+  const rows=statsData.filter(s=>{if(s.playerName!==selectedPlayer)return false;if(opp&&s.opponent!==opp)return false;if(df&&s.date<df)return false;if(dt&&s.date>dt)return false;return true;}).sort((a,b)=>a.date<b.date?-1:1);
   if(!rows.length){clearStatsDisplay();document.getElementById('statsNoData').textContent='該当するデータがありません';return;}
   const pInfo=playersData.find(p=>p.name===selectedPlayer)||{group:'female'};
   const grad=pInfo.group==='female'?'linear-gradient(135deg,var(--female-color),#e91e63)':pInfo.group==='male'?'linear-gradient(135deg,var(--male-color),#1976d2)':'linear-gradient(135deg,var(--ob-color),#9c27b0)';
@@ -1189,37 +1497,27 @@ function renderStatsPage(){
   document.getElementById('statsPlayerHeader').style.background=grad;
   document.getElementById('statsPlayerIcon').textContent=icon;
   document.getElementById('statsPlayerName').textContent=selectedPlayer;
-  let tFgM=0,tFgA=0,tFtM=0,tFtA=0,tRO=0,tRD=0,tAst=0,tStl=0,tBlk=0,tQs=0;
-  const fgMQ={q1:0,q2:0,q3:0,q4:0},fgAQ={q1:0,q2:0,q3:0,q4:0},ftMQ={q1:0,q2:0,q3:0,q4:0},ftAQ={q1:0,q2:0,q3:0,q4:0},qCnt={q1:0,q2:0,q3:0,q4:0};
-  rows.forEach(s=>{
-    ['q1','q2','q3','q4'].forEach(q=>{
-      if(getQ(s,q))qCnt[q]++;
-      fgMQ[q]+=getFgMadeQ(s,q);fgAQ[q]+=getFgAttQ(s,q);
-      ftMQ[q]+=getFtMadeQ(s,q);ftAQ[q]+=getFtAttQ(s,q);
-    });
-    tFgM+=getFgMade(s);tFgA+=getFgAtt(s);tFtM+=getFtMade(s);tFtA+=getFtAtt(s);
-    tRO+=getRebOff(s);tRD+=getRebDef(s);tAst+=s.ast||0;tStl+=s.stl||0;tBlk+=s.blk||0;tQs+=getQCount(s);
-  });
-  const totalPts=tFgM*2+tFtM,fgPct=tFgA>0?(tFgM/tFgA*100).toFixed(1):'-',ftPct=tFtA>0?(tFtM/tFtA*100).toFixed(1):'-',avgPts=rows.length>0?(totalPts/rows.length).toFixed(1):0;
-  document.getElementById('statsPlayerSub').textContent=`${rows.length}試合 / 出場${tQs}Q / 平均${avgPts}点`;
+  const st=calcStats(rows);
+  const fgPct=st.fgA?st.fgPct.toFixed(1):'-',ftPct=st.ftA?st.ftPct.toFixed(1):'-';
+  document.getElementById('statsPlayerSub').textContent=`${rows.length}試合 / 出場${st.qs}Q / 平均${st.avgPts.toFixed(1)}点`;
   document.getElementById('statsTablePlayerName').textContent=selectedPlayer;
   document.getElementById('statsSummaryCards').innerHTML=[
-    {v:rows.length,l:'試合数'},{v:tQs,l:'出場Q数'},{v:totalPts,l:'総得点'},{v:avgPts,l:'平均得点'},
-    {v:`${tFgM}/${tFgA}`,l:'FG成功/試投'},{v:fgPct==='-'?'-':fgPct+'%',l:'FG成功率'},
-    {v:`${tFtM}/${tFtA}`,l:'FT成功/試投'},{v:ftPct==='-'?'-':ftPct+'%',l:'FT成功率'},
-    {v:tRO+tRD,l:'REB合計'},{v:tAst,l:'AST'},{v:tStl,l:'STL'},{v:tBlk,l:'BLK'}
+    {v:rows.length,l:'試合数'},{v:st.qs,l:'出場Q数'},{v:st.pts,l:'総得点'},{v:st.avgPts.toFixed(1),l:'平均得点'},
+    {v:`${st.fgM}/${st.fgA}`,l:'FG成功/試投'},{v:fgPct==='-'?'-':fgPct+'%',l:'FG成功率'},
+    {v:`${st.ftM}/${st.ftA}`,l:'FT成功/試投'},{v:ftPct==='-'?'-':ftPct+'%',l:'FT成功率'},
+    {v:st.reb,l:'REB合計'},{v:st.ast,l:'AST'},{v:st.stl,l:'STL'},{v:st.blk,l:'BLK'}
   ].map(c=>`<div class="stats-card"><div class="sc-val">${c.v}</div><div class="sc-lbl">${c.l}</div></div>`).join('');
   const gameLabels=rows.map(s=>fmtDate(s.date));
-  const fgPctN=tFgA>0?tFgM/tFgA*100:0,ftPctN=tFtA>0?tFtM/tFtA*100:0;
-  const ptsScore=Math.min(totalPts/rows.length/20*100,100),rebScore=Math.min((tRO+tRD)/rows.length/10*100,100),astScore=Math.min(tAst/rows.length/5*100,100),stlScore=Math.min(tStl/rows.length/3*100,100);
+  const rs=radarScores(st);
+  const fgMQ={q1:0,q2:0,q3:0,q4:0},fgAQ={q1:0,q2:0,q3:0,q4:0};
+  rows.forEach(s=>{['q1','q2','q3','q4'].forEach(q=>{fgMQ[q]+=getFgMadeQ(s,q);fgAQ[q]+=getFgAttQ(s,q);});});
   if(statsRadarInst)statsRadarInst.destroy();
-  statsRadarInst=new Chart(document.getElementById('statsRadarChart'),{type:'radar',data:{labels:['得点力','FG精度','FT精度','リバウンド','アシスト','スティール'],datasets:[{label:selectedPlayer,data:[ptsScore,fgPctN,ftPctN,rebScore,astScore,stlScore],backgroundColor:'rgba(37,99,168,.2)',borderColor:'#2563a8',pointBackgroundColor:'#2563a8',pointRadius:4,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{beginAtZero:true,max:100,ticks:{stepSize:25,font:{size:9},callback:v=>v+'%'},pointLabels:{font:{size:10}}}},plugins:{legend:{display:false}}}});
+  statsRadarInst=new Chart(document.getElementById('statsRadarChart'),{type:'radar',data:{labels:['得点力','FG精度','FT精度','リバウンド','アシスト','スティール'],datasets:[{label:selectedPlayer,data:rs,backgroundColor:'rgba(37,99,168,.2)',borderColor:'#2563a8',pointBackgroundColor:'#2563a8',pointRadius:4,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{beginAtZero:true,max:100,ticks:{stepSize:25,font:{size:9},callback:v=>v+'%'},pointLabels:{font:{size:10}}}},plugins:{legend:{display:false}}}});
   if(statsPtsInst)statsPtsInst.destroy();
   statsPtsInst=new Chart(document.getElementById('statsPtsChart'),{type:'bar',data:{labels:gameLabels,datasets:[{label:'2P得点',data:rows.map(s=>getFgMade(s)*2),backgroundColor:'#f5a623',stack:'pts'},{label:'FT得点',data:rows.map(s=>getFtMade(s)),backgroundColor:'#4a90c4',stack:'pts'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,ticks:{font:{size:9}}},y:{stacked:true,beginAtZero:true,ticks:{stepSize:2,font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}}});
   if(statsQFgInst)statsQFgInst.destroy();
   statsQFgInst=new Chart(document.getElementById('statsQFgChart'),{type:'bar',data:{labels:['1Q','2Q','3Q','4Q'],datasets:[{label:'FG成功',data:[fgMQ.q1,fgMQ.q2,fgMQ.q3,fgMQ.q4],backgroundColor:'#f5a623'},{label:'FG失敗',data:[fgAQ.q1-fgMQ.q1,fgAQ.q2-fgMQ.q2,fgAQ.q3-fgMQ.q3,fgAQ.q4-fgMQ.q4],backgroundColor:'#e0e0e0'}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,ticks:{font:{size:11}}},y:{stacked:true,beginAtZero:true,ticks:{stepSize:1,font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}}});
-  function nd(v){return!v||v===0?'':v;}
-  function qMark(b){return b?`<span class="q-check">✓</span>`:`<span class="q-empty">-</span>`;}
+  function nd(v){return!v||v===0?'':v;}function qMark(b){return b?`<span class="q-check">✓</span>`:`<span class="q-empty">-</span>`;}
   function pctCell(m,a){if(!a)return'';const p=(m/a*100).toFixed(1);return`<span class="${Number(p)>=50?'pct-high':'pct-low'}">${p}%</span>`;}
   document.getElementById('statsMainBody').innerHTML=rows.map(s=>{
     const fgM1=getFgMadeQ(s,'q1'),fgM2=getFgMadeQ(s,'q2'),fgM3=getFgMadeQ(s,'q3'),fgM4=getFgMadeQ(s,'q4');
@@ -1227,480 +1525,59 @@ function renderStatsPage(){
     const ftM1=getFtMadeQ(s,'q1'),ftM2=getFtMadeQ(s,'q2'),ftM3=getFtMadeQ(s,'q3'),ftM4=getFtMadeQ(s,'q4');
     const ftA1=getFtAttQ(s,'q1'),ftA2=getFtAttQ(s,'q2'),ftA3=getFtAttQ(s,'q3'),ftA4=getFtAttQ(s,'q4');
     const fgMt=fgM1+fgM2+fgM3+fgM4,fgAt=fgA1+fgA2+fgA3+fgA4,ftMt=ftM1+ftM2+ftM3+ftM4,ftAt=ftA1+ftA2+ftA3+ftA4;
-    const qCntRow=['q1','q2','q3','q4'].filter(q=>getQ(s,q)).length;
-    const jr=(s.isJr===true||s.isJr==='true')?' (Jr)':'';
+    const qCntRow=['q1','q2','q3','q4'].filter(q=>getQ(s,q)).length;const jr=(s.isJr===true||s.isJr==='true')?' (Jr)':'';
     return`<tr><td>${fmtDate(s.date)}</td><td>${escH(s.category||'')}${jr}</td><td style="text-align:left;">${escH(s.matchName)}</td><td>${escH(s.opponent)}</td><td class="bl-thick-left">${qMark(getQ(s,'q1'))}</td><td>${qMark(getQ(s,'q2'))}</td><td>${qMark(getQ(s,'q3'))}</td><td>${qMark(getQ(s,'q4'))}</td><td style="font-weight:700;">${qCntRow||''}</td><td class="bl-thick-left td-fgm">${nd(fgM1)}</td><td class="td-fgm">${nd(fgM2)}</td><td class="td-fgm">${nd(fgM3)}</td><td class="td-fgm">${nd(fgM4)}</td><td class="td-fgm" style="font-weight:700;">${nd(fgMt)}</td><td class="bl-thick-left td-fga">${nd(fgA1)}</td><td class="td-fga">${nd(fgA2)}</td><td class="td-fga">${nd(fgA3)}</td><td class="td-fga">${nd(fgA4)}</td><td class="td-fga" style="font-weight:700;">${nd(fgAt)}</td><td class="bl-thick-left">${pctCell(fgMt,fgAt)}</td><td class="bl-thick-left td-ftm">${nd(ftM1)}</td><td class="td-ftm">${nd(ftM2)}</td><td class="td-ftm">${nd(ftM3)}</td><td class="td-ftm">${nd(ftM4)}</td><td class="td-ftm" style="font-weight:700;">${nd(ftMt)}</td><td class="bl-thick-left td-fta">${nd(ftA1)}</td><td class="td-fta">${nd(ftA2)}</td><td class="td-fta">${nd(ftA3)}</td><td class="td-fta">${nd(ftA4)}</td><td class="td-fta" style="font-weight:700;">${nd(ftAt)}</td><td class="bl-thick-left">${pctCell(ftMt,ftAt)}</td><td class="bl-thick-left">${nd(getRebOff(s))}</td><td>${nd(getRebDef(s))}</td><td>${nd(s.ast)}</td><td>${nd(s.stl)}</td><td>${nd(s.blk)}</td></tr>`;
   }).join('');
-  const fgPF=tFgA>0?`<span class="${Number(fgPct)>=50?'pct-high':'pct-low'}">${fgPct}%</span>`:'-';
-  const ftPF=tFtA>0?`<span class="${Number(ftPct)>=50?'pct-high':'pct-low'}">${ftPct}%</span>`:'-';
-  document.getElementById('statsMainFoot').innerHTML=`<tr><td colspan="4" style="text-align:left;">合計（${rows.length}試合）</td><td class="bl-thick-left">${qCnt.q1||''}</td><td>${qCnt.q2||''}</td><td>${qCnt.q3||''}</td><td>${qCnt.q4||''}</td><td>${tQs}</td><td class="bl-thick-left">${fgMQ.q1||''}</td><td>${fgMQ.q2||''}</td><td>${fgMQ.q3||''}</td><td>${fgMQ.q4||''}</td><td>${tFgM}</td><td class="bl-thick-left">${fgAQ.q1||''}</td><td>${fgAQ.q2||''}</td><td>${fgAQ.q3||''}</td><td>${fgAQ.q4||''}</td><td>${tFgA}</td><td class="bl-thick-left">${fgPF}</td><td class="bl-thick-left">${ftMQ.q1||''}</td><td>${ftMQ.q2||''}</td><td>${ftMQ.q3||''}</td><td>${ftMQ.q4||''}</td><td>${tFtM}</td><td class="bl-thick-left">${ftAQ.q1||''}</td><td>${ftAQ.q2||''}</td><td>${ftAQ.q3||''}</td><td>${ftAQ.q4||''}</td><td>${tFtA}</td><td class="bl-thick-left">${ftPF}</td><td class="bl-thick-left">${tRO}</td><td>${tRD}</td><td>${tAst}</td><td>${tStl}</td><td>${tBlk}</td></tr>`;
+  const tFgM=st.fgM,tFgA=st.fgA,tFtM=st.ftM,tFtA=st.ftA,tQs=st.qs,tRO=st.rebO,tRD=st.rebD,tAst=st.ast,tStl=st.stl,tBlk=st.blk;
+  const fgMQtot={q1:0,q2:0,q3:0,q4:0},fgAQtot={q1:0,q2:0,q3:0,q4:0},ftMQtot={q1:0,q2:0,q3:0,q4:0},ftAQtot={q1:0,q2:0,q3:0,q4:0},qCntTot={q1:0,q2:0,q3:0,q4:0};
+  rows.forEach(s=>{['q1','q2','q3','q4'].forEach(q=>{if(getQ(s,q))qCntTot[q]++;fgMQtot[q]+=getFgMadeQ(s,q);fgAQtot[q]+=getFgAttQ(s,q);ftMQtot[q]+=getFtMadeQ(s,q);ftAQtot[q]+=getFtAttQ(s,q);});});
+  const fgPF=tFgA>0?`<span class="${st.fgPct>=50?'pct-high':'pct-low'}">${st.fgPct.toFixed(1)}%</span>`:'-';
+  const ftPF=tFtA>0?`<span class="${st.ftPct>=50?'pct-high':'pct-low'}">${st.ftPct.toFixed(1)}%</span>`:'-';
+  document.getElementById('statsMainFoot').innerHTML=`<tr><td colspan="4" style="text-align:left;">合計（${rows.length}試合）</td><td class="bl-thick-left">${qCntTot.q1||''}</td><td>${qCntTot.q2||''}</td><td>${qCntTot.q3||''}</td><td>${qCntTot.q4||''}</td><td>${tQs}</td><td class="bl-thick-left">${fgMQtot.q1||''}</td><td>${fgMQtot.q2||''}</td><td>${fgMQtot.q3||''}</td><td>${fgMQtot.q4||''}</td><td>${tFgM}</td><td class="bl-thick-left">${fgAQtot.q1||''}</td><td>${fgAQtot.q2||''}</td><td>${fgAQtot.q3||''}</td><td>${fgAQtot.q4||''}</td><td>${tFgA}</td><td class="bl-thick-left">${fgPF}</td><td class="bl-thick-left">${ftMQtot.q1||''}</td><td>${ftMQtot.q2||''}</td><td>${ftMQtot.q3||''}</td><td>${ftMQtot.q4||''}</td><td>${tFtM}</td><td class="bl-thick-left">${ftAQtot.q1||''}</td><td>${ftAQtot.q2||''}</td><td>${ftAQtot.q3||''}</td><td>${ftAQtot.q4||''}</td><td>${tFtA}</td><td class="bl-thick-left">${ftPF}</td><td class="bl-thick-left">${tRO}</td><td>${tRD}</td><td>${tAst}</td><td>${tStl}</td><td>${tBlk}</td></tr>`;
   document.getElementById('statsPlayerBlock').style.display='block';
   document.getElementById('statsNoData').style.display='none';
 }
 
-/* ════════════════════════════════════════════
-   用語集
-════════════════════════════════════════════ */
-function kanaCompare(a,b){return(a||'').localeCompare(b||'','ja',{sensitivity:'base'});}
-function getGlossarySorted(){return[...(glossaryData||[])].sort((a,b)=>(a.order||0)-(b.order||0));}
-
-/* 用語集内に用語が存在するか確認 */
-function findTermInGlossary(termName){
-  const trimmed=(termName||'').trim();
-  for(const cat of glossaryData){
-    for(const t of(cat.terms||[])){
-      if((t.term||'').trim()===trimmed)return{term:t,cat};
-    }
-  }
-  return null;
-}
-
-/* ★修正③：YouTube URL から動画IDを抽出 */
-function extractYouTubeId(url){
-  const m=(url||'').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_\-]{11})/);
-  return m?m[1]:null;
-}
-
-/* ★修正③：メディアブロックのHTML生成 */
-function buildMediaHTML(mediaList){
-  if(!mediaList||!mediaList.length)return'';
-  const items=mediaList.map(m=>{
-    if(!m.url)return'';
-    const ytId=extractYouTubeId(m.url);
-    if(ytId){
-      return`<div class="gterm-media-item">
-        <div class="gterm-media-yt-wrap">
-          <iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy"
-            allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>
-        </div>
-        ${m.caption?`<div class="gterm-media-caption">${escH(m.caption)}</div>`:''}
-      </div>`;
-    }else{
-      return`<div class="gterm-media-item">
-        <img src="${escH(m.url)}" alt="${escH(m.caption||'')}" loading="lazy">
-        ${m.caption?`<div class="gterm-media-caption">${escH(m.caption)}</div>`:''}
-      </div>`;
-    }
-  }).filter(Boolean).join('');
-  return items?`<div class="gterm-media-list">${items}</div>`:'';
-}
-
-/* 関連用語ポップアップ */
-function openRelatedPopup(termName){
-  const found=findTermInGlossary(termName);
-  if(!found)return;
-  const sorted=getGlossarySorted();
-  const cidx=sorted.findIndex(c=>c.category===found.cat.category);
-  const colorIdx=Math.max(0,cidx)%8;
-  document.getElementById('relatedPopupLabel').textContent=`🔗 関連用語：${termName}`;
-  document.getElementById('relatedPopupBody').innerHTML=buildTermDetailHTML(found.term,found.cat.category,colorIdx,'');
-  document.getElementById('relatedPopupOverlay').classList.add('open');
-}
-function closeRelatedPopup(e){
-  if(e&&e.target!==document.getElementById('relatedPopupOverlay'))return;
-  document.getElementById('relatedPopupOverlay').classList.remove('open');
-}
-
-/* 検索 */
-function onGlossarySearch(val){
-  glossarySearchText=val;
-  const bar=document.getElementById('glossarySearchResultBar');
-  if(val.trim()){renderGlossaryAllSearch(val.trim());bar.style.display='block';}
-  else{bar.style.display='none';document.getElementById('glossarySearchCount').textContent='';renderGlossaryCats();}
-}
-function clearGlossarySearch(){
-  document.getElementById('glossarySearchInput').value='';glossarySearchText='';
-  document.getElementById('glossarySearchResultBar').style.display='none';
-  document.getElementById('glossarySearchCount').textContent='';
-  renderGlossaryCats();
-}
-
-/* 全カテゴリ横断検索 */
-function renderGlossaryAllSearch(kw){
-  const sorted=getGlossarySorted();
-  const termEl=document.getElementById('glossaryTermArea');
-  const bar=document.getElementById('glossarySearchResultBar');
-  const kwL=kw.toLowerCase();
-  let total=0,html='';
-  sorted.forEach((catObj,cidx)=>{
-    const colorIdx=cidx%8;
-    const terms=(catObj.terms||[]).filter(t=>
-      (t.term||'').toLowerCase().includes(kwL)||
-      (t.oneliner||'').toLowerCase().includes(kwL)||
-      (t.detail||'').toLowerCase().includes(kwL)||
-      (t.usage||'').toLowerCase().includes(kwL)||
-      (t.related||'').toLowerCase().includes(kwL)
-    );
-    if(!terms.length)return;
-    total+=terms.length;
-    const sorted2=[...terms].sort((a,b)=>kanaCompare(a.term,b.term));
-    /* ★修正①：用語名のみ（onelinerを表示しない） */
-    const itemsHtml=sorted2.map(t=>`
-      <div class="glossary-accordion-item">
-        <button class="glossary-accordion-trigger" onclick="toggleGlossaryItem(this)">
-          <span class="glossary-accordion-arrow">▶</span>
-          <span class="glossary-term-badge" data-cidx="${colorIdx}">${escH(catObj.category)}</span>
-          <span style="font-weight:700;">${highlightText(escH(t.term),kw)}</span>
-        </button>
-        <div class="glossary-accordion-body">${buildTermDetailHTML(t,catObj.category,colorIdx,kw)}</div>
-      </div>`).join('');
-    html+=`<div class="glossary-cat-heading" data-cidx="${colorIdx}">📋 ${escH(catObj.category)}<span class="glossary-cat-count">${terms.length}件ヒット</span></div><div class="glossary-term-list">${itemsHtml}</div>`;
-  });
-  bar.textContent=`🔍 「${kw}」の検索結果：${total}件`;
-  document.getElementById('glossarySearchCount').textContent=`${total}件`;
-  termEl.innerHTML=html||`<div class="glossary-no-cat">「${escH(kw)}」に一致する用語が見つかりませんでした</div>`;
-  document.querySelectorAll('.glossary-cat-btn').forEach(b=>b.classList.remove('active'));
-}
-
-/* カテゴリタブ */
-function renderGlossaryCats(){
-  const tabsEl=document.getElementById('glossaryCatTabs');
-  const sorted=getGlossarySorted();
-  if(!sorted.length){tabsEl.innerHTML='<span style="color:#888;">用語集データがありません</span>';document.getElementById('glossaryTermArea').innerHTML='';return;}
-  tabsEl.innerHTML=sorted.map((cat,i)=>`
-    <button class="glossary-cat-btn${glossarySelectedCat===cat.category?' active':''}" data-cidx="${i%8}"
-      onclick="selectGlossaryCat('${escH(cat.category)}')">${escH(cat.category)}</button>`).join('');
-  if(!glossarySelectedCat||!sorted.find(c=>c.category===glossarySelectedCat))glossarySelectedCat=sorted[0].category;
-  renderGlossaryTerms(sorted);
-}
-function selectGlossaryCat(catName){
-  glossarySelectedCat=catName;
-  document.getElementById('glossarySearchInput').value='';glossarySearchText='';
-  document.getElementById('glossarySearchResultBar').style.display='none';
-  document.getElementById('glossarySearchCount').textContent='';
-  document.querySelectorAll('.glossary-cat-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===catName));
-  renderGlossaryTerms(getGlossarySorted());
-}
-
-/* ★修正①：用語一覧 — 用語名のみ表示（onelinerを削除） */
-function renderGlossaryTerms(sorted){
-  const termEl=document.getElementById('glossaryTermArea');
-  const cidx=sorted.findIndex(c=>c.category===glossarySelectedCat);
-  const catObj=sorted[cidx];
-  if(!catObj){termEl.innerHTML='<div class="glossary-no-cat">カテゴリが見つかりません</div>';return;}
-  const colorIdx=cidx%8;
-  const terms=catObj.terms||[];
-  const sortedTerms=[...terms].sort((a,b)=>kanaCompare(a.term,b.term));
-  const itemsHtml=sortedTerms.map(t=>`
-    <div class="glossary-accordion-item">
-      <button class="glossary-accordion-trigger" onclick="toggleGlossaryItem(this)">
-        <span class="glossary-accordion-arrow">▶</span>
-        <span style="font-size:13px;font-weight:600;">${escH(t.term)}</span>
-      </button>
-      <div class="glossary-accordion-body">${buildTermDetailHTML(t,catObj.category,colorIdx,'')}</div>
-    </div>`).join('');
-  termEl.innerHTML=`
-    <div class="glossary-cat-heading" data-cidx="${colorIdx}">📋 ${escH(catObj.category)}<span class="glossary-cat-count">${terms.length}用語</span></div>
-    <div class="glossary-term-list">
-      ${terms.length?itemsHtml:'<div style="padding:20px;text-align:center;color:#888;">用語が登録されていません</div>'}
-    </div>`;
-}
-
-/* ★修正③：3階層目詳細HTML（メディアセクション追加） */
-function buildTermDetailHTML(t,catName,colorIdx,kw){
-  const hl=str=>kw?highlightText(escH(str||''),kw):escH(str||'');
-
-  /* 関連用語タグ */
-  let relatedHTML='';
-  if(t.related&&t.related.trim()){
-    const tags=t.related.split(/[,、]/).map(s=>s.trim()).filter(Boolean);
-    relatedHTML=tags.map(tag=>{
-      const exists=!!findTermInGlossary(tag);
-      if(exists){
-        return`<span class="gterm-related-tag has-link"
-          onclick="openRelatedPopup('${escH(tag).replace(/'/g,"\\'")}')">🔗 ${hl(tag)}</span>`;
-      }else{
-        return`<span class="gterm-related-tag">🔗 ${hl(tag)}</span>`;
-      }
-    }).join('');
-  }
-
-  /* ★修正③：メディアセクション */
-  const mediaHTML=buildMediaHTML(t.media||[]);
-
-  return`<div class="gterm-detail">
-    <div class="gterm-title-banner">
-      <span class="gterm-title-icon">🏀</span>
-      <span class="gterm-title-text">${hl(t.term)}</span>
-      <span class="gterm-title-cat">${escH(catName)}</span>
-    </div>
-    <div class="gterm-oneliner">
-      <span class="gterm-oneliner-icon">💡</span>
-      <span class="gterm-oneliner-text">${t.oneliner?hl(t.oneliner):'<span style="color:#bbb;font-weight:400;font-size:13px;">未登録</span>'}</span>
-    </div>
-    <div class="gterm-section">
-      <div class="gterm-section-header detail">📖 くわしい説明</div>
-      ${t.detail?`<div class="gterm-section-body">${hl(t.detail).replace(/\n/g,'<br>')}</div>`:`<div class="gterm-empty-section">未登録</div>`}
-    </div>
-    <div class="gterm-section">
-      <div class="gterm-section-header usage">🏀 試合でどう使う？</div>
-      ${t.usage?`<div class="gterm-section-body">${hl(t.usage).replace(/\n/g,'<br>')}</div>`:`<div class="gterm-empty-section">未登録</div>`}
-    </div>
-    <div class="gterm-section">
-      <div class="gterm-section-header related">🔗 関連用語</div>
-      ${relatedHTML?`<div class="gterm-related-tags">${relatedHTML}</div>`:`<div class="gterm-empty-section">未登録</div>`}
-    </div>
-    ${mediaHTML?`<div class="gterm-section">
-      <div class="gterm-section-header media">🎬 メディア</div>
-      ${mediaHTML}
-    </div>`:''}
-  </div>`;
-}
-
-function highlightText(html,kw){
-  if(!kw)return html;
-  const e=kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  return html.replace(new RegExp(`(${e})`,'gi'),'<mark>$1</mark>');
-}
-function toggleGlossaryItem(btn){
-  const body=btn.nextElementSibling;const isOpen=btn.classList.contains('open');
-  btn.closest('.glossary-term-list').querySelectorAll('.glossary-accordion-trigger').forEach(b=>{
-    b.classList.remove('open');b.nextElementSibling.classList.remove('open');
-  });
-  if(!isOpen){btn.classList.add('open');body.classList.add('open');}
-}
-
-/* ════════ 用語集 管理エディタ ════════ */
-function renderGlossaryEditor(){
-  const sorted=getGlossarySorted();
-  const catListEl=document.getElementById('geCatList');
-  if(!sorted.length){catListEl.innerHTML='<div class="ge-empty">カテゴリなし</div>';return;}
-  catListEl.innerHTML=sorted.map((cat,i)=>`
-    <div class="ge-cat-item${geSelectedCatIdx===i?' active':''}" onclick="selectGeCat(${i})">
-      <span class="ge-cat-dot" style="background:${GE_COLORS[i%8]};"></span>
-      <span style="flex:1;">${escH(cat.category)}</span>
-      <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openGCatModal(${i})">✏️</button>
-      <button class="btn btn-danger btn-sm"  onclick="event.stopPropagation();deleteGCat(${i})">🗑️</button>
-    </div>`).join('');
-  renderGeTermList(sorted);
-}
-function selectGeCat(idx){geSelectedCatIdx=idx;renderGlossaryEditor();document.getElementById('geAddTermBtn').disabled=false;}
-function renderGeTermList(sorted){
-  const termListEl=document.getElementById('geTermList');
-  const labelEl=document.getElementById('geTermListLabel');
-  if(geSelectedCatIdx===null||geSelectedCatIdx===undefined||!sorted[geSelectedCatIdx]){
-    termListEl.innerHTML='<div class="ge-empty">← カテゴリを選択してください</div>';
-    labelEl.textContent='📝 用語一覧（カテゴリを選択）';return;
-  }
-  const cat=sorted[geSelectedCatIdx];
-  labelEl.textContent=`📝 用語一覧：${cat.category}`;
-  const terms=cat.terms||[];
-  if(!terms.length){termListEl.innerHTML='<div class="ge-empty">用語なし</div>';return;}
-  termListEl.innerHTML=terms.map((t,i)=>`
-    <div class="ge-term-item">
-      <span class="ge-term-name">${escH(t.term)}</span>
-      <button class="btn btn-primary btn-sm" onclick="openGTermModal(${i})">✏️</button>
-      <button class="btn btn-danger btn-sm"  onclick="deleteGTerm(${i})">🗑️</button>
-    </div>`).join('');
-}
-
-function openGCatModal(idx){
-  editingGCatIdx=(idx!==undefined)?idx:null;
-  document.getElementById('gCatModalTitle').textContent=editingGCatIdx!==null?'カテゴリ編集':'カテゴリ追加';
-  const sorted=getGlossarySorted();
-  if(editingGCatIdx!==null&&sorted[editingGCatIdx]){
-    document.getElementById('gCatName').value=sorted[editingGCatIdx].category;
-    document.getElementById('gCatOrder').value=sorted[editingGCatIdx].order||10;
-  }else{document.getElementById('gCatName').value='';document.getElementById('gCatOrder').value=10;}
-  document.getElementById('gCatModal').classList.add('open');
-}
-async function saveGlossaryCat(){
-  const name=document.getElementById('gCatName').value.trim();
-  if(!name){showToast('⚠️ カテゴリ名を入力してください');return;}
-  const order=Number(document.getElementById('gCatOrder').value)||10;
-  const sorted=getGlossarySorted();
-  if(editingGCatIdx!==null&&sorted[editingGCatIdx]){
-    sorted[editingGCatIdx].category=name;sorted[editingGCatIdx].order=order;
-  }else{sorted.push({category:name,order,terms:[]});}
-  glossaryData=sorted;
-  await saveToFirebase('glossary',glossaryData);
-  closeModal('gCatModal');showToast('✅ カテゴリを保存しました');geSelectedCatIdx=null;
-}
-async function deleteGCat(idx){
-  if(!confirm('このカテゴリと全用語を削除しますか？'))return;
-  const sorted=getGlossarySorted();sorted.splice(idx,1);
-  glossaryData=sorted;
-  await saveToFirebase('glossary',glossaryData);
-  geSelectedCatIdx=null;showToast('🗑️ 削除しました');
-}
-
-/* ★修正③：メディア入力UI */
-function renderMediaList(){
-  const container=document.getElementById('gTermMediaList');
-  if(!container)return;
-  container.innerHTML=currentMediaList.map((m,i)=>`
-    <div class="media-editor-wrap">
-      <div class="media-editor-row">
-        <label>種類</label>
-        <select onchange="currentMediaList[${i}].type=this.value">
-          <option value="image"  ${m.type==='image'  ?'selected':''}>🖼 画像URL</option>
-          <option value="youtube"${m.type==='youtube'?'selected':''}>▶ YouTube URL</option>
-        </select>
-        <button class="media-remove-btn" onclick="removeMediaRow(${i})">✕ 削除</button>
-      </div>
-      <div class="media-editor-row">
-        <label>URL</label>
-        <input type="text" placeholder="${m.type==='youtube'?'https://www.youtube.com/watch?v=...':'https://example.com/image.jpg'}"
-          value="${escH(m.url||'')}"
-          oninput="currentMediaList[${i}].url=this.value">
-      </div>
-      <div class="media-editor-row">
-        <label>説明</label>
-        <input type="text" placeholder="キャプション（任意）"
-          value="${escH(m.caption||'')}"
-          oninput="currentMediaList[${i}].caption=this.value">
-      </div>
-    </div>`).join('');
-}
-function addMediaRow(){
-  currentMediaList.push({type:'image',url:'',caption:''});
-  renderMediaList();
-}
-function removeMediaRow(idx){
-  currentMediaList.splice(idx,1);
-  renderMediaList();
-}
-
-function openGTermModal(termIdx){
-  editingGTermIdx=(termIdx!==undefined)?termIdx:null;
-  document.getElementById('gTermModalTitle').textContent=editingGTermIdx!==null?'用語編集':'用語追加';
-  const sorted=getGlossarySorted();const cat=sorted[geSelectedCatIdx];
-  if(editingGTermIdx!==null&&cat&&cat.terms[editingGTermIdx]){
-    const t=cat.terms[editingGTermIdx];
-    document.getElementById('gTermName').value=t.term||'';
-    document.getElementById('gTermOneliner').value=t.oneliner||'';
-    document.getElementById('gTermDetail').value=t.detail||'';
-    document.getElementById('gTermUsage').value=t.usage||'';
-    document.getElementById('gTermRelated').value=t.related||'';
-    /* ★修正③：メディアリストを復元 */
-    currentMediaList=JSON.parse(JSON.stringify(t.media||[]));
-  }else{
-    ['gTermName','gTermOneliner','gTermDetail','gTermUsage','gTermRelated'].forEach(id=>document.getElementById(id).value='');
-    currentMediaList=[];
-  }
-  renderMediaList();
-  document.getElementById('gTermModal').classList.add('open');
-}
-
-async function saveGlossaryTerm(){
-  const termName=document.getElementById('gTermName').value.trim();
-  if(!termName){showToast('⚠️ 用語名を入力してください');return;}
-  if(geSelectedCatIdx===null){showToast('⚠️ カテゴリを選択してください');return;}
-  /* ★修正③：mediaを含めて保存 */
-  const rec={
-    term:termName,
-    oneliner:document.getElementById('gTermOneliner').value.trim(),
-    detail:document.getElementById('gTermDetail').value.trim(),
-    usage:document.getElementById('gTermUsage').value.trim(),
-    related:document.getElementById('gTermRelated').value.trim(),
-    media:currentMediaList.filter(m=>m.url.trim())
-  };
-  const sorted=getGlossarySorted();const cat=sorted[geSelectedCatIdx];
-  if(!cat){showToast('⚠️ カテゴリが見つかりません');return;}
-  if(!cat.terms)cat.terms=[];
-  if(editingGTermIdx!==null){cat.terms[editingGTermIdx]=rec;}else{cat.terms.push(rec);}
-  glossaryData=sorted;
-  await saveToFirebase('glossary',glossaryData);
-  closeModal('gTermModal');showToast('✅ 用語を保存しました');
-}
-async function deleteGTerm(termIdx){
-  if(!confirm('この用語を削除しますか？'))return;
-  const sorted=getGlossarySorted();const cat=sorted[geSelectedCatIdx];
-  if(!cat||!cat.terms)return;
-  cat.terms.splice(termIdx,1);glossaryData=sorted;
-  await saveToFirebase('glossary',glossaryData);
-  showToast('🗑️ 削除しました');
-}
-
-/* ════════ 管理画面（試合・スタッツ・選手） ════════ */
+/* ══ 管理画面 ══ */
 function renderAdminMatches(){
   const kw=document.getElementById('adminMatchFilter').value.trim().toLowerCase();
   let list=matchesData.filter(m=>!kw||`${m.date}${m.matchName}${m.opponent}`.toLowerCase().includes(kw));
-  list=[...list].sort((a,b)=>{
-    let va=a[admMatchSortCol]??'',vb=b[admMatchSortCol]??'';
-    if(['scoreFor','scoreAgainst'].includes(admMatchSortCol)){va=Number(va);vb=Number(vb);}
-    if(va<vb)return admMatchSortDir==='asc'?-1:1;if(va>vb)return admMatchSortDir==='asc'?1:-1;return 0;
-  });
-  const total=list.length,pages=Math.ceil(total/ADMIN_PAGE_SIZE)||1;
-  if(adminMatchPage>pages)adminMatchPage=pages;
+  list=[...list].sort((a,b)=>{let va=a[admMatchSortCol]??'',vb=b[admMatchSortCol]??'';if(['scoreFor','scoreAgainst'].includes(admMatchSortCol)){va=Number(va);vb=Number(vb);}if(va<vb)return admMatchSortDir==='asc'?-1:1;if(va>vb)return admMatchSortDir==='asc'?1:-1;return 0;});
+  const total=list.length,pages=Math.ceil(total/ADMIN_PAGE_SIZE)||1;if(adminMatchPage>pages)adminMatchPage=pages;
   const items=list.slice((adminMatchPage-1)*ADMIN_PAGE_SIZE,adminMatchPage*ADMIN_PAGE_SIZE);
-  ['date','category','matchName','opponent','scoreFor','result'].forEach(col=>{
-    const ic=document.getElementById('admMatchIc-'+col);
-    if(ic)ic.textContent=col===admMatchSortCol?(admMatchSortDir==='asc'?'▲':'▼'):'⇅';
-  });
-  document.getElementById('adminMatchBody').innerHTML=items.map(m=>{
-    const res=m.result==='勝'?`<span class="badge badge-win">勝</span>`:m.result==='負'?`<span class="badge badge-lose">負</span>`:`<span class="badge badge-draw">引</span>`;
-    return`<tr><td>${m.date}</td><td><span class="badge ${m.category==='男子'?'badge-male':'badge-female'}">${m.category}</span>${m.isJr?'<span class="badge badge-jr">Jr</span>':''}</td><td>${escH(m.matchName)}</td><td>${escH(m.opponent)}</td><td class="td-center">${m.scoreFor}–${m.scoreAgainst}</td><td class="td-center">${res}</td><td class="td-center"><button class="btn btn-primary btn-sm" onclick="openMatchModal(${m.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteMatch(${m.id})">🗑️</button></td></tr>`;
-  }).join('');
+  ['date','category','matchName','opponent','scoreFor','result'].forEach(col=>{const ic=document.getElementById('admMatchIc-'+col);if(ic)ic.textContent=col===admMatchSortCol?(admMatchSortDir==='asc'?'▲':'▼'):'⇅';});
+  document.getElementById('adminMatchBody').innerHTML=items.map(m=>{const res=m.result==='勝'?`<span class="badge badge-win">勝</span>`:m.result==='負'?`<span class="badge badge-lose">負</span>`:`<span class="badge badge-draw">引</span>`;return`<tr><td>${m.date}</td><td><span class="badge ${m.category==='男子'?'badge-male':'badge-female'}">${m.category}</span>${m.isJr?'<span class="badge badge-jr">Jr</span>':''}</td><td>${escH(m.matchName)}</td><td>${escH(m.opponent)}</td><td class="td-center">${m.scoreFor}–${m.scoreAgainst}</td><td class="td-center">${res}</td><td class="td-center"><button class="btn btn-primary btn-sm" onclick="openMatchModal(${m.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteMatch(${m.id})">🗑️</button></td></tr>`;}).join('');
   renderAdminPagination('adminMatchPagination',total,pages,adminMatchPage,'adminMatchGo');
 }
 function adminMatchGo(p){adminMatchPage=p;renderAdminMatches();}
-function admMatchSort(col){
-  if(admMatchSortCol===col)admMatchSortDir=admMatchSortDir==='asc'?'desc':'asc';
-  else{admMatchSortCol=col;admMatchSortDir='asc';}adminMatchPage=1;renderAdminMatches();
-}
+function admMatchSort(col){if(admMatchSortCol===col)admMatchSortDir=admMatchSortDir==='asc'?'desc':'asc';else{admMatchSortCol=col;admMatchSortDir='asc';}adminMatchPage=1;renderAdminMatches();}
 function renderAdminStats(){
   const kw=document.getElementById('adminStatsFilter').value.trim().toLowerCase();
   let list=statsData.filter(s=>!kw||`${s.playerName}${s.opponent}${s.matchName}`.toLowerCase().includes(kw));
-  list=[...list].sort((a,b)=>{
-    let va=a[admStatsSortCol]??'',vb=b[admStatsSortCol]??'';
-    if(va<vb)return admStatsSortDir==='asc'?-1:1;if(va>vb)return admStatsSortDir==='asc'?1:-1;return 0;
-  });
-  const total=list.length,pages=Math.ceil(total/ADMIN_PAGE_SIZE)||1;
-  if(adminStatsPage>pages)adminStatsPage=pages;
+  list=[...list].sort((a,b)=>{let va=a[admStatsSortCol]??'',vb=b[admStatsSortCol]??'';if(va<vb)return admStatsSortDir==='asc'?-1:1;if(va>vb)return admStatsSortDir==='asc'?1:-1;return 0;});
+  const total=list.length,pages=Math.ceil(total/ADMIN_PAGE_SIZE)||1;if(adminStatsPage>pages)adminStatsPage=pages;
   const items=list.slice((adminStatsPage-1)*ADMIN_PAGE_SIZE,adminStatsPage*ADMIN_PAGE_SIZE);
-  ['playerName','date','matchName','opponent'].forEach(col=>{
-    const ic=document.getElementById('admStatsIc-'+col);
-    if(ic)ic.textContent=col===admStatsSortCol?(admStatsSortDir==='asc'?'▲':'▼'):'⇅';
-  });
-  document.getElementById('adminStatsBody').innerHTML=items.map(s=>{
-    const fgM=getFgMade(s),fgA=getFgAtt(s);
-    return`<tr><td>${escH(s.playerName)}</td><td>${s.date}</td><td>${escH(s.matchName)}</td><td>${escH(s.opponent)}</td><td class="td-center">${fgM}/${fgA}</td><td class="td-center"><button class="btn btn-primary btn-sm" onclick="openStatsModal(${s.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteStat(${s.id})">🗑️</button></td></tr>`;
-  }).join('');
+  ['playerName','date','matchName','opponent'].forEach(col=>{const ic=document.getElementById('admStatsIc-'+col);if(ic)ic.textContent=col===admStatsSortCol?(admStatsSortDir==='asc'?'▲':'▼'):'⇅';});
+  document.getElementById('adminStatsBody').innerHTML=items.map(s=>{const fgM=getFgMade(s),fgA=getFgAtt(s);return`<tr><td>${escH(s.playerName)}</td><td>${s.date}</td><td>${escH(s.matchName)}</td><td>${escH(s.opponent)}</td><td class="td-center">${fgM}/${fgA}</td><td class="td-center"><button class="btn btn-primary btn-sm" onclick="openStatsModal(${s.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteStat(${s.id})">🗑️</button></td></tr>`;}).join('');
   renderAdminPagination('adminStatsPagination',total,pages,adminStatsPage,'adminStatsGo');
 }
 function adminStatsGo(p){adminStatsPage=p;renderAdminStats();}
-function admStatsSort(col){
-  if(admStatsSortCol===col)admStatsSortDir=admStatsSortDir==='asc'?'desc':'asc';
-  else{admStatsSortCol=col;admStatsSortDir='asc';}adminStatsPage=1;renderAdminStats();
-}
+function admStatsSort(col){if(admStatsSortCol===col)admStatsSortDir=admStatsSortDir==='asc'?'desc':'asc';else{admStatsSortCol=col;admStatsSortDir='asc';}adminStatsPage=1;renderAdminStats();}
 function renderAdminPagination(elId,total,pages,cur,fn){
   let h=`<span class="page-info">全${total}件${pages>1?' / '+pages+'ページ':''}</span>`;
-  if(pages>1){
-    h+=`<button class="page-btn" onclick="${fn}(${cur-1})" ${cur<=1?'disabled':''}>◀</button>`;
-    for(let i=Math.max(1,cur-2);i<=Math.min(pages,cur+2);i++)h+=`<button class="page-btn${i===cur?' active':''}" onclick="${fn}(${i})">${i}</button>`;
-    h+=`<button class="page-btn" onclick="${fn}(${cur+1})" ${cur>=pages?'disabled':''}>▶</button>`;
-  }
+  if(pages>1){h+=`<button class="page-btn" onclick="${fn}(${cur-1})" ${cur<=1?'disabled':''}>◀</button>`;for(let i=Math.max(1,cur-2);i<=Math.min(pages,cur+2);i++)h+=`<button class="page-btn${i===cur?' active':''}" onclick="${fn}(${i})">${i}</button>`;h+=`<button class="page-btn" onclick="${fn}(${cur+1})" ${cur>=pages?'disabled':''}>▶</button>`;}
   document.getElementById(elId).innerHTML=h;
 }
 function renderPlayerMaster(){
   const groups=[{k:'female',lbl:'👧 女子'},{k:'male',lbl:'👦 男子'},{k:'ob',lbl:'🎓 OB'}];
-  document.getElementById('playerMasterGrid').innerHTML=groups.map(g=>{
-    const ps=playersData.filter(p=>p.group===g.k).sort((a,b)=>{
-      const na=(a.number!==undefined&&a.number!==null&&a.number!=='')?Number(a.number):Infinity;
-      const nb=(b.number!==undefined&&b.number!==null&&b.number!=='')?Number(b.number):Infinity;
-      if(na!==nb)return na-nb;return a.name.localeCompare(b.name,'ja');
-    });
-    return`<div style="min-width:200px;"><div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:6px;">${g.lbl}</div>${ps.map(p=>{const nb=(p.number!==undefined&&p.number!==null&&p.number!=='')?`<span class="badge-number">#${p.number}</span>`:'';return`<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">${nb}<span style="font-size:13px;flex:1;">${escH(p.name)}</span><button class="btn btn-primary btn-sm" onclick="openPlayerModal(${p.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="deletePlayer(${p.id})">🗑️</button></div>`;}).join('')}</div>`;
-  }).join('');
+  document.getElementById('playerMasterGrid').innerHTML=groups.map(g=>{const ps=playersData.filter(p=>p.group===g.k).sort((a,b)=>{const na=(a.number!==undefined&&a.number!==null&&a.number!=='')?Number(a.number):Infinity;const nb=(b.number!==undefined&&b.number!==null&&b.number!=='')?Number(b.number):Infinity;if(na!==nb)return na-nb;return a.name.localeCompare(b.name,'ja');});return`<div style="min-width:200px;"><div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:6px;">${g.lbl}</div>${ps.map(p=>{const nb=(p.number!==undefined&&p.number!==null&&p.number!=='')?`<span class="badge-number">#${p.number}</span>`:'';return`<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">${nb}<span style="font-size:13px;flex:1;">${escH(p.name)}</span><button class="btn btn-primary btn-sm" onclick="openPlayerModal(${p.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="deletePlayer(${p.id})">🗑️</button></div>`;}).join('')}</div>`;}).join('');
 }
 
-/* ════════ CRUD – 試合 ════════ */
+/* ══ CRUD – 試合 ══ */
 function openMatchModal(id){
-  editingMatchId=id||null;
-  document.getElementById('matchModalTitle').textContent=id?'試合データ編集':'試合データ追加';
-  if(id){
-    const m=matchesData.find(x=>x.id===id);if(!m)return;
-    document.getElementById('mDate').value=m.date;document.getElementById('mVenue').value=m.venue;
-    document.getElementById('mCategory').value=m.category;document.getElementById('mIsJr').value=String(m.isJr);
-    document.getElementById('mMatchName').value=m.matchName;document.getElementById('mOpponent').value=m.opponent;
-    document.getElementById('mScoreFor').value=m.scoreFor;document.getElementById('mScoreAgainst').value=m.scoreAgainst;
-    document.getElementById('mVideoUrl').value=m.videoUrl||'';document.getElementById('mMemo').value=m.memo||'';
-  }else{
-    ['mDate','mVenue','mMatchName','mOpponent','mVideoUrl','mMemo'].forEach(i=>document.getElementById(i).value='');
-    document.getElementById('mCategory').value='男子';document.getElementById('mIsJr').value='false';
-    document.getElementById('mScoreFor').value='0';document.getElementById('mScoreAgainst').value='0';
-  }
+  editingMatchId=id||null;document.getElementById('matchModalTitle').textContent=id?'試合データ編集':'試合データ追加';
+  if(id){const m=matchesData.find(x=>x.id===id);if(!m)return;document.getElementById('mDate').value=m.date;document.getElementById('mVenue').value=m.venue;document.getElementById('mCategory').value=m.category;document.getElementById('mIsJr').value=String(m.isJr);document.getElementById('mMatchName').value=m.matchName;document.getElementById('mOpponent').value=m.opponent;document.getElementById('mScoreFor').value=m.scoreFor;document.getElementById('mScoreAgainst').value=m.scoreAgainst;document.getElementById('mVideoUrl').value=m.videoUrl||'';document.getElementById('mMemo').value=m.memo||'';}
+  else{['mDate','mVenue','mMatchName','mOpponent','mVideoUrl','mMemo'].forEach(i=>document.getElementById(i).value='');document.getElementById('mCategory').value='男子';document.getElementById('mIsJr').value='false';document.getElementById('mScoreFor').value='0';document.getElementById('mScoreAgainst').value='0';}
   document.getElementById('matchModal').classList.add('open');
 }
 async function saveMatch(){
@@ -1708,128 +1585,103 @@ async function saveMatch(){
   if(!date||!venue||!matchName||!opponent){showToast('⚠️ 必須項目を入力してください');return;}
   const sf=Number(document.getElementById('mScoreFor').value),sa=Number(document.getElementById('mScoreAgainst').value);
   const rec={date,venue,category:document.getElementById('mCategory').value,isJr:document.getElementById('mIsJr').value==='true',matchName,opponent,scoreFor:sf,scoreAgainst:sa,result:sf>sa?'勝':sf<sa?'負':'引',videoUrl:document.getElementById('mVideoUrl').value.trim(),memo:document.getElementById('mMemo').value.trim()};
-  if(editingMatchId){const i=matchesData.findIndex(x=>x.id===editingMatchId);if(i>=0)matchesData[i]={...matchesData[i],...rec};}
-  else{rec.id=Date.now();matchesData.push(rec);}
+  if(editingMatchId){const i=matchesData.findIndex(x=>x.id===editingMatchId);if(i>=0)matchesData[i]={...matchesData[i],...rec};}else{rec.id=Date.now();matchesData.push(rec);}
   await saveToFirebase('matches',matchesData);closeModal('matchModal');showToast('✅ 試合データを保存しました');
 }
 async function deleteMatch(id){if(!confirm('この試合データを削除しますか？'))return;matchesData=matchesData.filter(m=>m.id!==id);await saveToFirebase('matches',matchesData);showToast('🗑️ 削除しました');}
 
-/* ════════ CRUD – スタッツ ════════ */
+/* ══ CRUD – スタッツ ══ */
 function buildStatRecord(){
   const playerName=document.getElementById('sPName').value.trim(),date=document.getElementById('sSDate').value,matchName=document.getElementById('sSMatchName').value.trim(),opponent=document.getElementById('sSOpponent').value.trim();
   if(!playerName||!date||!matchName||!opponent)return null;
   const gv=id=>Number(document.getElementById(id).value)||0,gbv=id=>document.getElementById(id).value==='true';
   return{playerName,date,matchName,opponent,category:document.getElementById('sSCategory').value,isJr:document.getElementById('sSIsJr').value==='true',quarters:{q1:gbv('sQ1'),q2:gbv('sQ2'),q3:gbv('sQ3'),q4:gbv('sQ4')},fg:{made:{q1:gv('sFgMadeQ1'),q2:gv('sFgMadeQ2'),q3:gv('sFgMadeQ3'),q4:gv('sFgMadeQ4')},att:{q1:gv('sFgAttQ1'),q2:gv('sFgAttQ2'),q3:gv('sFgAttQ3'),q4:gv('sFgAttQ4')}},ft:{made:{q1:gv('sFtMadeQ1'),q2:gv('sFtMadeQ2'),q3:gv('sFtMadeQ3'),q4:gv('sFtMadeQ4')},att:{q1:gv('sFtAttQ1'),q2:gv('sFtAttQ2'),q3:gv('sFtAttQ3'),q4:gv('sFtAttQ4')}},reb:{off:gv('sRebOff'),def:gv('sRebDef')},ast:gv('sAst'),stl:gv('sStl'),blk:gv('sBlk')};
 }
-function resetStatsNumbers(){
-  ['sQ1','sQ2','sQ3','sQ4'].forEach(i=>document.getElementById(i).value='true');
-  ['sFgMadeQ1','sFgMadeQ2','sFgMadeQ3','sFgMadeQ4','sFgAttQ1','sFgAttQ2','sFgAttQ3','sFgAttQ4','sFtMadeQ1','sFtMadeQ2','sFtMadeQ3','sFtMadeQ4','sFtAttQ1','sFtAttQ2','sFtAttQ3','sFtAttQ4','sRebOff','sRebDef','sAst','sStl','sBlk'].forEach(i=>document.getElementById(i).value='0');
-}
+function resetStatsNumbers(){['sQ1','sQ2','sQ3','sQ4'].forEach(i=>document.getElementById(i).value='true');['sFgMadeQ1','sFgMadeQ2','sFgMadeQ3','sFgMadeQ4','sFgAttQ1','sFgAttQ2','sFgAttQ3','sFgAttQ4','sFtMadeQ1','sFtMadeQ2','sFtMadeQ3','sFtMadeQ4','sFtAttQ1','sFtAttQ2','sFtAttQ3','sFtAttQ4','sRebOff','sRebDef','sAst','sStl','sBlk'].forEach(i=>document.getElementById(i).value='0');}
 function openStatsModal(id){
-  editingStatsId=id||null;
-  document.getElementById('statsModalTitle').textContent=id?'スタッツ編集':'スタッツ追加';
+  editingStatsId=id||null;document.getElementById('statsModalTitle').textContent=id?'スタッツ編集':'スタッツ追加';
   const sv=(eid,val)=>document.getElementById(eid).value=val||0;
-  if(id){
-    const s=statsData.find(x=>x.id===id);if(!s)return;
-    document.getElementById('sSDate').value=s.date;document.getElementById('sSCategory').value=s.category||'女子';
-    document.getElementById('sSMatchName').value=s.matchName;document.getElementById('sSOpponent').value=s.opponent;
-    document.getElementById('sPName').value=s.playerName;document.getElementById('sSIsJr').value=String(s.isJr||false);
-    ['q1','q2','q3','q4'].forEach(q=>document.getElementById('s'+q.toUpperCase()).value=String(getQ(s,q)));
-    sv('sFgMadeQ1',s.fg?.made?.q1);sv('sFgMadeQ2',s.fg?.made?.q2);sv('sFgMadeQ3',s.fg?.made?.q3);sv('sFgMadeQ4',s.fg?.made?.q4);
-    sv('sFgAttQ1',s.fg?.att?.q1);sv('sFgAttQ2',s.fg?.att?.q2);sv('sFgAttQ3',s.fg?.att?.q3);sv('sFgAttQ4',s.fg?.att?.q4);
-    sv('sFtMadeQ1',s.ft?.made?.q1);sv('sFtMadeQ2',s.ft?.made?.q2);sv('sFtMadeQ3',s.ft?.made?.q3);sv('sFtMadeQ4',s.ft?.made?.q4);
-    sv('sFtAttQ1',s.ft?.att?.q1);sv('sFtAttQ2',s.ft?.att?.q2);sv('sFtAttQ3',s.ft?.att?.q3);sv('sFtAttQ4',s.ft?.att?.q4);
-    sv('sRebOff',s.reb?.off);sv('sRebDef',s.reb?.def);sv('sAst',s.ast);sv('sStl',s.stl);sv('sBlk',s.blk);
-  }else{
-    document.getElementById('sSDate').value='';document.getElementById('sSCategory').value='女子';
-    document.getElementById('sSMatchName').value='';document.getElementById('sSOpponent').value='';
-    document.getElementById('sPName').value='';document.getElementById('sSIsJr').value='false';
-    resetStatsNumbers();
-  }
+  if(id){const s=statsData.find(x=>x.id===id);if(!s)return;document.getElementById('sSDate').value=s.date;document.getElementById('sSCategory').value=s.category||'女子';document.getElementById('sSMatchName').value=s.matchName;document.getElementById('sSOpponent').value=s.opponent;document.getElementById('sPName').value=s.playerName;document.getElementById('sSIsJr').value=String(s.isJr||false);['q1','q2','q3','q4'].forEach(q=>document.getElementById('s'+q.toUpperCase()).value=String(getQ(s,q)));sv('sFgMadeQ1',s.fg?.made?.q1);sv('sFgMadeQ2',s.fg?.made?.q2);sv('sFgMadeQ3',s.fg?.made?.q3);sv('sFgMadeQ4',s.fg?.made?.q4);sv('sFgAttQ1',s.fg?.att?.q1);sv('sFgAttQ2',s.fg?.att?.q2);sv('sFgAttQ3',s.fg?.att?.q3);sv('sFgAttQ4',s.fg?.att?.q4);sv('sFtMadeQ1',s.ft?.made?.q1);sv('sFtMadeQ2',s.ft?.made?.q2);sv('sFtMadeQ3',s.ft?.made?.q3);sv('sFtMadeQ4',s.ft?.made?.q4);sv('sFtAttQ1',s.ft?.att?.q1);sv('sFtAttQ2',s.ft?.att?.q2);sv('sFtAttQ3',s.ft?.att?.q3);sv('sFtAttQ4',s.ft?.att?.q4);sv('sRebOff',s.reb?.off);sv('sRebDef',s.reb?.def);sv('sAst',s.ast);sv('sStl',s.stl);sv('sBlk',s.blk);}
+  else{document.getElementById('sSDate').value='';document.getElementById('sSCategory').value='女子';document.getElementById('sSMatchName').value='';document.getElementById('sSOpponent').value='';document.getElementById('sPName').value='';document.getElementById('sSIsJr').value='false';resetStatsNumbers();}
   document.getElementById('statsModal').classList.add('open');
 }
-async function saveStat(){
-  const rec=buildStatRecord();if(!rec){showToast('⚠️ 必須項目を入力してください');return;}
-  if(editingStatsId){const i=statsData.findIndex(x=>x.id===editingStatsId);if(i>=0)statsData[i]={...statsData[i],...rec};}
-  else{rec.id=Date.now();statsData.push(rec);}
-  await saveToFirebase('stats',statsData);closeModal('statsModal');showToast('✅ スタッツを保存しました');
-}
-async function saveStatAndContinue(){
-  const rec=buildStatRecord();if(!rec){showToast('⚠️ 必須項目を入力してください');return;}
-  const kD=document.getElementById('sSDate').value,kC=document.getElementById('sSCategory').value,kJ=document.getElementById('sSIsJr').value,kM=document.getElementById('sSMatchName').value,kO=document.getElementById('sSOpponent').value;
-  if(editingStatsId){const i=statsData.findIndex(x=>x.id===editingStatsId);if(i>=0)statsData[i]={...statsData[i],...rec};editingStatsId=null;}
-  else{rec.id=Date.now();statsData.push(rec);}
-  await saveToFirebase('stats',statsData);showToast('✅ 保存しました。続けて入力できます');
-  document.getElementById('sSDate').value=kD;document.getElementById('sSCategory').value=kC;
-  document.getElementById('sSMatchName').value=kM;document.getElementById('sSOpponent').value=kO;
-  document.getElementById('sPName').value='';document.getElementById('sSIsJr').value=kJ;
-  resetStatsNumbers();document.getElementById('statsModalTitle').textContent='スタッツ追加';
-  setTimeout(()=>document.getElementById('sPName').focus(),100);
-}
+async function saveStat(){const rec=buildStatRecord();if(!rec){showToast('⚠️ 必須項目を入力してください');return;}if(editingStatsId){const i=statsData.findIndex(x=>x.id===editingStatsId);if(i>=0)statsData[i]={...statsData[i],...rec};}else{rec.id=Date.now();statsData.push(rec);}await saveToFirebase('stats',statsData);closeModal('statsModal');showToast('✅ スタッツを保存しました');}
+async function saveStatAndContinue(){const rec=buildStatRecord();if(!rec){showToast('⚠️ 必須項目を入力してください');return;}const kD=document.getElementById('sSDate').value,kC=document.getElementById('sSCategory').value,kJ=document.getElementById('sSIsJr').value,kM=document.getElementById('sSMatchName').value,kO=document.getElementById('sSOpponent').value;if(editingStatsId){const i=statsData.findIndex(x=>x.id===editingStatsId);if(i>=0)statsData[i]={...statsData[i],...rec};editingStatsId=null;}else{rec.id=Date.now();statsData.push(rec);}await saveToFirebase('stats',statsData);showToast('✅ 保存しました。続けて入力できます');document.getElementById('sSDate').value=kD;document.getElementById('sSCategory').value=kC;document.getElementById('sSMatchName').value=kM;document.getElementById('sSOpponent').value=kO;document.getElementById('sPName').value='';document.getElementById('sSIsJr').value=kJ;resetStatsNumbers();document.getElementById('statsModalTitle').textContent='スタッツ追加';setTimeout(()=>document.getElementById('sPName').focus(),100);}
 async function deleteStat(id){if(!confirm('このスタッツデータを削除しますか？'))return;statsData=statsData.filter(s=>s.id!==id);await saveToFirebase('stats',statsData);showToast('🗑️ 削除しました');}
 
-/* ════════ CRUD – 選手 ════════ */
-function openPlayerModal(id){
-  editingPlayerId=id||null;
-  document.getElementById('playerModalTitle').textContent=id?'選手マスタ編集':'選手追加';
-  if(id){
-    const p=playersData.find(x=>x.id===id);if(!p)return;
-    document.getElementById('pName').value=p.name;document.getElementById('pGroup').value=p.group;
-    document.getElementById('pNumber').value=(p.number!==undefined&&p.number!==null)?p.number:'';
-  }else{
-    document.getElementById('pName').value='';document.getElementById('pGroup').value='female';document.getElementById('pNumber').value='';
-  }
-  document.getElementById('playerModal').classList.add('open');
-}
-async function savePlayer(){
-  const name=document.getElementById('pName').value.trim();if(!name){showToast('⚠️ 選手名を入力してください');return;}
-  const numVal=document.getElementById('pNumber').value;
-  const rec={name,group:document.getElementById('pGroup').value,number:numVal!==''?Number(numVal):null};
-  if(editingPlayerId){const i=playersData.findIndex(x=>x.id===editingPlayerId);if(i>=0)playersData[i]={...playersData[i],...rec};}
-  else{rec.id=Date.now();playersData.push(rec);}
-  await saveToFirebase('players',playersData);closeModal('playerModal');showToast('✅ 選手マスタを保存しました');
-}
+/* ══ CRUD – 選手 ══ */
+function openPlayerModal(id){editingPlayerId=id||null;document.getElementById('playerModalTitle').textContent=id?'選手マスタ編集':'選手追加';if(id){const p=playersData.find(x=>x.id===id);if(!p)return;document.getElementById('pName').value=p.name;document.getElementById('pGroup').value=p.group;document.getElementById('pNumber').value=(p.number!==undefined&&p.number!==null)?p.number:'';}else{document.getElementById('pName').value='';document.getElementById('pGroup').value='female';document.getElementById('pNumber').value='';}document.getElementById('playerModal').classList.add('open');}
+async function savePlayer(){const name=document.getElementById('pName').value.trim();if(!name){showToast('⚠️ 選手名を入力してください');return;}const numVal=document.getElementById('pNumber').value;const rec={name,group:document.getElementById('pGroup').value,number:numVal!==''?Number(numVal):null};if(editingPlayerId){const i=playersData.findIndex(x=>x.id===editingPlayerId);if(i>=0)playersData[i]={...playersData[i],...rec};}else{rec.id=Date.now();playersData.push(rec);}await saveToFirebase('players',playersData);closeModal('playerModal');showToast('✅ 選手マスタを保存しました');}
 async function deletePlayer(id){if(!confirm('この選手を削除しますか？'))return;playersData=playersData.filter(p=>p.id!==id);await saveToFirebase('players',playersData);showToast('🗑️ 削除しました');}
 
-/* ════════ データインポート・エクスポート ════════ */
-async function importData(e,type){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=async ev=>{
-    try{
-      const parsed=JSON.parse(ev.target.result);
-      const data=Array.isArray(parsed)?parsed:Array.isArray(parsed.items)?parsed.items:null;
-      if(!data)throw new Error('配列または{items:[...]}形式のJSONを選択してください');
-      if(type==='matches')matchesData=data;
-      else if(type==='stats')statsData=data;
-      else if(type==='players')playersData=data;
-      else if(type==='glossary')glossaryData=data;
-      await saveToFirebase(type,type==='matches'?matchesData:type==='stats'?statsData:type==='players'?playersData:glossaryData);
-      showToast('✅ 読み込み完了 ('+data.length+'件)');
-    }catch(err){showToast('⚠️ '+err.message);}
-  };
-  reader.readAsText(file);e.target.value='';
-}
-function exportData(type){
-  const map={matches:matchesData,stats:statsData,players:playersData,glossary:glossaryData};
-  const blob=new Blob([JSON.stringify(map[type],null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`thunders_${type}_${new Date().toISOString().slice(0,10)}.json`;a.click();
-}
+/* ══ インポート・エクスポート ══ */
+async function importData(e,type){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=async ev=>{try{const parsed=JSON.parse(ev.target.result);const data=Array.isArray(parsed)?parsed:Array.isArray(parsed.items)?parsed.items:null;if(!data)throw new Error('配列または{items:[...]}形式のJSONを選択してください');if(type==='matches')matchesData=data;else if(type==='stats')statsData=data;else if(type==='players')playersData=data;else if(type==='glossary')glossaryData=data;await saveToFirebase(type,type==='matches'?matchesData:type==='stats'?statsData:type==='players'?playersData:glossaryData);showToast('✅ 読み込み完了 ('+data.length+'件)');}catch(err){showToast('⚠️ '+err.message);}};reader.readAsText(file);e.target.value='';}
+function exportData(type){const map={matches:matchesData,stats:statsData,players:playersData,glossary:glossaryData};const blob=new Blob([JSON.stringify(map[type],null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`thunders_${type}_${new Date().toISOString().slice(0,10)}.json`;a.click();}
 
-/* ════════ 認証 ════════ */
+/* ══ 用語集 ══ */
+function kanaCompare(a,b){return(a||'').localeCompare(b||'','ja',{sensitivity:'base'});}
+function getGlossarySorted(){return[...(glossaryData||[])].sort((a,b)=>(a.order||0)-(b.order||0));}
+function findTermInGlossary(termName){const trimmed=(termName||'').trim();for(const cat of glossaryData){for(const t of(cat.terms||[])){if((t.term||'').trim()===trimmed)return{term:t,cat};}}return null;}
+function extractYouTubeId(url){const m=(url||'').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_\-]{11})/);return m?m[1]:null;}
+function buildMediaHTML(mediaList){if(!mediaList||!mediaList.length)return'';const items=mediaList.map(m=>{if(!m.url)return'';const ytId=extractYouTubeId(m.url);if(ytId){return`<div class="gterm-media-item"><div class="gterm-media-yt-wrap"><iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div>${m.caption?`<div class="gterm-media-caption">${escH(m.caption)}</div>`:''}</div>`;}else{return`<div class="gterm-media-item"><img src="${escH(m.url)}" alt="${escH(m.caption||'')}" loading="lazy">${m.caption?`<div class="gterm-media-caption">${escH(m.caption)}</div>`:''}</div>`;}}).filter(Boolean).join('');return items?`<div class="gterm-media-list">${items}</div>`:'';}
+function openRelatedPopup(termName){const found=findTermInGlossary(termName);if(!found)return;const sorted=getGlossarySorted();const cidx=sorted.findIndex(c=>c.category===found.cat.category);const colorIdx=Math.max(0,cidx)%8;document.getElementById('relatedPopupLabel').textContent=`🔗 関連用語：${termName}`;document.getElementById('relatedPopupBody').innerHTML=buildTermDetailHTML(found.term,found.cat.category,colorIdx,'');document.getElementById('relatedPopupOverlay').classList.add('open');}
+function closeRelatedPopup(e){if(e&&e.target!==document.getElementById('relatedPopupOverlay'))return;document.getElementById('relatedPopupOverlay').classList.remove('open');}
+function onGlossarySearch(val){glossarySearchText=val;const bar=document.getElementById('glossarySearchResultBar');if(val.trim()){renderGlossaryAllSearch(val.trim());bar.style.display='block';}else{bar.style.display='none';document.getElementById('glossarySearchCount').textContent='';renderGlossaryCats();}}
+function clearGlossarySearch(){document.getElementById('glossarySearchInput').value='';glossarySearchText='';document.getElementById('glossarySearchResultBar').style.display='none';document.getElementById('glossarySearchCount').textContent='';renderGlossaryCats();}
+function renderGlossaryAllSearch(kw){
+  const sorted=getGlossarySorted();const termEl=document.getElementById('glossaryTermArea');const bar=document.getElementById('glossarySearchResultBar');const kwL=kw.toLowerCase();let total=0,html='';
+  sorted.forEach((catObj,cidx)=>{const colorIdx=cidx%8;const terms=(catObj.terms||[]).filter(t=>(t.term||'').toLowerCase().includes(kwL)||(t.oneliner||'').toLowerCase().includes(kwL)||(t.detail||'').toLowerCase().includes(kwL)||(t.usage||'').toLowerCase().includes(kwL)||(t.related||'').toLowerCase().includes(kwL));if(!terms.length)return;total+=terms.length;const sorted2=[...terms].sort((a,b)=>kanaCompare(a.term,b.term));const itemsHtml=sorted2.map(t=>`<div class="glossary-accordion-item"><button class="glossary-accordion-trigger" onclick="toggleGlossaryItem(this)"><span class="glossary-accordion-arrow">▶</span><span class="glossary-term-badge" data-cidx="${colorIdx}">${escH(catObj.category)}</span><span style="font-weight:700;">${highlightText(escH(t.term),kw)}</span></button><div class="glossary-accordion-body">${buildTermDetailHTML(t,catObj.category,colorIdx,kw)}</div></div>`).join('');html+=`<div class="glossary-cat-heading" data-cidx="${colorIdx}">📋 ${escH(catObj.category)}<span class="glossary-cat-count">${terms.length}件ヒット</span></div><div class="glossary-term-list">${itemsHtml}</div>`;});
+  bar.textContent=`🔍 「${kw}」の検索結果：${total}件`;document.getElementById('glossarySearchCount').textContent=`${total}件`;
+  termEl.innerHTML=html||`<div class="glossary-no-cat">「${escH(kw)}」に一致する用語が見つかりませんでした</div>`;
+  document.querySelectorAll('.glossary-cat-btn').forEach(b=>b.classList.remove('active'));
+}
+function renderGlossaryCats(){
+  const tabsEl=document.getElementById('glossaryCatTabs');const sorted=getGlossarySorted();
+  if(!sorted.length){tabsEl.innerHTML='<span style="color:#888;">用語集データがありません</span>';document.getElementById('glossaryTermArea').innerHTML='';return;}
+  tabsEl.innerHTML=sorted.map((cat,i)=>`<button class="glossary-cat-btn${glossarySelectedCat===cat.category?' active':''}" data-cidx="${i%8}" onclick="selectGlossaryCat('${escH(cat.category)}')">${escH(cat.category)}</button>`).join('');
+  if(!glossarySelectedCat||!sorted.find(c=>c.category===glossarySelectedCat))glossarySelectedCat=sorted[0].category;
+  renderGlossaryTerms(sorted);
+}
+function selectGlossaryCat(catName){glossarySelectedCat=catName;document.getElementById('glossarySearchInput').value='';glossarySearchText='';document.getElementById('glossarySearchResultBar').style.display='none';document.getElementById('glossarySearchCount').textContent='';document.querySelectorAll('.glossary-cat-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===catName));renderGlossaryTerms(getGlossarySorted());}
+function renderGlossaryTerms(sorted){
+  const termEl=document.getElementById('glossaryTermArea');const cidx=sorted.findIndex(c=>c.category===glossarySelectedCat);const catObj=sorted[cidx];
+  if(!catObj){termEl.innerHTML='<div class="glossary-no-cat">カテゴリが見つかりません</div>';return;}
+  const colorIdx=cidx%8;const terms=catObj.terms||[];const sortedTerms=[...terms].sort((a,b)=>kanaCompare(a.term,b.term));
+  const itemsHtml=sortedTerms.map(t=>`<div class="glossary-accordion-item"><button class="glossary-accordion-trigger" onclick="toggleGlossaryItem(this)"><span class="glossary-accordion-arrow">▶</span><span style="font-size:13px;font-weight:600;">${escH(t.term)}</span></button><div class="glossary-accordion-body">${buildTermDetailHTML(t,catObj.category,colorIdx,'')}</div></div>`).join('');
+  termEl.innerHTML=`<div class="glossary-cat-heading" data-cidx="${colorIdx}">📋 ${escH(catObj.category)}<span class="glossary-cat-count">${terms.length}用語</span></div><div class="glossary-term-list">${terms.length?itemsHtml:'<div style="padding:20px;text-align:center;color:#888;">用語が登録されていません</div>'}</div>`;
+}
+function buildTermDetailHTML(t,catName,colorIdx,kw){
+  const hl=str=>kw?highlightText(escH(str||''),kw):escH(str||'');
+  let relatedHTML='';
+  if(t.related&&t.related.trim()){const tags=t.related.split(/[,、]/).map(s=>s.trim()).filter(Boolean);relatedHTML=tags.map(tag=>{const exists=!!findTermInGlossary(tag);if(exists)return`<span class="gterm-related-tag has-link" onclick="openRelatedPopup('${escH(tag).replace(/'/g,"\\'")}')">🔗 ${hl(tag)}</span>`;return`<span class="gterm-related-tag">🔗 ${hl(tag)}</span>`;}).join('');}
+  const mediaHTML=buildMediaHTML(t.media||[]);
+  return`<div class="gterm-detail"><div class="gterm-title-banner"><span class="gterm-title-icon">🏀</span><span class="gterm-title-text">${hl(t.term)}</span><span class="gterm-title-cat">${escH(catName)}</span></div><div class="gterm-oneliner"><span class="gterm-oneliner-icon">💡</span><span class="gterm-oneliner-text">${t.oneliner?hl(t.oneliner):'<span style="color:#bbb;font-weight:400;font-size:13px;">未登録</span>'}</span></div><div class="gterm-section"><div class="gterm-section-header detail">📖 くわしい説明</div>${t.detail?`<div class="gterm-section-body">${hl(t.detail).replace(/\n/g,'<br>')}</div>`:`<div class="gterm-empty-section">未登録</div>`}</div><div class="gterm-section"><div class="gterm-section-header usage">🏀 試合でどう使う？</div>${t.usage?`<div class="gterm-section-body">${hl(t.usage).replace(/\n/g,'<br>')}</div>`:`<div class="gterm-empty-section">未登録</div>`}</div><div class="gterm-section"><div class="gterm-section-header related">🔗 関連用語</div>${relatedHTML?`<div class="gterm-related-tags">${relatedHTML}</div>`:`<div class="gterm-empty-section">未登録</div>`}</div>${mediaHTML?`<div class="gterm-section"><div class="gterm-section-header media">🎬 メディア</div>${mediaHTML}</div>`:''}</div>`;
+}
+function highlightText(html,kw){if(!kw)return html;const e=kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return html.replace(new RegExp(`(${e})`,'gi'),'<mark>$1</mark>');}
+function toggleGlossaryItem(btn){const body=btn.nextElementSibling;const isOpen=btn.classList.contains('open');btn.closest('.glossary-term-list').querySelectorAll('.glossary-accordion-trigger').forEach(b=>{b.classList.remove('open');b.nextElementSibling.classList.remove('open');});if(!isOpen){btn.classList.add('open');body.classList.add('open');}}
+
+/* ══ 用語集管理エディタ ══ */
+function renderGlossaryEditor(){const sorted=getGlossarySorted();const catListEl=document.getElementById('geCatList');if(!sorted.length){catListEl.innerHTML='<div class="ge-empty">カテゴリなし</div>';return;}catListEl.innerHTML=sorted.map((cat,i)=>`<div class="ge-cat-item${geSelectedCatIdx===i?' active':''}" onclick="selectGeCat(${i})"><span class="ge-cat-dot" style="background:${GE_COLORS[i%8]};"></span><span style="flex:1;">${escH(cat.category)}</span><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openGCatModal(${i})">✏️</button><button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteGCat(${i})">🗑️</button></div>`).join('');renderGeTermList(sorted);}
+function selectGeCat(idx){geSelectedCatIdx=idx;renderGlossaryEditor();document.getElementById('geAddTermBtn').disabled=false;}
+function renderGeTermList(sorted){const termListEl=document.getElementById('geTermList');const labelEl=document.getElementById('geTermListLabel');if(geSelectedCatIdx===null||geSelectedCatIdx===undefined||!sorted[geSelectedCatIdx]){termListEl.innerHTML='<div class="ge-empty">← カテゴリを選択してください</div>';labelEl.textContent='📝 用語一覧（カテゴリを選択）';return;}const cat=sorted[geSelectedCatIdx];labelEl.textContent=`📝 用語一覧：${cat.category}`;const terms=cat.terms||[];if(!terms.length){termListEl.innerHTML='<div class="ge-empty">用語なし</div>';return;}termListEl.innerHTML=terms.map((t,i)=>`<div class="ge-term-item"><span class="ge-term-name">${escH(t.term)}</span><button class="btn btn-primary btn-sm" onclick="openGTermModal(${i})">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteGTerm(${i})">🗑️</button></div>`).join('');}
+function openGCatModal(idx){editingGCatIdx=(idx!==undefined)?idx:null;document.getElementById('gCatModalTitle').textContent=editingGCatIdx!==null?'カテゴリ編集':'カテゴリ追加';const sorted=getGlossarySorted();if(editingGCatIdx!==null&&sorted[editingGCatIdx]){document.getElementById('gCatName').value=sorted[editingGCatIdx].category;document.getElementById('gCatOrder').value=sorted[editingGCatIdx].order||10;}else{document.getElementById('gCatName').value='';document.getElementById('gCatOrder').value=10;}document.getElementById('gCatModal').classList.add('open');}
+async function saveGlossaryCat(){const name=document.getElementById('gCatName').value.trim();if(!name){showToast('⚠️ カテゴリ名を入力してください');return;}const order=Number(document.getElementById('gCatOrder').value)||10;const sorted=getGlossarySorted();if(editingGCatIdx!==null&&sorted[editingGCatIdx]){sorted[editingGCatIdx].category=name;sorted[editingGCatIdx].order=order;}else{sorted.push({category:name,order,terms:[]});}glossaryData=sorted;await saveToFirebase('glossary',glossaryData);closeModal('gCatModal');showToast('✅ カテゴリを保存しました');geSelectedCatIdx=null;}
+async function deleteGCat(idx){if(!confirm('このカテゴリと全用語を削除しますか？'))return;const sorted=getGlossarySorted();sorted.splice(idx,1);glossaryData=sorted;await saveToFirebase('glossary',glossaryData);geSelectedCatIdx=null;showToast('🗑️ 削除しました');}
+function renderMediaList(){const container=document.getElementById('gTermMediaList');if(!container)return;container.innerHTML=currentMediaList.map((m,i)=>`<div class="media-editor-wrap"><div class="media-editor-row"><label>種類</label><select onchange="currentMediaList[${i}].type=this.value"><option value="image" ${m.type==='image'?'selected':''}>🖼 画像URL</option><option value="youtube" ${m.type==='youtube'?'selected':''}>▶ YouTube URL</option></select><button class="media-remove-btn" onclick="removeMediaRow(${i})">✕ 削除</button></div><div class="media-editor-row"><label>URL</label><input type="text" placeholder="${m.type==='youtube'?'https://www.youtube.com/watch?v=...':'https://example.com/image.jpg'}" value="${escH(m.url||'')}" oninput="currentMediaList[${i}].url=this.value"></div><div class="media-editor-row"><label>説明</label><input type="text" placeholder="キャプション（任意）" value="${escH(m.caption||'')}" oninput="currentMediaList[${i}].caption=this.value"></div></div>`).join('');}
+function addMediaRow(){currentMediaList.push({type:'image',url:'',caption:''});renderMediaList();}
+function removeMediaRow(idx){currentMediaList.splice(idx,1);renderMediaList();}
+function openGTermModal(termIdx){editingGTermIdx=(termIdx!==undefined)?termIdx:null;document.getElementById('gTermModalTitle').textContent=editingGTermIdx!==null?'用語編集':'用語追加';const sorted=getGlossarySorted();const cat=sorted[geSelectedCatIdx];if(editingGTermIdx!==null&&cat&&cat.terms[editingGTermIdx]){const t=cat.terms[editingGTermIdx];document.getElementById('gTermName').value=t.term||'';document.getElementById('gTermOneliner').value=t.oneliner||'';document.getElementById('gTermDetail').value=t.detail||'';document.getElementById('gTermUsage').value=t.usage||'';document.getElementById('gTermRelated').value=t.related||'';currentMediaList=JSON.parse(JSON.stringify(t.media||[]));}else{['gTermName','gTermOneliner','gTermDetail','gTermUsage','gTermRelated'].forEach(id=>document.getElementById(id).value='');currentMediaList=[];}renderMediaList();document.getElementById('gTermModal').classList.add('open');}
+async function saveGlossaryTerm(){const termName=document.getElementById('gTermName').value.trim();if(!termName){showToast('⚠️ 用語名を入力してください');return;}if(geSelectedCatIdx===null){showToast('⚠️ カテゴリを選択してください');return;}const rec={term:termName,oneliner:document.getElementById('gTermOneliner').value.trim(),detail:document.getElementById('gTermDetail').value.trim(),usage:document.getElementById('gTermUsage').value.trim(),related:document.getElementById('gTermRelated').value.trim(),media:currentMediaList.filter(m=>m.url.trim())};const sorted=getGlossarySorted();const cat=sorted[geSelectedCatIdx];if(!cat){showToast('⚠️ カテゴリが見つかりません');return;}if(!cat.terms)cat.terms=[];if(editingGTermIdx!==null){cat.terms[editingGTermIdx]=rec;}else{cat.terms.push(rec);}glossaryData=sorted;await saveToFirebase('glossary',glossaryData);closeModal('gTermModal');showToast('✅ 用語を保存しました');}
+async function deleteGTerm(termIdx){if(!confirm('この用語を削除しますか？'))return;const sorted=getGlossarySorted();const cat=sorted[geSelectedCatIdx];if(!cat||!cat.terms)return;cat.terms.splice(termIdx,1);glossaryData=sorted;await saveToFirebase('glossary',glossaryData);showToast('🗑️ 削除しました');}
+
+/* ══ 認証 ══ */
 function openAdminAuth(){if(isAdmin){showPage('admin');return;}document.getElementById('authPwInput').value='';document.getElementById('authOverlay').classList.add('open');setTimeout(()=>document.getElementById('authPwInput').focus(),100);}
 function doAuth(){if(document.getElementById('authPwInput').value===ADMIN_PASS){isAdmin=true;closeAuth();document.querySelectorAll('.admin-only').forEach(el=>el.style.display='');showPage('admin');showToast('✅ 管理者としてログインしました');}else{showToast('⚠️ パスワードが違います');}}
 function closeAuth(){document.getElementById('authOverlay').classList.remove('open');}
 
-/* ════════ 起動 ════════ */
+/* ══ 起動 ══ */
 document.addEventListener('DOMContentLoaded',()=>{
-  document.querySelectorAll('#page-dashboard th.sortable').forEach(th=>{
-    th.addEventListener('click',()=>{
-      const col=th.dataset.col;if(!col)return;
-      if(sortCol===col)sortDir=sortDir==='asc'?'desc':'asc';else{sortCol=col;sortDir='asc';}
-      sortAndRender();
-    });
-  });
+  document.querySelectorAll('#page-dashboard th.sortable').forEach(th=>{th.addEventListener('click',()=>{const col=th.dataset.col;if(!col)return;if(sortCol===col)sortDir=sortDir==='asc'?'desc':'asc';else{sortCol=col;sortDir='asc';}sortAndRender();});});
   document.querySelectorAll('#page-admin th.sortable[data-admtable="match"]').forEach(th=>{th.addEventListener('click',()=>admMatchSort(th.dataset.admcol));});
   document.querySelectorAll('#page-admin th.sortable[data-admtable="stats"]').forEach(th=>{th.addEventListener('click',()=>admStatsSort(th.dataset.admcol));});
   document.getElementById('authOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('authOverlay'))closeAuth();});
