@@ -1,0 +1,114 @@
+<div class="page" id="page-stats">
+  <div class="section-card">
+    <!-- グループタブ -->
+    <div class="player-group-tabs">
+      <button class="player-group-tab active-tab" data-grp="female" onclick="switchPlayerGroup('female')">👧 女子</button>
+      <button class="player-group-tab"             data-grp="male"   onclick="switchPlayerGroup('male')">👦 男子</button>
+      <button class="player-group-tab"             data-grp="ob"     onclick="switchPlayerGroup('ob')">🎓 OB</button>
+    </div>
+
+    <!-- 選手ボタングリッド -->
+    <div class="player-btn-grid" id="playerBtnGrid"></div>
+
+    <!-- スタッツフィルター -->
+    <div class="stats-filter-row">
+      <span class="filter-label">対戦相手：</span>
+      <select id="statsFilterOpponent" onchange="renderStatsPage()">
+        <option value="">すべて</option>
+      </select>
+      <div class="date-filter-group">
+        <span class="filter-label">📅 開始日：</span>
+        <input type="date" id="statsDateFrom" onchange="renderStatsPage()">
+      </div>
+      <div class="date-filter-group">
+        <span class="filter-label">終了日：</span>
+        <input type="date" id="statsDateTo" onchange="renderStatsPage()">
+      </div>
+      <button class="btn-reset" onclick="clearStatsFilters()">✕ リセット</button>
+      <button class="btn-pdf" onclick="printPage('stats')" style="margin-left:auto;">🖨️ PDF出力</button>
+    </div>
+  </div>
+
+  <!-- 選手詳細ブロック（選手選択後に表示） -->
+  <div id="statsPlayerBlock" style="display:none;">
+    <!-- ヘッダー -->
+    <div class="stats-player-header" id="statsPlayerHeader">
+      <span class="stats-player-icon" id="statsPlayerIcon"></span>
+      <div>
+        <div class="stats-player-name">
+          <span id="statsPlayerName"></span>
+          <span class="stats-player-number" id="statsPlayerNumber" style="display:none;"></span>
+        </div>
+        <div class="stats-player-sub" id="statsPlayerSub"></div>
+      </div>
+    </div>
+
+    <!-- サマリーカード -->
+    <div id="statsSummaryCards" class="stats-summary-cards"></div>
+
+    <!-- チャート3列 -->
+    <div class="stats-charts-row">
+      <div class="stats-chart-card">
+        <h4>🕸️ 能力レーダー</h4>
+        <div class="stats-chart-wrap"><canvas id="statsRadarChart"></canvas></div>
+      </div>
+      <div class="stats-chart-card">
+        <h4>📊 試合別得点内訳</h4>
+        <div class="stats-chart-wrap"><canvas id="statsPtsChart"></canvas></div>
+      </div>
+      <div class="stats-chart-card">
+        <h4>📈 Q別 FG成功/試投</h4>
+        <div class="stats-chart-wrap"><canvas id="statsQFgChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- 選手名バー -->
+    <div class="stats-name-bar">
+      <span class="snb-label">選手名</span>
+      <span class="snb-name"   id="statsTablePlayerName"></span>
+      <span class="snb-number" id="statsTablePlayerNumber" style="display:none;"></span>
+    </div>
+
+    <!-- スタッツ詳細テーブル -->
+    <div class="stats-table-wrap">
+      <table class="stats-main-table">
+        <thead>
+          <tr class="h-group">
+            <th class="th-base" rowspan="2">日付</th>
+            <th class="th-base" rowspan="2">カテゴリー</th>
+            <th class="th-base" rowspan="2">試合名</th>
+            <th class="th-base" rowspan="2">相手</th>
+            <th class="th-jikan" colspan="5">出場時限</th>
+            <th class="th-fg"    colspan="5">2P　成功</th>
+            <th class="th-fg"    colspan="5">2P　試投</th>
+            <th class="th-fg"    rowspan="2" style="background:#f5a623;color:#fff;">成功率</th>
+            <th class="th-ft"    colspan="5">FT　成功</th>
+            <th class="th-ft"    colspan="5">FT　試投</th>
+            <th class="th-ft"    rowspan="2" style="background:#4a90c4;color:#fff;">成功率</th>
+            <th class="th-reb"   colspan="2">REB</th>
+            <th class="th-other" rowspan="2">AST</th>
+            <th class="th-other" rowspan="2">STL</th>
+            <th class="th-other" rowspan="2">BLK</th>
+          </tr>
+          <tr class="h-sub">
+            <th class="th-sub-jikan">1Q</th><th class="th-sub-jikan">2Q</th>
+            <th class="th-sub-jikan">3Q</th><th class="th-sub-jikan">4Q</th><th class="th-sub-jikan">計</th>
+            <th class="th-sub-fgm">1Q</th><th class="th-sub-fgm">2Q</th>
+            <th class="th-sub-fgm">3Q</th><th class="th-sub-fgm">4Q</th><th class="th-sub-fgm">計</th>
+            <th class="th-sub-fga">1Q</th><th class="th-sub-fga">2Q</th>
+            <th class="th-sub-fga">3Q</th><th class="th-sub-fga">4Q</th><th class="th-sub-fga">計</th>
+            <th class="th-sub-ftm">1Q</th><th class="th-sub-ftm">2Q</th>
+            <th class="th-sub-ftm">3Q</th><th class="th-sub-ftm">4Q</th><th class="th-sub-ftm">計</th>
+            <th class="th-sub-fta">1Q</th><th class="th-sub-fta">2Q</th>
+            <th class="th-sub-fta">3Q</th><th class="th-sub-fta">4Q</th><th class="th-sub-fta">計</th>
+            <th class="th-sub-reb">OR</th><th class="th-sub-reb">DR</th>
+          </tr>
+        </thead>
+        <tbody id="statsMainBody"></tbody>
+        <tfoot  id="statsMainFoot"></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div class="no-data" id="statsNoData">上のボタンから選手を選択してください</div>
+</div>

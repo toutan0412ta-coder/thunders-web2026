@@ -1,0 +1,105 @@
+<div class="page" id="page-admin">
+  <!-- 試合データ管理 -->
+  <div class="section-card">
+    <h2>🏀 試合データ管理</h2>
+    <div class="admin-toolbar">
+      <button class="btn btn-success btn-sm" onclick="openMatchModal()">➕ 新規追加</button>
+      <input class="filter-input" id="adminMatchFilter"
+             placeholder="🔍 キーワード検索…" oninput="renderAdminMatches()" style="min-width:180px;">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th class="sortable" data-admcol="date"      data-admtable="match">日付 <span class="sort-ic" id="admMatchIc-date">⇅</span></th>
+          <th class="sortable" data-admcol="category"  data-admtable="match">カテゴリー <span class="sort-ic" id="admMatchIc-category">⇅</span></th>
+          <th class="sortable" data-admcol="matchName" data-admtable="match">試合名 <span class="sort-ic" id="admMatchIc-matchName">⇅</span></th>
+          <th class="sortable" data-admcol="opponent"  data-admtable="match">相手 <span class="sort-ic" id="admMatchIc-opponent">⇅</span></th>
+          <th class="sortable td-center" data-admcol="scoreFor" data-admtable="match">点数 <span class="sort-ic" id="admMatchIc-scoreFor">⇅</span></th>
+          <th class="sortable td-center" data-admcol="result"   data-admtable="match">勝敗 <span class="sort-ic" id="admMatchIc-result">⇅</span></th>
+          <th class="td-center">操作</th>
+        </tr></thead>
+        <tbody id="adminMatchBody"></tbody>
+      </table>
+    </div>
+    <div id="adminMatchPagination" class="pagination"></div>
+  </div>
+
+  <!-- スタッツデータ管理 -->
+  <div class="section-card">
+    <h2>📊 スタッツデータ管理</h2>
+    <div class="admin-toolbar">
+      <button class="btn btn-success btn-sm" onclick="openStatsModal()">➕ 新規追加</button>
+      <input class="filter-input" id="adminStatsFilter"
+             placeholder="🔍 選手名・相手で検索…" oninput="renderAdminStats()" style="min-width:180px;">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th class="sortable" data-admcol="playerName" data-admtable="stats">選手名 <span class="sort-ic" id="admStatsIc-playerName">⇅</span></th>
+          <th class="sortable" data-admcol="date"       data-admtable="stats">日付 <span class="sort-ic" id="admStatsIc-date">⇅</span></th>
+          <th class="sortable" data-admcol="matchName"  data-admtable="stats">試合名 <span class="sort-ic" id="admStatsIc-matchName">⇅</span></th>
+          <th class="sortable" data-admcol="opponent"   data-admtable="stats">対戦相手 <span class="sort-ic" id="admStatsIc-opponent">⇅</span></th>
+          <th class="td-center">FG成功/試投</th>
+          <th class="td-center">操作</th>
+        </tr></thead>
+        <tbody id="adminStatsBody"></tbody>
+      </table>
+    </div>
+    <div id="adminStatsPagination" class="pagination"></div>
+  </div>
+
+  <!-- 選手マスタ & 用語集管理 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;" id="adminBottomGrid">
+
+    <!-- 選手マスタ -->
+    <div class="section-card">
+      <h2>👤 選手マスタ管理</h2>
+      <div class="admin-toolbar">
+        <button class="btn btn-success btn-sm" onclick="openPlayerModal()">➕ 選手追加</button>
+      </div>
+      <div id="playerMasterGrid" style="display:flex;flex-wrap:wrap;gap:16px;"></div>
+    </div>
+
+    <!-- 用語集管理 -->
+    <div class="section-card">
+      <h2>📖 用語集管理</h2>
+      <div class="glossary-editor">
+        <div class="ge-left">
+          <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:6px;">📂 カテゴリ</div>
+          <div class="ge-cat-list" id="geCatList"></div>
+          <button class="btn btn-success btn-sm" onclick="openGCatModal()"
+                  style="width:100%;margin-top:4px;">➕ カテゴリ追加</button>
+        </div>
+        <div class="ge-right">
+          <div style="font-size:12px;font-weight:700;color:#555;margin-bottom:6px;"
+               id="geTermListLabel">📝 用語一覧（カテゴリを選択）</div>
+          <div class="ge-term-list" id="geTermList">
+            <div class="ge-empty">← カテゴリを選択してください</div>
+          </div>
+          <button class="btn btn-success btn-sm" onclick="openGTermModal()" id="geAddTermBtn"
+                  style="width:100%;margin-top:4px;" disabled>➕ 用語追加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- データ管理（JSONインポート） -->
+  <div class="section-card">
+    <h2>📂 データ管理（JSONインポート）</h2>
+    <p style="font-size:13px;color:#666;margin-bottom:10px;">既存のJSONファイルをFirestoreに一括登録できます</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;">
+      <input type="file" id="importMatchFile"    accept=".json" style="display:none" onchange="importData(event,'matches')">
+      <input type="file" id="importStatsFile"    accept=".json" style="display:none" onchange="importData(event,'stats')">
+      <input type="file" id="importPlayersFile"  accept=".json" style="display:none" onchange="importData(event,'players')">
+      <input type="file" id="importGlossaryFile" accept=".json" style="display:none" onchange="importData(event,'glossary')">
+      <button class="btn btn-accent btn-sm" onclick="document.getElementById('importMatchFile').click()">📤 試合データ読込</button>
+      <button class="btn btn-accent btn-sm" onclick="document.getElementById('importStatsFile').click()">📤 スタッツ読込</button>
+      <button class="btn btn-accent btn-sm" onclick="document.getElementById('importPlayersFile').click()">📤 選手マスタ読込</button>
+      <button class="btn btn-accent btn-sm" onclick="document.getElementById('importGlossaryFile').click()">📤 用語集読込</button>
+      <button class="btn btn-primary btn-sm" onclick="exportData('matches')">📥 試合データDL</button>
+      <button class="btn btn-primary btn-sm" onclick="exportData('stats')">📥 スタッツDL</button>
+      <button class="btn btn-primary btn-sm" onclick="exportData('players')">📥 選手マスタDL</button>
+      <button class="btn btn-primary btn-sm" onclick="exportData('glossary')">📥 用語集DL</button>
+    </div>
+  </div>
+</div>

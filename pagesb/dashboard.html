@@ -1,0 +1,101 @@
+<div class="page active" id="page-dashboard">
+  <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+    <button class="btn-pdf" onclick="printPage('dashboard')">🖨️ PDF出力</button>
+  </div>
+
+  <!-- チャート行 -->
+  <div class="chart-row">
+    <div class="chart-card">
+      <h3>勝率（絞り込み連動）</h3>
+      <div class="chart-wrap">
+        <canvas id="donutChart"></canvas>
+        <div class="donut-center">
+          <div class="pct" id="donutPct">-%</div>
+          <div class="lbl">勝率</div>
+        </div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>月別 勝敗推移（絞り込み連動）</h3>
+      <div class="chart-wrap" style="height:180px;">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- フィルター -->
+  <div class="filter-area">
+    <input class="filter-input" id="filterKeyword"
+           placeholder="🔍 試合名・場所・相手…" oninput="applyFilters()">
+    <select id="filterOpponent" onchange="applyFilters()" style="min-width:130px;">
+      <option value="">相手：すべて</option>
+    </select>
+    <select id="filterCategory" onchange="applyFilters()">
+      <option value="">男女：すべて</option>
+      <option value="男子">👦 男子</option>
+      <option value="女子">👧 女子</option>
+    </select>
+    <select id="filterJr" onchange="applyFilters()">
+      <option value="">Jr：すべて</option>
+      <option value="false">通常</option>
+      <option value="true">Jr</option>
+    </select>
+    <select id="filterResult" onchange="applyFilters()">
+      <option value="">勝敗：すべて</option>
+      <option value="勝">勝</option>
+      <option value="負">負</option>
+      <option value="引">引き分け</option>
+    </select>
+    <div class="date-filter-group">
+      <span class="filter-label">📅 開始日：</span>
+      <input type="date" id="filterDateFrom" onchange="applyFilters()">
+    </div>
+    <div class="date-filter-group">
+      <span class="filter-label">終了日：</span>
+      <input type="date" id="filterDateTo" onchange="applyFilters()">
+    </div>
+    <button class="btn-reset" onclick="clearFilters()">✕ リセット</button>
+  </div>
+
+  <!-- メイン2カラム -->
+  <div class="dashboard-layout">
+    <!-- 試合テーブル -->
+    <div class="dashboard-main">
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th class="sortable" data-col="date">日付</th>
+            <th class="sortable" data-col="venue">場所</th>
+            <th class="sortable" data-col="category">区分</th>
+            <th class="sortable" data-col="matchName">試合名</th>
+            <th class="sortable" data-col="opponent">対戦相手</th>
+            <th class="sortable td-center" data-col="scoreFor">点数</th>
+            <th class="sortable td-center" data-col="result">勝敗</th>
+            <th class="td-center video-col">動画</th>
+          </tr></thead>
+          <tbody id="matchTableBody"></tbody>
+        </table>
+      </div>
+      <div id="matchPagination" class="pagination"></div>
+    </div>
+
+    <!-- 月別集計サイドバー -->
+    <div class="monthly-card">
+      <div class="monthly-card-header"><h3>📅 月別勝敗集計</h3></div>
+      <div class="monthly-card-body">
+        <div class="cat-tab-group">
+          <div class="cat-tab active" data-cat="全体"   onclick="switchMonthlyCat(this)">全体</div>
+          <div class="cat-tab"       data-cat="全体Jr" onclick="switchMonthlyCat(this)">全体Jr</div>
+          <div class="cat-tab"       data-cat="男子"   onclick="switchMonthlyCat(this)">男子</div>
+          <div class="cat-tab"       data-cat="男子Jr" onclick="switchMonthlyCat(this)">男子Jr</div>
+          <div class="cat-tab"       data-cat="女子"   onclick="switchMonthlyCat(this)">女子</div>
+          <div class="cat-tab"       data-cat="女子Jr" onclick="switchMonthlyCat(this)">女子Jr</div>
+        </div>
+        <table class="monthly-table">
+          <thead><tr><th>月</th><th>勝</th><th>負</th><th>引</th><th>勝率</th></tr></thead>
+          <tbody id="monthlySummaryBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
